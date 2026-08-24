@@ -6,6 +6,9 @@
    조작    : ← →  단계 이동 · Space 다음 · F 전체화면 · R 응답판 · Esc 나가기
    시간    : 각 <section class="step"> 에 data-min="5" 를 적어 두면
              그 절의 배정 시간을 재고, 넘기면 알려 줍니다.
+             절 시간의 합은 40분입니다. 나머지 10분(출석·환기·기기 접속·마무리)은
+             수업 앞뒤로 빼 두었습니다.
+   영상    : <div class="teach-only" data-yt="영상ID"> 는 진행 화면에서만 보입니다.
    원칙    : 이 화면에는 정답표를 두지 않습니다. 정답과 해설은 학생 화면이
              즉시 보여주므로, 교사는 여기서 '분포'만 봅니다.
    ========================================================================== */
@@ -27,6 +30,16 @@ const CSS = `
 :root[data-teach] .figtitle{font-size:1.15em}
 :root[data-teach] .opt{font-size:1.02em;padding:14px 18px}
 :root[data-teach] .submit{display:none}
+.teach-only{display:none}
+:root[data-teach] .teach-only{display:block;margin:22px 0}
+.ytbox{background:#000;border-radius:14px;overflow:hidden;aspect-ratio:16/9;position:relative}
+.ytbox iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.ytnone{background:var(--surface-2);border:1px dashed var(--rule);border-radius:14px;
+  padding:26px 28px;text-align:center}
+.ytnone p{margin:0 0 8px;font-size:16px;font-weight:600;color:var(--ink)}
+.ytnone span{font-size:14px;color:var(--ink-soft);line-height:1.7;display:block}
+.ytnone code{font-size:13px}
+.ytcap{margin:10px 2px 0;font-size:14px;color:var(--ink-faint)}
 @media (prefers-reduced-motion:reduce){:root[data-teach] section.step.tshow{animation:none}}
 
 /* ── 진행 막대 ── */
@@ -111,7 +124,7 @@ let on = false, idx = 0, secs = [], respOpen = false, poll = null;
 let bar, prog, resp, toast;
 let t0 = null, running = false, elapsed = 0;   // 전체 시계
 let secStart = null, warned = false;           // 절 시계
-const TOTAL = 50 * 60;
+const TOTAL = 40 * 60;   /* 실제 수업 40분 · 출석·환기·접속·마무리 10분은 따로 */
 
 const root = document.documentElement;
 const cfg  = () => (typeof LESSON === 'object' && LESSON) || {};
@@ -327,8 +340,28 @@ function onMode(){
   on = true;
   root.setAttribute('data-teach', '');
   secs = [...document.querySelectorAll('section.step')];
+  mountVideos();
   go(0); tick();
 }
+/* ---------- 영상 (진행 화면에서만) ---------- */
+function mountVideos(){
+  document.querySelectorAll('.teach-only[data-yt]').forEach(box => {
+    if(box.dataset.done) return;
+    box.dataset.done = '1';
+    const id = (box.dataset.yt || '').trim();
+    const cap = box.dataset.cap || '';
+    const find = box.dataset.find || '';
+    box.innerHTML = id
+      ? `<div class="ytbox"><iframe src="https://www.youtube-nocookie.com/embed/${encodeURIComponent(id)}?rel=0"
+           title="${cap.replace(/"/g,'')}" allow="accelerometer; clipboard-write; encrypted-media; picture-in-picture"
+           allowfullscreen loading="lazy"></iframe></div>` +
+        (cap ? `<p class="ytcap">${cap}</p>` : '')
+      : `<div class="ytnone"><p>${cap || '영상 자리'}</p>
+           <span>아직 주소를 넣지 않았습니다. 유튜브에서 <b>${find || '관련 영상'}</b> 으로 찾은 뒤,
+           주소의 <code>v=</code> 뒤 11글자를 이 절의 <code>data-yt</code> 에 넣으세요.</span></div>`;
+  });
+}
+
 function off(){
   on = false;
   root.removeAttribute('data-teach');

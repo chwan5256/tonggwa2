@@ -74,6 +74,14 @@ function quiz(sel, items){
     p.className = 'fb ' + (ok ? 'right' : 'wrong');
     p.innerHTML = `<b>${ok ? '맞았습니다.' : '다시 볼 지점.'}</b> ${msg}`;
     qi.appendChild(p);
+
+    /* 학생 활동 기록(act.js)이 받아 갑니다 */
+    const sec = host.closest('section.step');
+    document.dispatchEvent(new CustomEvent('tg:quiz', { detail:{
+      host: sel.replace(/\W/g, ''), i,
+      sec: sec ? (sec.dataset.nav || sec.id) : '',
+      stem: it.stem, picked: it.opts[j], answer: it.opts[it.ans], ok
+    }}));
   });
 }
 
