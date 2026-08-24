@@ -1,0 +1,899 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>하나의 원인, 정반대의 결과 · 통합과학2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=IBM+Plex+Sans+KR:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../../shared/base.css">
+<style>
+/* ── 이 차시에서만 쓰는 것 ─────────────────────────────── */
+
+/* 지시등 */
+.lamps{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;margin:18px 0 0}
+.lamp{background:var(--surface);border:1px solid var(--rule);border-radius:12px;padding:14px 16px;
+  display:grid;gap:6px}
+.lamp .k{margin:0;font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;color:var(--ink-faint)}
+.lamp .v{margin:0;font-size:20px;font-weight:600;font-variant-numeric:tabular-nums;line-height:1.3}
+.lamp .bar{height:8px;border-radius:5px;background:var(--surface-2);overflow:hidden}
+.lamp .bar i{display:block;height:100%;width:0;border-radius:5px;transition:width .25s ease}
+@media (prefers-reduced-motion:reduce){.lamp .bar i{transition:none}}
+.lamp.rain .bar i{background:var(--s1)}
+.lamp.warm .bar i{background:var(--s2)}
+
+/* 시뮬레이터 — 부드러운 반응 */
+#sim path, #sim rect, #sim g, #sim text{transition:d .34s cubic-bezier(.4,0,.2,1),
+  opacity .34s ease, transform .34s cubic-bezier(.4,0,.2,1), stroke-width .34s ease}
+#sim .rain line{stroke-dasharray:9 13;animation:fall .9s linear infinite}
+@keyframes fall{to{stroke-dashoffset:-44}}
+@media (prefers-reduced-motion:reduce){
+  #sim path,#sim rect,#sim g,#sim text{transition:none}
+  #sim .rain line{animation:none;stroke-dasharray:none}
+}
+
+/* 상태 배지 */
+.state{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:12.5px;
+  border:1px solid var(--rule);border-radius:999px;padding:4px 14px;color:var(--ink-soft)}
+.state b{color:var(--ink);font-weight:600;letter-spacing:.02em}
+.state.el{border-color:var(--s2);color:var(--s2)}
+.state.la{border-color:var(--s1);color:var(--s1)}
+
+/* 슬라이더 눈금 */
+.scale{display:flex;justify-content:space-between;font-family:var(--mono);font-size:11.5px;
+  color:var(--ink-faint);margin-top:-4px;padding:0 2px}
+
+/* 편차 실험실 */
+.labbox{background:var(--surface);border:1px solid var(--rule);border-radius:14px;padding:20px;margin-top:18px}
+.labbox .cv{position:relative}
+.labbox canvas{width:100%;display:block;touch-action:none;cursor:ns-resize}
+.stepper{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+.stepper button{font:inherit;font-size:14px;border:1px solid var(--rule);background:var(--surface);
+  color:var(--ink-soft);border-radius:9px;padding:7px 14px;cursor:pointer;display:flex;gap:8px;align-items:center}
+.stepper button .n{font-family:var(--mono);font-size:11px;color:var(--ink-faint)}
+.stepper button:hover{border-color:var(--accent)}
+.stepper button.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.stepper button.on .n{color:#fff;opacity:.75}
+.readout{display:flex;flex-wrap:wrap;gap:10px 26px;margin-top:14px;padding-top:14px;
+  border-top:1px solid var(--rule-soft);font-size:14.5px;color:var(--ink-soft)}
+.readout b{color:var(--ink);font-variant-numeric:tabular-nums}
+
+/* 데이터 카드 */
+.datacard{margin-top:14px;font-family:var(--mono);font-size:12px;line-height:1.85;color:var(--ink-faint)}
+.datacard b{color:var(--ink-soft);font-weight:500}
+.banner{background:var(--danger-wash);border:1px solid var(--danger);border-radius:11px;
+  padding:13px 16px;margin-top:16px;font-size:14.5px;color:var(--ink)}
+.banner b{color:var(--danger)}
+.banner[hidden]{display:none}
+
+/* 익명 제출 */
+.anon{background:var(--surface-2);border-radius:12px;padding:16px 18px;margin-top:16px}
+.anon p.h{margin:0 0 10px;font-size:14.5px;font-weight:600}
+.anon textarea{width:100%;min-height:78px;font:inherit;font-size:15px;padding:11px 13px;
+  border:1px solid var(--rule);border-radius:9px;background:var(--surface);color:var(--ink);resize:vertical}
+.anon .ox{display:flex;gap:8px;margin-bottom:10px}
+.anon .ox button{font:inherit;font-size:15px;border:1px solid var(--rule);background:var(--surface);
+  color:var(--ink-soft);border-radius:9px;padding:8px 22px;cursor:pointer}
+.anon .ox button.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.anon .sent{margin:10px 0 0;font-size:14px;color:var(--good)}
+.anon .note{margin:10px 0 0;font-size:13px;color:var(--ink-faint)}
+</style>
+</head>
+<body>
+
+<div class="topbar"><div class="wrap">
+  <a class="home" href="../../">← 자료실</a>
+  <nav></nav>
+  <button class="tbtn" id="themeBtn" type="button">테마</button>
+</div></div>
+
+<header class="mast"><div class="wrap">
+  <p class="eyebrow">Ⅱ. 환경과 에너지 · 03차시</p>
+  <h1>하나의 원인, 정반대의 결과</h1>
+  <p class="dek">바람 하나가 약해졌을 뿐인데 한쪽에는 가뭄이, 반대쪽에는 홍수가 옵니다. 어떻게 그런 일이 가능한지 직접 움직여 보며 확인합니다.</p>
+  <div class="tags">
+    <span class="tag std">[10통과2-02-03]</span>
+    <span class="tag">대기 대순환 · 엘니뇨</span>
+    <span class="tag">지식·이해 · 과정·기능</span>
+  </div>
+</div></header>
+
+<main><div class="wrap">
+
+<!-- ================= 1 ================= -->
+<section class="step" id="s1" data-nav="오늘의 질문">
+  <h2><span class="n">01</span>오늘의 질문</h2>
+  <p class="q">엘니뇨가 오면 페루에는 홍수가, 인도네시아에는 가뭄이 든다. 하나의 원인이 어떻게 정반대의 결과를 낳는가?</p>
+  <p>오늘 수업이 끝날 때, 이 질문에 <b>“바람 → 바다 → 구름”</b>의 순서로 답할 수 있어야 합니다.</p>
+</section>
+
+<!-- ================= 2 ================= -->
+<section class="step" id="s2" data-nav="되짚기">
+  <h2><span class="n">02</span>되짚기</h2>
+  <p class="lead">중학교에서 배운 것부터 확인합니다. 답을 고르면 바로 해설이 나옵니다.</p>
+  <div id="quizA"></div>
+</section>
+
+<!-- ================= 3 ================= -->
+<section class="step" id="s3" data-nav="바람은 왜 그 방향인가">
+  <h2><span class="n">03</span>바람은 왜 늘 그 방향으로 부는가</h2>
+  <p class="lead">엘니뇨를 이해하려면 <b>평상시</b>를 먼저 알아야 합니다. 그리고 평상시를 만드는 것은 <b>적도가 더 뜨겁다</b>는 사실 하나입니다.</p>
+
+  <figure class="fig">
+    <p class="figtitle">대기 대순환 — 세 개의 고리</p>
+    <p class="figsub">적도의 남는 에너지를 극지방으로 옮기는 구조</p>
+    <svg viewBox="0 0 720 330" role="img" aria-label="위도에 따라 세 개의 순환 세포가 형성되며, 지표 부근에는 저위도에서 무역풍, 중위도에서 편서풍, 고위도에서 극동풍이 분다." style="width:100%;height:auto;display:block">
+      <rect x="60" y="30" width="600" height="230" fill="var(--surface-2)"/>
+      <rect x="60" y="260" width="600" height="30" fill="var(--rule)"/>
+      <g stroke="var(--rule)" stroke-width="1" stroke-dasharray="4 4">
+        <line x1="260" y1="30" x2="260" y2="260"/>
+        <line x1="460" y1="30" x2="460" y2="260"/>
+      </g>
+      <!-- 순환 고리 -->
+      <g fill="none" stroke="var(--accent)" stroke-width="2.2" stroke-linecap="round">
+        <path d="M645 250 C645 120, 490 120, 480 250" marker-end="url(#ah)"/>
+        <path d="M275 250 C285 110, 450 110, 462 250" marker-end="url(#ah)"/>
+        <path d="M70 250 C70 60, 250 60, 258 250" marker-end="url(#ah)"/>
+      </g>
+      <defs>
+        <marker id="ah" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="5.5" markerHeight="5.5" orient="auto-start-reverse">
+          <path d="M0 0 L10 5 L0 10 z" fill="var(--accent)"/>
+        </marker>
+        <marker id="aw" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+          <path d="M0 0 L10 5 L0 10 z" fill="var(--ochre)"/>
+        </marker>
+      </defs>
+      <!-- 지표 바람 -->
+      <g stroke="var(--ochre)" stroke-width="3" marker-end="url(#aw)">
+        <line x1="240" y1="243" x2="110" y2="243"/>
+        <line x1="290" y1="243" x2="430" y2="243"/>
+        <line x1="640" y1="243" x2="500" y2="243"/>
+      </g>
+      <g font-family="IBM Plex Sans KR, sans-serif" font-size="13.5" font-weight="600" fill="var(--ochre)">
+        <text x="120" y="234">무역풍 (동 → 서)</text>
+        <text x="310" y="234">편서풍</text>
+        <text x="512" y="234">극동풍</text>
+      </g>
+      <g font-family="IBM Plex Mono, monospace" font-size="12" fill="var(--ink-faint)" text-anchor="middle">
+        <text x="70" y="282">적도 0°</text>
+        <text x="260" y="282">30°</text>
+        <text x="460" y="282">60°</text>
+        <text x="650" y="282">극 90°</text>
+      </g>
+      <g font-family="IBM Plex Sans KR, sans-serif" font-size="13" fill="var(--ink-soft)">
+        <text x="120" y="88">에너지 남음 → 상승</text>
+        <text x="565" y="150">에너지 부족 → 하강</text>
+      </g>
+      <text x="60" y="316" font-family="IBM Plex Sans KR, sans-serif" font-size="13" fill="var(--ink-faint)">※ 북반구 기준. 남반구는 위아래로 대칭입니다.</text>
+    </svg>
+    <figcaption><b>읽는 법.</b> 적도는 태양 에너지를 남길 만큼 받고, 극지방은 모자랍니다. 그 불균형을 메우려고 공기가 움직이면서 세 개의 순환 고리가 만들어집니다. 우리가 <b>지표에서 느끼는 바람</b>은 이 고리의 <b>아랫부분</b>입니다. 저위도에서는 그것이 <b>동에서 서로 부는 무역풍</b>입니다.</figcaption>
+  </figure>
+
+  <div class="note">
+    <span class="lbl">여기서 바다로 넘어갑니다</span>
+    바람이 계속 한 방향으로 불면 <b>바닷물의 표층도 끌려갑니다.</b> 태평양 적도에서 무역풍이 동에서 서로 부니, 따뜻한 표층수가 <b>서쪽(인도네시아 쪽)에 쌓입니다.</b>
+    그러면 동쪽(남아메리카 쪽)에서는 표층수가 빠져나간 자리를 메우려고 <b>차가운 물이 아래에서 올라옵니다</b> — 이것이 <b>용승</b>입니다.
+  </div>
+</section>
+
+<!-- ================= 4 ================= -->
+<section class="step" id="s4" data-nav="무역풍을 약하게">
+  <h2><span class="n">04</span>무역풍을 약하게 해 보자</h2>
+  <p class="lead">아래는 태평양 적도를 <b>서쪽에서 동쪽으로 자른 단면</b>입니다. 손잡이를 움직여 무역풍의 세기만 바꿔 보세요. <b>바꾸는 것은 바람 하나뿐</b>입니다.</p>
+
+  <figure class="fig">
+    <p class="figtitle">태평양 적도 단면 — 바람이 바다를 움직이고, 바다가 구름을 옮긴다</p>
+    <p class="figsub" id="simState">평상시</p>
+
+    <svg id="sim" viewBox="0 0 900 470" role="img" aria-label="태평양 적도 단면 모식도. 무역풍의 세기에 따라 따뜻한 표층수의 분포, 수온약층의 기울기, 용승의 세기, 워커 순환과 강수의 위치가 달라진다." style="width:100%;height:auto;display:block">
+      <defs>
+        <linearGradient id="gSky" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="var(--accent)" stop-opacity=".10"/>
+          <stop offset="1" stop-color="var(--ochre)" stop-opacity=".06"/>
+        </linearGradient>
+        <linearGradient id="gWarm" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0"   stop-color="var(--s2)" stop-opacity=".62"/>
+          <stop offset=".55" stop-color="var(--s2)" stop-opacity=".34"/>
+          <stop offset="1"   stop-color="var(--s2)" stop-opacity=".10"/>
+        </linearGradient>
+        <linearGradient id="gDeep" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="var(--s1)" stop-opacity=".16"/>
+          <stop offset="1" stop-color="var(--s1)" stop-opacity=".46"/>
+        </linearGradient>
+        <linearGradient id="gCold" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="var(--s1)" stop-opacity="0"/>
+          <stop offset="1" stop-color="var(--s1)" stop-opacity=".55"/>
+        </linearGradient>
+        <linearGradient id="gCloud" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="var(--ink-faint)" stop-opacity=".30"/>
+          <stop offset="1" stop-color="var(--ink-soft)" stop-opacity=".58"/>
+        </linearGradient>
+        <marker id="mWind" viewBox="0 0 12 12" refX="9" refY="6" markerWidth="5" markerHeight="5" orient="auto">
+          <path d="M0 0 L12 6 L0 12 L3 6 Z" fill="var(--ochre)"/>
+        </marker>
+        <marker id="mCell" viewBox="0 0 12 12" refX="9" refY="6" markerWidth="4.6" markerHeight="4.6" orient="auto">
+          <path d="M0 0 L12 6 L0 12 L3 6 Z" fill="var(--ink-soft)"/>
+        </marker>
+        <marker id="mUp" viewBox="0 0 12 12" refX="9" refY="6" markerWidth="5" markerHeight="5" orient="auto">
+          <path d="M0 0 L12 6 L0 12 L3 6 Z" fill="var(--s1)"/>
+        </marker>
+      </defs>
+
+      <!-- 하늘 -->
+      <rect x="0" y="0" width="900" height="196" fill="url(#gSky)"/>
+      <!-- 바다 -->
+      <rect x="0" y="196" width="900" height="200" fill="var(--surface-2)"/>
+      <path id="deep"  fill="url(#gDeep)" d=""/>
+      <path id="warm"  fill="url(#gWarm)" d=""/>
+      <!-- 동쪽 찬 표층수 -->
+      <rect id="cold" x="600" y="196" width="300" height="52" fill="url(#gCold)" opacity="0"/>
+      <!-- 수온약층 -->
+      <path id="thermoHalo" fill="none" stroke="var(--surface)" stroke-width="7" stroke-linecap="round" opacity=".75" d=""/>
+      <path id="thermo" fill="none" stroke="var(--ink)" stroke-width="2.6" stroke-dasharray="9 6" stroke-linecap="round" d=""/>
+      <text id="thermoLbl" x="430" y="290" font-family="IBM Plex Sans KR, sans-serif" font-size="13.5" font-weight="600" fill="var(--ink)" text-anchor="middle">수온약층</text>
+
+      <!-- 해수면 -->
+      <path d="M0 196 Q 30 191, 60 196 T 120 196 T 180 196 T 240 196 T 300 196 T 360 196 T 420 196 T 480 196 T 540 196 T 600 196 T 660 196 T 720 196 T 780 196 T 840 196 T 900 196"
+            fill="none" stroke="var(--ink-faint)" stroke-width="1.6" opacity=".55"/>
+
+      <!-- 해저와 육지 -->
+      <path d="M0 396 L900 396 L900 470 L0 470 Z" fill="var(--rule)"/>
+      <path d="M812 396 L862 196 L900 240 L900 396 Z" fill="var(--rule)" stroke="var(--ink-faint)" stroke-width="1" stroke-opacity=".4"/>
+      <path d="M18 196 q14 -22 30 0 z M62 196 q18 -28 36 0 z M112 196 q12 -18 24 0 z" fill="var(--rule)" stroke="var(--ink-faint)" stroke-width="1" stroke-opacity=".4"/>
+
+      <!-- 워커 순환 -->
+      <g id="cell" stroke="var(--ink-soft)" stroke-width="2.4" fill="none" stroke-linecap="round" opacity=".65">
+        <path id="cellUp"   marker-end="url(#mCell)" d=""/>
+        <path id="cellDown" marker-end="url(#mCell)" d=""/>
+      </g>
+      <text id="cellLbl" x="430" y="96" font-family="IBM Plex Sans KR, sans-serif" font-size="13" fill="var(--ink-soft)" text-anchor="middle" opacity=".8">공기가 도는 큰 고리 (워커 순환)</text>
+
+      <!-- 무역풍 = 고리의 지표 되돌이 -->
+      <g id="windG" stroke="var(--ochre)" stroke-linecap="round" marker-end="url(#mWind)">
+        <line id="w1" x1="740" y1="168" x2="300" y2="168" stroke-width="5"/>
+        <line id="w2" x1="712" y1="184" x2="330" y2="184" stroke-width="3.4"/>
+      </g>
+      <text id="windLbl" x="748" y="152" font-family="IBM Plex Sans KR, sans-serif" font-size="14.5" font-weight="700" fill="var(--ochre)" text-anchor="end">무역풍</text>
+
+      <!-- 용승 -->
+      <g id="upwell" stroke="var(--s1)" stroke-width="3.2" fill="none" stroke-linecap="round" marker-end="url(#mUp)">
+        <path id="u1" d="M796 372 C 788 322, 792 274, 800 232"/>
+        <path id="u2" d="M760 384 C 752 336, 756 292, 764 250"/>
+      </g>
+      <text id="upLbl" x="772" y="404" font-family="IBM Plex Sans KR, sans-serif" font-size="13.5" font-weight="600" fill="var(--s1)" text-anchor="middle">용승</text>
+
+      <!-- 대류·강수 -->
+      <g id="conv">
+        <ellipse cx="0" cy="44" rx="96" ry="15" fill="url(#gCloud)"/>
+        <ellipse cx="-30" cy="74" rx="56" ry="30" fill="url(#gCloud)"/>
+        <ellipse cx="30"  cy="76" rx="60" ry="32" fill="url(#gCloud)"/>
+        <ellipse cx="0"   cy="60" rx="48" ry="34" fill="url(#gCloud)"/>
+        <g class="rain" stroke="var(--s1)" stroke-width="2.6" stroke-linecap="round" opacity=".85">
+          <line x1="-52" y1="106" x2="-60" y2="140"/>
+          <line x1="-20" y1="110" x2="-28" y2="146"/>
+          <line x1="14"  y1="108" x2="6"   y2="142"/>
+          <line x1="48"  y1="110" x2="40"  y2="144"/>
+        </g>
+        <text x="0" y="18" font-family="IBM Plex Sans KR, sans-serif" font-size="14" font-weight="700" fill="var(--ink)" text-anchor="middle">상승 · 강수</text>
+      </g>
+
+      <!-- 수온 표시 -->
+      <g id="pillW">
+        <rect x="150" y="212" width="132" height="30" rx="15" fill="var(--surface)" stroke="var(--rule)"/>
+        <text id="lblW" x="216" y="232" font-family="IBM Plex Mono, monospace" font-size="13.5" fill="var(--ink)" text-anchor="middle">—</text>
+      </g>
+      <g id="pillE">
+        <rect x="612" y="212" width="132" height="30" rx="15" fill="var(--surface)" stroke="var(--rule)"/>
+        <text id="lblE" x="678" y="232" font-family="IBM Plex Mono, monospace" font-size="13.5" fill="var(--ink)" text-anchor="middle">—</text>
+      </g>
+
+      <!-- 지역 이름 -->
+      <g font-family="IBM Plex Sans KR, sans-serif" font-size="14" font-weight="600" fill="var(--ink-soft)">
+        <text x="20" y="432">서태평양 · 인도네시아</text>
+        <text x="880" y="432" text-anchor="end">동태평양 · 페루</text>
+      </g>
+      <text x="20" y="458" font-family="IBM Plex Sans KR, sans-serif" font-size="12.5" fill="var(--ink-faint)">※ 실제 관측 자료가 아니라 관계를 보여주는 <tspan font-weight="600">모식도</tspan>입니다. 수치는 대략적인 값입니다.</text>
+    </svg>
+
+    <div class="ctrl">
+      <div class="row">
+        <label for="wind">무역풍의 세기</label>
+        <input type="range" id="wind" min="-1" max="1" step="0.02" value="0" aria-describedby="simState">
+        <span class="val" id="windv">평상시</span>
+      </div>
+      <div class="scale"><span>← 매우 약함</span><span>평상시</span><span>매우 강함 →</span></div>
+      <div class="btnrow">
+        <button class="btn ghost" data-set="-1" type="button">엘니뇨</button>
+        <button class="btn ghost" data-set="0" type="button">평상시</button>
+        <button class="btn ghost" data-set="1" type="button">라니냐</button>
+      </div>
+    </div>
+
+    <div class="lamps">
+      <div class="lamp warm"><p class="k">동태평양 표층 수온</p><p class="v" id="lampSST">—</p><div class="bar"><i id="barSST"></i></div></div>
+      <div class="lamp rain"><p class="k">페루 (동쪽) 강수</p><p class="v" id="lampPE">—</p><div class="bar"><i id="barPE"></i></div></div>
+      <div class="lamp rain"><p class="k">인도네시아 (서쪽) 강수</p><p class="v" id="lampID">—</p><div class="bar"><i id="barID"></i></div></div>
+    </div>
+
+    <figcaption><b>확인할 것.</b> 손잡이를 왼쪽 끝까지 밀어 보세요. 무역풍이 약해지면 서쪽에 쌓여 있던 따뜻한 물이 동쪽으로 퍼지고, <b>수온약층의 기울기가 평평해지며</b>, 동쪽의 용승이 약해집니다. 그러면 <b>구름이 만들어지는 자리 자체가 동쪽으로 옮겨갑니다</b>. 페루의 강수 막대와 인도네시아의 강수 막대가 <b>서로 반대로</b> 움직이는 것이 오늘의 답입니다.</figcaption>
+  </figure>
+
+  <div class="note warn">
+    <span class="lbl">자주 틀리는 지점</span>
+    엘니뇨는 <b>지구온난화 때문에 생기는 것이 아닙니다.</b> 엘니뇨는 열대 태평양에서 <b>수년 주기로 되풀이되어 온 자연적인 변동</b>이며, 산업화 이전의 기록에도 남아 있습니다.
+    “온난화가 엘니뇨의 <b>원인</b>이다”와 “온난화가 엘니뇨의 <b>빈도나 강도에 영향을 줄 수 있다</b>”는 전혀 다른 문장입니다. 시험에서 갈리는 지점이 정확히 여기입니다.
+  </div>
+</section>
+
+<!-- ================= 5 ================= -->
+<section class="step" id="s5" data-nav="편차 실험실">
+  <h2><span class="n">05</span>편차 실험실</h2>
+  <p class="lead">뉴스는 “엘니뇨가 왔다”고 단정해 말합니다. 그런데 <b>무엇을 보고 왔다고 판정</b>하는 걸까요? 바닷물 온도를 직접 놓고, 판정하는 과정을 그대로 따라가 봅니다.</p>
+
+  <div class="banner" id="dataWarn" hidden>
+    <b>지금은 예시 자료입니다.</b> 실제 관측값이 아니라 연습용으로 만든 값이므로, 이 그래프에서 읽은 수치를 실제 사실처럼 인용하면 안 됩니다.
+    수업 전에 <code>data/nino34.csv</code> 파일을 넣으면 실제 관측 자료로 바뀝니다.
+  </div>
+
+  <div class="labbox">
+    <div class="stepper" role="group" aria-label="단계 선택">
+      <button type="button" data-stage="0" class="on"><span class="n">1</span>수온 그대로 보기</button>
+      <button type="button" data-stage="1"><span class="n">2</span>기준선 정하기</button>
+      <button type="button" data-stage="2"><span class="n">3</span>편차로 보기</button>
+      <button type="button" data-stage="3"><span class="n">4</span>엘니뇨 판정</button>
+    </div>
+
+    <div class="cv"><canvas id="anom" aria-label="해수면 온도 시계열과 기준선, 편차 막대, 엘니뇨 판정 구간을 보여주는 그래프"></canvas></div>
+
+    <div class="ctrl" style="margin-top:16px">
+      <div class="row">
+        <label for="base">기준값 (평년값)</label>
+        <input type="range" id="base" min="24" max="30" step="0.05" value="27">
+        <span class="val" id="basev">27.00 ℃</span>
+      </div>
+      <div class="btnrow">
+        <button class="btn ghost" id="baseAuto" type="button">전체 기간의 평균으로</button>
+      </div>
+    </div>
+
+    <div class="readout">
+      <span>기준값 <b id="roBase">—</b></span>
+      <span>가장 큰 양(+)의 편차 <b id="roMax">—</b></span>
+      <span>+0.5 ℃ 이상이 5개월 이상 이어진 구간 <b id="roCount">—</b></span>
+    </div>
+
+    <p class="datacard" id="dataCard"></p>
+  </div>
+
+  <div class="note">
+    <span class="lbl">지금 해 볼 것</span>
+    3단계까지 간 다음, <b>기준값 손잡이를 위로 크게 올려 보세요.</b> 막대가 전부 파랗게 변하고 엘니뇨 구간이 사라집니다. 반대로 내리면 온통 빨개집니다.
+    같은 바다, 같은 관측값인데 결과가 뒤집힙니다. 그렇다면 묻습니다 — <b>편차는 관측한 값입니까, 약속한 값입니까?</b>
+  </div>
+
+  <div class="note warn">
+    <span class="lbl">그래서 약속이 필요합니다</span>
+    기준값을 아무렇게나 정해도 된다는 뜻이 <b>아닙니다.</b> 정반대입니다. 결과가 기준에 따라 달라지기 때문에 <b>기준을 먼저 공개적으로 약속해 두어야</b> 서로 다른 나라, 서로 다른 해의 관측을 비교할 수 있습니다.
+    그래서 기상 기관은 평년값을 <b>연속된 30년의 평균</b>으로 정하고, 그 기간이 무엇인지를 자료마다 반드시 함께 밝힙니다. 위의 <b>데이터 카드</b>에 기준 기간이 적혀 있는 이유가 그것입니다.
+  </div>
+
+  <details class="card">
+    <summary style="cursor:pointer;font-weight:600">왜 절대 온도가 아니라 편차로 그릴까</summary>
+    <p style="margin-top:14px">서울의 1월 평균 기온과 제주의 1월 평균 기온은 원래 다릅니다. 두 지역의 <b>절대값</b>을 나란히 그리면 눈에 들어오는 것은 “제주가 따뜻하다”는 이미 아는 사실뿐이고, 정작 궁금한 <b>“올해가 예년보다 얼마나 달랐는가”</b>는 묻힙니다.</p>
+    <p>편차는 각 지점의 원래 수준을 <b>0으로 맞춰 놓고</b> 변화분만 남깁니다. 그래서 지역이 달라도, 계절이 달라도 <b>변화의 크기를 서로 비교</b>할 수 있습니다. 2차시에서 본 전지구 평균 기온 그래프가 편차로 그려진 이유도 같습니다.</p>
+  </details>
+</section>
+
+<!-- ================= 6 ================= -->
+<section class="step" id="s6" data-nav="정리 확인">
+  <h2><span class="n">06</span>정리 확인</h2>
+  <p class="lead">오늘 다룬 것을 확인합니다. 틀려도 괜찮습니다. 해설을 읽는 것이 목적입니다.</p>
+  <div id="quizB"></div>
+
+  <div class="anon">
+    <p class="h">O/X 한 문장 — “엘니뇨는 지구온난화 때문에 생긴다.”</p>
+    <div class="ox">
+      <button type="button" data-ox="O">O</button>
+      <button type="button" data-ox="X">X</button>
+    </div>
+    <label for="reason" style="display:block;font-size:14px;color:var(--ink-soft);margin-bottom:6px">그렇게 판단한 근거를 한 줄로 쓰세요.</label>
+    <textarea id="reason" placeholder="예: 엘니뇨는 …이기 때문이다."></textarea>
+    <button class="btn" id="sendBtn" type="button" style="margin-top:12px">보내기</button>
+    <p class="sent" id="sentMsg" hidden>보냈습니다. 화면에 반 전체 결과가 곧 뜹니다.</p>
+    <p class="note">이름과 학번은 묻지 않습니다. <b>누가 썼는지 알 수 없는 형태</b>로 전송되며, 선생님 화면에는 전체 분포와 문장만 보입니다.</p>
+  </div>
+</section>
+
+<!-- ================= 7 ================= -->
+<section class="step" id="s7" data-nav="제출">
+  <h2><span class="n">07</span>제출</h2>
+  <div class="submit">
+    <h3>오늘의 활동 제출</h3>
+    <p>클래스룸에 함께 올라온 제출 양식을 열어 답안을 작성합니다. 이 페이지는 닫지 말고 옆에 두고 보면서 쓰세요.</p>
+    <a class="btn" id="formBtn" href="#" target="_blank" rel="noopener">제출 양식 열기</a>
+    <p id="formNote" style="margin:16px auto 0;font-size:14px;color:var(--ink-faint)"></p>
+  </div>
+</section>
+
+</div></main>
+
+<footer><div class="wrap">
+  <span>통합과학2 · Ⅱ. 환경과 에너지 · 03차시</span>
+  <span><a href="../../">자료실로 돌아가기</a></span>
+</div></footer>
+
+<script src="../../shared/lib.js"></script>
+<script>
+/* ============ 이 차시의 설정 — 여기만 고치면 됩니다 ============ */
+const LESSON = {
+  code: "u2-03",     // 응답 시트에 기록되는 차시 코드
+  form: "",          // 구글 폼 주소
+  api : "https://script.google.com/macros/s/AKfycbxGwVShBta72VSwPeJxaVDRWyEgv6Nl2tNsGNjdf_0AIKeI86oDrx806MAwoNJgezStNw/exec",
+  data: "../../data/nino34.csv"   // 실제 관측 자료 파일. 없으면 예시 자료로 동작합니다.
+};
+/* ============================================================ */
+
+TG.theme('themeBtn');
+TG.nav('.topbar nav');
+
+/* ---- 제출 버튼 ---- */
+(() => {
+  const b = document.getElementById('formBtn'), n = document.getElementById('formNote');
+  if(LESSON.form){ b.href = LESSON.form; }
+  else{
+    b.setAttribute('aria-disabled','true');
+    b.style.opacity = .45; b.style.pointerEvents = 'none';
+    n.textContent = '아직 제출 양식이 연결되지 않았습니다. 선생님께 알려 주세요.';
+  }
+})();
+
+/* ---- 익명 전송 (Apps Script) ---- */
+function sendAnon(payload){
+  if(!LESSON.api) return Promise.resolve(false);
+  return fetch(LESSON.api, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body: JSON.stringify(Object.assign({ lesson: 'u2-03' }, payload))
+  }).then(() => true).catch(() => false);
+}
+
+/* ============================================================
+   되짚기
+   ============================================================ */
+TG.quiz('#quizA', [
+  { stem:'적도 지방과 극지방 중 태양 에너지를 더 많이 받는 곳은 적도이다. 그런데도 적도가 끝없이 뜨거워지지 않는 까닭은?',
+    opts:['적도에서는 태양 에너지가 반사되기 때문','대기와 해수의 순환이 남는 에너지를 고위도로 옮기기 때문','적도의 대기가 더 두껍기 때문','적도에서는 지구 복사가 일어나지 않기 때문'], ans:1,
+    fb:{ right:'남는 곳에서 모자란 곳으로 에너지를 옮기는 것이 대기 대순환과 해수 순환의 역할입니다.',
+         wrong:['반사율이 위도에 따라 크게 다르지는 않습니다.','',
+                '대기의 두께로는 이 불균형이 해소되지 않습니다.',
+                '지구 복사는 어디서나 일어납니다. 다만 받는 양과 내보내는 양이 위도마다 다릅니다.'] } },
+
+  { stem:'저위도(적도 ~ 위도 30° 부근)의 지표 부근에서 부는 바람의 이름과 방향으로 옳은 것은?',
+    opts:['편서풍 · 서에서 동으로','무역풍 · 동에서 서로','극동풍 · 동에서 서로','계절풍 · 계절마다 반대로'], ans:1,
+    fb:{ right:'저위도 순환 고리의 아랫부분이 무역풍입니다. 태평양 적도에서 동에서 서로 불며, 표층 해수를 서쪽으로 밀어냅니다.',
+         wrong:['편서풍은 중위도의 바람입니다.','',
+                '극동풍은 고위도의 바람입니다.',
+                '계절풍은 대륙과 해양의 가열 차이로 생기는 별개의 현상입니다.'] } },
+
+  { stem:'바람이 한 방향으로 계속 불어 표층 해수가 밀려나면, 그 빈자리를 메우기 위해 아래쪽의 찬 해수가 올라온다. 이 현상을 무엇이라 하는가?',
+    opts:['용승','침강','조석','해일'], ans:0,
+    fb:{ right:'용승입니다. 심층의 찬 물과 영양염이 함께 올라오기 때문에 용승 해역은 좋은 어장이 되기도 합니다.',
+         wrong:['','표층수가 가라앉는 반대 현상입니다.',
+                '달과 태양의 인력으로 해수면이 오르내리는 현상입니다.',
+                '지진 등으로 생기는 큰 파도입니다.'] } }
+]);
+
+/* ============================================================
+   엘니뇨 시뮬레이터
+   w = -1 (무역풍 매우 약함 · 엘니뇨) … 0 (평상시) … +1 (매우 강함 · 라니냐)
+   ※ 관계의 방향을 보이기 위한 모식 모형입니다. 관측값이 아닙니다.
+   ============================================================ */
+(() => {
+  const $ = id => document.getElementById(id);
+  const wind = $('wind'), windv = $('windv'), simState = $('simState');
+  const SX = 762;          // 하강역(동쪽)은 고정
+  const SEA = 196;         // 해수면
+  const MID = 300;         // 수온약층 기준 깊이
+
+  function render(w){
+    const n = (w + 1) / 2;                       // 0(엘니뇨) … 0.5(평상시) … 1(라니냐)
+
+    /* --- 수온약층: 서쪽은 깊고 동쪽은 얕다 --- */
+    const yW = MID + 58 * n, yE = MID - 58 * n;
+    const d = `M0 ${yW} C 300 ${yW}, 560 ${yE}, 900 ${yE}`;
+    $('thermo').setAttribute('d', d);
+    $('thermoHalo').setAttribute('d', d);
+    $('warm').setAttribute('d', d + ` L900 ${SEA} L0 ${SEA} Z`);
+    $('deep').setAttribute('d', d + ' L900 396 L0 396 Z');
+    $('thermoLbl').setAttribute('y', String((yW + yE) / 2 - 12));
+
+    /* --- 동쪽 찬 표층수 --- */
+    $('cold').setAttribute('opacity', (n * 0.9).toFixed(2));
+
+    /* --- 대류 중심 --- */
+    const cx = 545 - 725 * n + 330 * n * n;      // 엘니뇨 545 · 평상시 265 · 라니냐 150
+    $('conv').setAttribute('transform', `translate(${cx.toFixed(1)},0)`);
+
+    /* --- 워커 순환 고리 --- */
+    const gap = SX - cx;
+    const cell = $('cell');
+    if(gap < 130){
+      cell.setAttribute('opacity', '0');
+      $('cellLbl').setAttribute('opacity', '0');
+    } else {
+      cell.setAttribute('opacity', (0.30 + 0.45 * n).toFixed(2));
+      $('cellLbl').setAttribute('opacity', gap < 300 ? '0' : (0.45 + 0.4 * n).toFixed(2));
+      $('cellLbl').setAttribute('x', String(((cx + SX) / 2).toFixed(0)));
+      const midX = (cx + SX) / 2;
+      $('cellUp').setAttribute('d',
+        `M ${cx} 206 L ${cx} 140 Q ${cx} 118, ${cx + 26} 118 L ${midX} 118`);
+      $('cellDown').setAttribute('d',
+        `M ${midX} 118 L ${SX - 26} 118 Q ${SX} 118, ${SX} 140 L ${SX} 200`);
+    }
+
+    /* --- 무역풍 (고리의 지표 되돌이) --- */
+    const wg = $('windG');
+    wg.setAttribute('opacity', (0.20 + 0.80 * n).toFixed(2));
+    $('w1').setAttribute('stroke-width', (2.4 + 3.4 * n).toFixed(1));
+    $('w2').setAttribute('stroke-width', (1.6 + 2.4 * n).toFixed(1));
+    $('w1').setAttribute('x2', String(Math.min(700, cx + 46).toFixed(0)));
+    $('w2').setAttribute('x2', String(Math.min(680, cx + 78).toFixed(0)));
+    $('windLbl').setAttribute('opacity', (0.35 + 0.65 * n).toFixed(2));
+
+    /* --- 용승 --- */
+    const up = 0.10 + 0.90 * n;
+    $('upwell').setAttribute('opacity', up.toFixed(2));
+    $('upLbl').setAttribute('opacity', up.toFixed(2));
+    $('u1').setAttribute('d', `M796 372 C 788 322, 792 274, 800 ${(372 - 145 * up).toFixed(0)}`);
+    $('u2').setAttribute('d', `M760 384 C 752 336, 756 292, 764 ${(384 - 138 * up).toFixed(0)}`);
+
+    /* --- 수온 (모식값) --- */
+    const sstE = 27 - 6 * n, sstW = 28.6 + 0.8 * n;
+    $('lblW').textContent = `서쪽 약 ${sstW.toFixed(1)} ℃`;
+    $('lblE').textContent = `동쪽 약 ${sstE.toFixed(1)} ℃`;
+
+    /* --- 지시등 --- */
+    const rainPE = 1 - n, rainID = n;
+    const lv = v => v > .72 ? '많음' : v > .45 ? '보통' : v > .2 ? '적음' : '매우 적음';
+    $('lampSST').textContent = sstE.toFixed(1) + ' ℃';
+    $('barSST').style.width = ((sstE - 20) / 8 * 100).toFixed(0) + '%';
+    $('lampPE').textContent = lv(rainPE);
+    $('barPE').style.width = (rainPE * 100).toFixed(0) + '%';
+    $('lampID').textContent = lv(rainID);
+    $('barID').style.width = (rainID * 100).toFixed(0) + '%';
+
+    /* --- 상태 이름 --- */
+    let name, cls;
+    if(w < -0.33){ name = '엘니뇨에 가까운 상태'; cls = 'el'; }
+    else if(w > 0.33){ name = '라니냐에 가까운 상태'; cls = 'la'; }
+    else { name = '평상시'; cls = ''; }
+    simState.innerHTML = `<span class="state ${cls}"><b>${name}</b></span>`;
+    windv.textContent = w < -0.33 ? '약함' : w > 0.33 ? '강함' : '평상시';
+  }
+
+  wind.addEventListener('input', () => render(+wind.value));
+  document.querySelectorAll('[data-set]').forEach(b => {
+    b.addEventListener('click', () => { wind.value = b.dataset.set; render(+wind.value); });
+  });
+  render(0);
+})();
+
+/* ============================================================
+   편차 실험실
+   ============================================================ */
+(() => {
+  const cv = document.getElementById('anom'), ctx = cv.getContext('2d');
+  const box = cv.parentElement;
+  const baseEl = document.getElementById('base'), baseV = document.getElementById('basev');
+  const cssv = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+
+  let DATA = [];        // [{t, label, sst}]
+  let META = null;      // 데이터 카드
+  let stage = 0, base = 27, W = 0, H = 0;
+  const P = { l:54, r:18, t:16, b:40 };
+
+  /* ---- 예시 자료 (실제 관측값이 아닙니다) ----
+     실제 자료를 넣기 전에도 수업 흐름을 확인할 수 있도록 만든 연습용 값입니다.
+     계절 변동 + 몇 해 주기의 변동 + 작은 흔들림을 겹쳐 만들었습니다.       */
+  function sampleData(){
+    const out = [];
+    let seed = 20260824;
+    const rnd = () => (seed = (seed * 1103515245 + 12345) % 2147483648) / 2147483648 - 0.5;
+    for(let i = 0; i < 120; i++){
+      const season = 0.55 * Math.sin(2 * Math.PI * (i % 12) / 12 + 1.1);
+      const enso   = 1.15 * Math.sin(2 * Math.PI * i / 43 + 0.6)
+                   + 0.55 * Math.sin(2 * Math.PI * i / 27 + 2.4);
+      out.push({
+        t: i,
+        label: `${Math.floor(i / 12) + 1}년차 ${i % 12 + 1}월`,
+        sst: +(27.0 + season + enso + 0.18 * rnd()).toFixed(2)
+      });
+    }
+    return out;
+  }
+
+  /* ---- 실제 자료 읽기 : year,month,sst ---- */
+  function parseCSV(txt){
+    const rows = txt.trim().split(/\r?\n/)
+      .filter(r => r.trim() && !r.trim().startsWith('#'));   /* # 로 시작하는 출처 표기 줄은 건너뜁니다 */
+    const head = rows.shift().toLowerCase().split(',').map(s => s.trim());
+    const iy = head.indexOf('year'), im = head.indexOf('month'), is = head.indexOf('sst');
+    if(iy < 0 || im < 0 || is < 0) throw new Error('머리글에 year, month, sst 가 있어야 합니다');
+    return rows.map((r, i) => {
+      const c = r.split(',');
+      return { t:i, label:`${c[iy].trim()}년 ${+c[im]}월`, sst:+c[is] };
+    }).filter(d => isFinite(d.sst));
+  }
+
+  function fmtBase(v){ return v.toFixed(2) + ' ℃'; }
+
+  function anomalies(){ return DATA.map(d => d.sst - base); }
+
+  /* +0.5 ℃ 이상이 5개월 이상 이어진 구간 */
+  function elninoRuns(){
+    const a = anomalies(), runs = [];
+    let s = -1;
+    for(let i = 0; i <= a.length; i++){
+      const on = i < a.length && a[i] >= 0.5;
+      if(on && s < 0) s = i;
+      if(!on && s >= 0){ if(i - s >= 5) runs.push([s, i - 1]); s = -1; }
+    }
+    return runs;
+  }
+
+  function resize(){
+    W = box.clientWidth || 640;
+    H = Math.max(260, Math.min(420, Math.round(W * 0.48)));
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    cv.width = W * dpr; cv.height = H * dpr; cv.style.height = H + 'px';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    draw();
+  }
+
+  function yRange(){
+    if(stage >= 2){
+      const a = anomalies();
+      const m = Math.max(1.2, ...a.map(v => Math.abs(v))) * 1.12;
+      return [-m, m];
+    }
+    const v = DATA.map(d => d.sst);
+    const lo = Math.min(...v, base) - 0.5, hi = Math.max(...v, base) + 0.5;
+    return [lo, hi];
+  }
+
+  function draw(){
+    if(!DATA.length) return;
+    const [lo, hi] = yRange();
+    const xs = i => P.l + i / (DATA.length - 1) * (W - P.l - P.r);
+    const ys = v => H - P.b - (v - lo) / (hi - lo) * (H - P.t - P.b);
+    const grid = cssv('--chart-grid'), axis = cssv('--chart-axis'),
+          faint = cssv('--ink-faint'), soft = cssv('--ink-soft'),
+          s1 = cssv('--s1'), s2 = cssv('--s2'), ink = cssv('--ink');
+
+    ctx.clearRect(0, 0, W, H);
+    ctx.font = '12px ' + cssv('--mono').replace(/"/g, '') + ', monospace';
+    ctx.textBaseline = 'middle';
+
+    /* 판정 구간 음영 (4단계) */
+    if(stage >= 3){
+      ctx.fillStyle = s2; ctx.globalAlpha = .13;
+      elninoRuns().forEach(([a, b]) => {
+        ctx.fillRect(xs(a), P.t, Math.max(3, xs(b) - xs(a)), H - P.t - P.b);
+      });
+      ctx.globalAlpha = 1;
+    }
+
+    /* 가로 격자 */
+    const stepY = (hi - lo) / 5;
+    for(let k = 0; k <= 5; k++){
+      const v = lo + stepY * k, y = Math.round(ys(v)) + .5;
+      ctx.strokeStyle = grid; ctx.beginPath(); ctx.moveTo(P.l, y); ctx.lineTo(W - P.r, y); ctx.stroke();
+      ctx.fillStyle = faint; ctx.textAlign = 'right';
+      ctx.fillText((stage >= 2 ? (v >= 0 ? '+' : '') : '') + v.toFixed(1), P.l - 9, y);
+    }
+
+    /* 세로 눈금 — 12개월마다 */
+    ctx.textBaseline = 'top';
+    DATA.forEach((d, i) => {
+      if(i % 12) return;
+      const x = Math.round(xs(i)) + .5;
+      ctx.strokeStyle = grid; ctx.beginPath(); ctx.moveTo(x, P.t); ctx.lineTo(x, H - P.b); ctx.stroke();
+      ctx.fillStyle = faint; ctx.textAlign = 'center';
+      ctx.fillText(d.label.split(' ')[0], x, H - P.b + 9);
+    });
+
+    if(stage < 2){
+      /* 1·2단계 — 수온 그대로 */
+      ctx.strokeStyle = s1; ctx.lineWidth = 2; ctx.lineJoin = 'round';
+      ctx.beginPath();
+      DATA.forEach((d, i) => i ? ctx.lineTo(xs(i), ys(d.sst)) : ctx.moveTo(xs(i), ys(d.sst)));
+      ctx.stroke();
+
+      if(stage >= 1){
+        const y = Math.round(ys(base)) + .5;
+        ctx.save();
+        ctx.strokeStyle = ink; ctx.lineWidth = 2; ctx.setLineDash([7, 5]);
+        ctx.beginPath(); ctx.moveTo(P.l, y); ctx.lineTo(W - P.r, y); ctx.stroke();
+        ctx.restore();
+        /* 잡이 */
+        ctx.fillStyle = ink;
+        ctx.beginPath();
+        if(ctx.roundRect) ctx.roundRect(W - P.r - 74, y - 11, 74, 22, 6);
+        else ctx.rect(W - P.r - 74, y - 11, 74, 22);
+        ctx.fill();
+        ctx.fillStyle = cssv('--surface'); ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+        ctx.fillText('기준선 ↕', W - P.r - 37, y);
+      }
+    } else {
+      /* 3·4단계 — 편차 막대 */
+      const a = anomalies(), y0 = ys(0);
+      const bw = Math.max(1.5, (W - P.l - P.r) / DATA.length * 0.78);
+      a.forEach((v, i) => {
+        ctx.fillStyle = v >= 0 ? s2 : s1;
+        ctx.globalAlpha = Math.abs(v) >= 0.5 ? 1 : .45;
+        const y = ys(v);
+        ctx.fillRect(xs(i) - bw / 2, Math.min(y, y0), bw, Math.abs(y - y0));
+      });
+      ctx.globalAlpha = 1;
+      /* 0선 */
+      ctx.strokeStyle = axis; ctx.lineWidth = 1.4;
+      ctx.beginPath(); ctx.moveTo(P.l, Math.round(y0) + .5); ctx.lineTo(W - P.r, Math.round(y0) + .5); ctx.stroke();
+      /* ±0.5 기준선 */
+      ctx.save(); ctx.setLineDash([4, 4]); ctx.lineWidth = 1;
+      [0.5, -0.5].forEach(v => {
+        ctx.strokeStyle = v > 0 ? s2 : s1;
+        const y = Math.round(ys(v)) + .5;
+        ctx.beginPath(); ctx.moveTo(P.l, y); ctx.lineTo(W - P.r, y); ctx.stroke();
+      });
+      ctx.restore();
+      ctx.fillStyle = s2; ctx.textAlign = 'left'; ctx.textBaseline = 'bottom';
+      ctx.fillText('+0.5', P.l + 5, ys(0.5) - 3);
+      ctx.fillStyle = s1; ctx.textBaseline = 'top';
+      ctx.fillText('−0.5', P.l + 5, ys(-0.5) + 3);
+    }
+
+    /* 축 */
+    ctx.strokeStyle = axis; ctx.lineWidth = 1; ctx.beginPath();
+    ctx.moveTo(P.l + .5, P.t); ctx.lineTo(P.l + .5, H - P.b + .5); ctx.lineTo(W - P.r, H - P.b + .5); ctx.stroke();
+    ctx.fillStyle = soft; ctx.font = '12.5px ' + cssv('--sans').replace(/"/g, '') + ', sans-serif';
+    ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+    ctx.fillText(stage >= 2 ? '편차 (℃)' : '해수면 온도 (℃)', P.l + 4, P.t - 2);
+  }
+
+  function refresh(){
+    baseV.textContent = fmtBase(base);
+    document.getElementById('roBase').textContent = fmtBase(base);
+    const a = anomalies();
+    const mx = Math.max(...a);
+    document.getElementById('roMax').textContent = (mx >= 0 ? '+' : '') + mx.toFixed(2) + ' ℃';
+    document.getElementById('roCount').textContent = stage >= 3 ? elninoRuns().length + ' 개' : '4단계에서 확인';
+    draw();
+  }
+
+  /* 기준선 드래그 */
+  let dragging = false;
+  function yToVal(clientY){
+    const r = cv.getBoundingClientRect();
+    const [lo, hi] = yRange();
+    const y = clientY - r.top;
+    const v = lo + (H - P.b - y) / (H - P.t - P.b) * (hi - lo);
+    return Math.min(30, Math.max(24, v));
+  }
+  cv.addEventListener('pointerdown', e => {
+    if(stage !== 1) return;
+    dragging = true; cv.setPointerCapture(e.pointerId);
+    base = yToVal(e.clientY); baseEl.value = base.toFixed(2); refresh();
+  });
+  cv.addEventListener('pointermove', e => {
+    if(!dragging) return;
+    base = yToVal(e.clientY); baseEl.value = base.toFixed(2); refresh();
+  });
+  cv.addEventListener('pointerup', () => { dragging = false; });
+  cv.addEventListener('pointercancel', () => { dragging = false; });
+
+  baseEl.addEventListener('input', () => { base = +baseEl.value; refresh(); });
+  document.getElementById('baseAuto').addEventListener('click', () => {
+    base = DATA.reduce((s, d) => s + d.sst, 0) / DATA.length;
+    baseEl.value = base.toFixed(2); refresh();
+  });
+
+  document.querySelectorAll('[data-stage]').forEach(b => {
+    b.addEventListener('click', () => {
+      document.querySelectorAll('[data-stage]').forEach(o => o.classList.toggle('on', o === b));
+      stage = +b.dataset.stage;
+      cv.style.cursor = stage === 1 ? 'ns-resize' : 'default';
+      refresh();
+    });
+  });
+
+  /* 자료 준비 */
+  function start(){
+    baseEl.value = base.toFixed(2);
+    document.getElementById('dataCard').innerHTML = META;
+    new ResizeObserver(resize).observe(box);
+    document.addEventListener('tg:theme', draw);
+    window.matchMedia('(prefers-color-scheme:dark)').addEventListener('change', draw);
+    resize(); refresh();
+  }
+
+  fetch(LESSON.data, { cache:'no-store' })
+    .then(r => { if(!r.ok) throw new Error('없음'); return r.text(); })
+    .then(txt => {
+      DATA = parseCSV(txt);
+      if(DATA.length < 24) throw new Error('자료가 너무 짧습니다');
+      const first = DATA[0].label, last = DATA[DATA.length - 1].label;
+      META = `<b>자료</b> Niño 3.4 해역 월평균 해수면 온도 · ${first} ~ ${last} (${DATA.length}개월) &nbsp;·&nbsp; `
+           + `<b>단위</b> ℃ &nbsp;·&nbsp; <b>결측</b> 값이 없는 달은 제외했습니다 &nbsp;·&nbsp; `
+           + `<b>출처와 취득일</b>은 <code>data/nino34.csv</code> 머리글에 적혀 있습니다.`;
+      base = 27; start();
+    })
+    .catch(() => {
+      DATA = sampleData();
+      META = `<b>자료</b> 예시용 모의 값 · 10년치 120개월 &nbsp;·&nbsp; <b>단위</b> ℃ &nbsp;·&nbsp; `
+           + `<b>주의</b> 실제 관측값이 아닙니다. 연도를 ‘1년차’처럼 표시한 것은 실제 사건과 혼동하지 않게 하기 위해서입니다.`;
+      document.getElementById('dataWarn').hidden = false;
+      base = 27; start();
+    });
+})();
+
+/* ============================================================
+   정리 확인
+   ============================================================ */
+TG.quiz('#quizB', [
+  { stem:'평상시 태평양 적도에서 무역풍이 약해지면 나타나는 변화로 옳은 것은?',
+    opts:['서태평양에 따뜻한 표층수가 더 두껍게 쌓인다','동태평양의 용승이 강해져 표층 수온이 낮아진다','따뜻한 표층수가 동쪽으로 퍼져 수온약층의 기울기가 완만해진다','태평양 전체의 표층 수온이 고르게 낮아진다'], ans:2,
+    fb:{ right:'무역풍이 표층수를 서쪽으로 미는 힘이 약해지므로 따뜻한 물이 동쪽으로 퍼지고, 서쪽은 얕아지고 동쪽은 깊어져 수온약층이 평평해집니다.',
+         wrong:['미는 힘이 약해졌는데 더 쌓일 수는 없습니다. 반대 방향입니다.',
+                '표층수가 빠져나가는 정도가 줄어들므로 용승은 오히려 약해집니다.',
+                '',
+                '동쪽은 오르고 서쪽은 조금 내려갑니다. 고르게 변하는 것이 아니라 동서의 차이가 줄어드는 것입니다.'] } },
+
+  { stem:'엘니뇨 시기에 페루 연안과 인도네시아에서 나타나는 기상 변화를 바르게 짝지은 것은?',
+    opts:['페루 가뭄 · 인도네시아 홍수','페루 홍수 · 인도네시아 가뭄','두 지역 모두 홍수','두 지역 모두 가뭄'], ans:1,
+    fb:{ right:'대류가 일어나는 자리가 동쪽으로 옮겨가기 때문입니다. 구름이 새로 생기는 것이 아니라 <b>자리를 옮기는 것</b>이라 한쪽이 얻으면 반대쪽이 잃습니다.',
+         wrong:['방향이 반대입니다. 따뜻해진 동태평양 위에서 공기가 상승합니다.','',
+                '강수대가 이동하는 것이므로 양쪽이 동시에 늘어나지는 않습니다.',
+                '같은 이유로 양쪽이 동시에 줄지도 않습니다.'] } },
+
+  { stem:'“엘니뇨는 지구온난화가 원인이다”라는 주장에 대한 평가로 가장 적절한 것은?',
+    opts:['옳다. 최근 엘니뇨가 자주 발생하므로 인과가 성립한다','옳지 않다. 엘니뇨는 산업화 이전에도 나타난 자연적인 변동이다','옳지 않다. 엘니뇨와 지구온난화는 아무 관련이 없다','판단할 수 없다. 관측 자료가 부족하다'], ans:1,
+    fb:{ right:'엘니뇨는 열대 태평양의 자연적 변동입니다. 다만 온난화가 그 <b>빈도나 강도에 영향을 줄 수 있다</b>는 논의는 별개로 존재합니다. ‘원인이다’와 ‘영향을 줄 수 있다’를 구분하는 것이 핵심입니다.',
+         wrong:['자주 일어난다는 관찰만으로 원인을 단정할 수 없습니다. 상관과 인과의 구분 문제입니다.','',
+                '너무 강한 진술입니다. 영향을 줄 수 있다는 논의까지 부정할 근거는 없습니다.',
+                '엘니뇨는 오래 관측되어 온 현상이라 자료가 부족하지 않습니다.'] } },
+
+  { stem:'어떤 해역의 해수면 온도 편차를 구했더니 대부분의 달이 음(−)의 값이었다. 그런데 기준값을 0.8 ℃ 낮추자 대부분이 양(+)으로 바뀌었다. 이 사실이 뜻하는 것은?',
+    opts:['관측이 잘못되었다','편차는 기준값을 무엇으로 정하느냐에 따라 달라지므로 기준을 함께 밝혀야 한다','편차는 신뢰할 수 없는 값이므로 절대 온도를 써야 한다','기준값은 낮게 잡을수록 정확하다'], ans:1,
+    fb:{ right:'그래서 평년값을 연속된 30년 평균처럼 <b>공개적으로 약속</b>하고, 자료마다 그 기간을 함께 표시합니다. 기준이 같아야 서로 다른 지역과 시기를 비교할 수 있습니다.',
+         wrong:['관측값은 그대로입니다. 달라진 것은 기준입니다.','',
+                '절대 온도로 그리면 지역 간 비교가 오히려 어려워집니다.',
+                '높고 낮음의 문제가 아니라 <b>합의된 기준을 쓰는가</b>의 문제입니다.'] } }
+]);
+
+/* ---- O/X 익명 전송 ---- */
+(() => {
+  let ox = null;
+  document.querySelectorAll('[data-ox]').forEach(b => {
+    b.addEventListener('click', () => {
+      document.querySelectorAll('[data-ox]').forEach(o => o.classList.toggle('on', o === b));
+      ox = b.dataset.ox;
+    });
+  });
+  document.getElementById('sendBtn').addEventListener('click', async () => {
+    const t = document.getElementById('reason').value.trim();
+    if(!ox){ alert('O 또는 X를 먼저 고르세요.'); return; }
+    const msg = document.getElementById('sentMsg');
+    const ok = await sendAnon({ item:'ox-elnino', choice:ox, text:t.slice(0, 300) });
+    msg.hidden = false;
+    msg.textContent = ok
+      ? '보냈습니다. 화면에 반 전체 결과가 곧 뜹니다.'
+      : '보관했습니다. (지금은 전송 주소가 연결되지 않아 이 기기에만 남습니다)';
+    msg.style.color = ok ? 'var(--good)' : 'var(--ink-faint)';
+  });
+})();
+</script>
+<script src="../../shared/teach.js"></script>
+</body>
+</html>
