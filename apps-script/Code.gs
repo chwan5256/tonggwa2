@@ -1,55 +1,68 @@
 /**
- * 통합과학2 수업 웹앱 · 익명 응답 수집
+ * 통합과학2 수업 웹앱 · 익명 응답 수집 + 차시 공개 관리
  * ---------------------------------------------------------------
- * 학생 페이지에서 보낸 익명 응답을 이 스크립트가 붙어 있는
- * 구글 시트에 한 줄씩 쌓습니다.
- *
- * ▶ 받는 것   : 차시 코드, 문항 코드, 선택지, 짧은 문장
+ * ▶ 받는 것    : 차시 코드, 문항 코드, 선택지, 짧은 문장
  * ▶ 받지 않는 것 : 이름, 학번, 이메일, 그 밖에 개인을 알아볼 수 있는 것
  *
- * 이름을 받아야 하는 과제는 이 경로를 쓰지 않고 구글 폼·클래스룸으로 보냅니다.
+ * 이름이 필요한 과제는 이 경로를 쓰지 않고 구글 폼·클래스룸으로 보냅니다.
  * 그 경계선이 이 설계의 안전장치입니다.
  * ---------------------------------------------------------------
- * 설치 : 구글 시트 → 확장 프로그램 → Apps Script → 이 코드를 붙여넣기
+ * 설치 : 구글 시트 → 확장 프로그램 → Apps Script → 이 코드로 전부 교체
  * 배포 : 배포 → 새 배포 → 유형 '웹 앱'
- *          실행 계정      = 나
- *          액세스 권한    = 링크가 있는 모든 사용자
- *        → 배포를 누르면 나오는 /exec 로 끝나는 주소를 복사해서
- *          각 차시 index.html 의  LESSON.api  에 붙여 넣습니다.
+ *          실행 계정   = 나
+ *          액세스 권한 = 링크가 있는 모든 사용자
  *
- * ⚠ 코드를 고친 뒤에는 '배포 관리 → 편집 → 버전: 새 버전'으로 다시 배포해야
- *   바뀐 내용이 반영됩니다. 주소는 그대로 유지됩니다.
+ * ⚠ 코드를 고친 뒤에는 '배포 관리 → 편집(연필) → 버전: 새 버전 → 배포'를
+ *   해야 반영됩니다. 주소는 그대로 유지됩니다.
  */
+
+/* ★ 여기만 고치세요 — 차시를 열고 닫을 때 쓰는 번호입니다. 남에게 알리지 마세요. */
+var TEACHER_PIN = '2603';
 
 var SHEET = '응답';
 
-/** 학생 페이지 → 여기 (쓰기) */
+/* ============================================================
+   학생 페이지 → 여기 (응답 쓰기)
+   ============================================================ */
 function doPost(e) {
   try {
     var d = JSON.parse(e.postData.contents);
-    var sh = _sheet();
-    sh.appendRow([
+    _sheet().appendRow([
       new Date(),
       String(d.lesson || '').slice(0, 20),
       String(d.item   || '').slice(0, 40),
       String(d.choice || '').slice(0, 20),
       String(d.text   || '').slice(0, 300)
     ]);
-    return _json({ ok: true });
+    return _out({ ok: true });
   } catch (err) {
-    return _json({ ok: false, error: String(err) });
+    return _out({ ok: false, error: String(err) });
   }
 }
 
-/** 교사 화면 → 여기 (읽기)
- *  ?lesson=u2-03            그 차시 전체 집계
- *  ?lesson=u2-03&item=ox-elnino   한 문항만
- *  &since=30                최근 30분 것만 (기본 180분)
- */
+/* ============================================================
+   페이지 → 여기 (읽기)
+   ?mode=stats   응답 집계   (기본)
+   ?mode=gate    차시 공개 상태
+   ?mode=setgate&code=u2-03&open=1&pin=____   공개/비공개 전환
+   ?callback=fn  붙이면 JSONP 로 돌려줍니다 (브라우저 CORS 우회)
+   ============================================================ */
 function doGet(e) {
   var p = e.parameter || {};
-  var lesson = p.lesson || '';
-  var item   = p.item || '';
+  var out;
+  try {
+    if (p.mode === 'gate')          out = { ok: true, open: _gateAll() };
+    else if (p.mode === 'setgate')  out = _setGate(p);
+    else                            out = _stats(p);
+  } catch (err) {
+    out = { ok: false, error: String(err) };
+  }
+  return _out(out, p.callback);
+}
+
+/* ---------- 응답 집계 ---------- */
+function _stats(p) {
+  var lesson = p.lesson || '', item = p.item || '';
   var since  = Number(p.since || 180);
   var from   = new Date(Date.now() - since * 60 * 1000);
 
@@ -69,16 +82,36 @@ function doGet(e) {
     count[k] = (count[k] || 0) + 1;
   });
 
-  return _json({
+  return {
     ok: true,
     total: picked.length,
     count: count,
     texts: picked.map(function (r) { return r[4]; }).filter(String)
-  });
+  };
+}
+
+/* ---------- 차시 공개 관리 ----------
+   ScriptProperties 에 { "u2-01": true, "u2-03": false } 형태로 저장합니다.
+   목록에 없는 차시는 manifest.json 의 open 값을 따릅니다.               */
+function _gateAll() {
+  var raw = PropertiesService.getScriptProperties().getProperty('gate');
+  return raw ? JSON.parse(raw) : {};
+}
+
+function _setGate(p) {
+  if (String(p.pin || '') !== String(TEACHER_PIN)) {
+    return { ok: false, error: '번호가 맞지 않습니다' };
+  }
+  var code = String(p.code || '').slice(0, 20);
+  if (!code) return { ok: false, error: '차시 코드가 없습니다' };
+
+  var g = _gateAll();
+  g[code] = (String(p.open) === '1' || String(p.open) === 'true');
+  PropertiesService.getScriptProperties().setProperty('gate', JSON.stringify(g));
+  return { ok: true, open: g };
 }
 
 /* ---------- 도우미 ---------- */
-
 function _sheet() {
   var ss = SpreadsheetApp.getActiveSpreadsheet();
   var sh = ss.getSheetByName(SHEET);
@@ -90,9 +123,15 @@ function _sheet() {
   return sh;
 }
 
-function _json(obj) {
+function _out(obj, callback) {
+  var txt = JSON.stringify(obj);
+  if (callback) {
+    return ContentService
+      .createTextOutput(callback + '(' + txt + ')')
+      .setMimeType(ContentService.MimeType.JAVASCRIPT);
+  }
   return ContentService
-    .createTextOutput(JSON.stringify(obj))
+    .createTextOutput(txt)
     .setMimeType(ContentService.MimeType.JSON);
 }
 

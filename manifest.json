@@ -21,6 +21,7 @@
       "title": "온실효과에서 지구 열수지까지",
       "std": "[10통과2-02-03]",
       "path": "u2/01-energy-budget/",
+      "open": true,
       "used": null,
       "form": ""
     },
@@ -30,6 +31,7 @@
       "title": "하나의 원인, 정반대의 결과",
       "std": "[10통과2-02-03]",
       "path": "u2/03-el-nino/",
+      "open": false,
       "used": null,
       "form": ""
     }

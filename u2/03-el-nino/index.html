@@ -102,21 +102,21 @@
 <main><div class="wrap">
 
 <!-- ================= 1 ================= -->
-<section class="step" id="s1" data-nav="오늘의 질문">
+<section class="step" id="s1" data-min="2" data-nav="오늘의 질문">
   <h2><span class="n">01</span>오늘의 질문</h2>
   <p class="q">엘니뇨가 오면 페루에는 홍수가, 인도네시아에는 가뭄이 든다. 하나의 원인이 어떻게 정반대의 결과를 낳는가?</p>
   <p>오늘 수업이 끝날 때, 이 질문에 <b>“바람 → 바다 → 구름”</b>의 순서로 답할 수 있어야 합니다.</p>
 </section>
 
 <!-- ================= 2 ================= -->
-<section class="step" id="s2" data-nav="되짚기">
+<section class="step" id="s2" data-min="5" data-nav="되짚기">
   <h2><span class="n">02</span>되짚기</h2>
   <p class="lead">중학교에서 배운 것부터 확인합니다. 답을 고르면 바로 해설이 나옵니다.</p>
   <div id="quizA"></div>
 </section>
 
 <!-- ================= 3 ================= -->
-<section class="step" id="s3" data-nav="바람은 왜 그 방향인가">
+<section class="step" id="s3" data-min="14" data-nav="바람은 왜 그 방향인가">
   <h2><span class="n">03</span>바람은 왜 늘 그 방향으로 부는가</h2>
   <p class="lead">엘니뇨를 이해하려면 <b>평상시</b>를 먼저 알아야 합니다. 그리고 평상시를 만드는 것은 <b>적도가 더 뜨겁다</b>는 사실 하나입니다.</p>
 
@@ -178,7 +178,7 @@
 </section>
 
 <!-- ================= 4 ================= -->
-<section class="step" id="s4" data-nav="무역풍을 약하게">
+<section class="step" id="s4" data-min="12" data-nav="무역풍을 약하게">
   <h2><span class="n">04</span>무역풍을 약하게 해 보자</h2>
   <p class="lead">아래는 태평양 적도를 <b>서쪽에서 동쪽으로 자른 단면</b>입니다. 손잡이를 움직여 무역풍의 세기만 바꿔 보세요. <b>바꾸는 것은 바람 하나뿐</b>입니다.</p>
 
@@ -327,7 +327,7 @@
 </section>
 
 <!-- ================= 5 ================= -->
-<section class="step" id="s5" data-nav="편차 실험실">
+<section class="step" id="s5" data-min="12" data-nav="편차 실험실">
   <h2><span class="n">05</span>편차 실험실</h2>
   <p class="lead">뉴스는 “엘니뇨가 왔다”고 단정해 말합니다. 그런데 <b>무엇을 보고 왔다고 판정</b>하는 걸까요? 바닷물 온도를 직접 놓고, 판정하는 과정을 그대로 따라가 봅니다.</p>
 
@@ -386,7 +386,7 @@
 </section>
 
 <!-- ================= 6 ================= -->
-<section class="step" id="s6" data-nav="정리 확인">
+<section class="step" id="s6" data-min="5" data-nav="정리 확인">
   <h2><span class="n">06</span>정리 확인</h2>
   <p class="lead">오늘 다룬 것을 확인합니다. 틀려도 괜찮습니다. 해설을 읽는 것이 목적입니다.</p>
   <div id="quizB"></div>
@@ -424,6 +424,7 @@
 </div></footer>
 
 <script src="../../shared/lib.js"></script>
+<script src="../../shared/gate.js"></script>
 <script>
 /* ============ 이 차시의 설정 — 여기만 고치면 됩니다 ============ */
 const LESSON = {
