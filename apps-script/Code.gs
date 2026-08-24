@@ -46,6 +46,8 @@ function doPost(e) {
    ?mode=ping    연결 시험
    ?mode=checkpin&pin=____   번호 확인
    ?mode=gate    차시 공개 상태
+   ?mode=vid     차시별 영상 주소
+   ?mode=setvid&key=u2-02|0&id=영상ID&pin=____   영상 주소 저장
    ?mode=setgate&code=u2-03&open=1&pin=____   공개/비공개 전환
    ?callback=fn  붙이면 JSONP 로 돌려줍니다 (브라우저 CORS 우회)
    ============================================================ */
@@ -57,6 +59,8 @@ function doGet(e) {
     else if (p.mode === 'ping')     out = { ok: true, ver: 2 };
     else if (p.mode === 'checkpin') out = { ok: String(p.pin || '') === String(TEACHER_PIN) };
     else if (p.mode === 'setgate')  out = _setGate(p);
+    else if (p.mode === 'vid')      out = { ok: true, vid: _vidAll() };
+    else if (p.mode === 'setvid')   out = _setVid(p);
     else                            out = _stats(p);
   } catch (err) {
     out = { ok: false, error: String(err) };
@@ -113,6 +117,28 @@ function _setGate(p) {
   g[code] = (String(p.open) === '1' || String(p.open) === 'true');
   PropertiesService.getScriptProperties().setProperty('gate', JSON.stringify(g));
   return { ok: true, open: g };
+}
+
+/* ---------- 차시별 영상 주소 ----------
+   { "u2-02|0": "영상ID", "u2-02|1": "영상ID", … }
+   키는 '차시코드|영상자리번호' 입니다.                                  */
+function _vidAll() {
+  var raw = PropertiesService.getScriptProperties().getProperty('vid');
+  return raw ? JSON.parse(raw) : {};
+}
+
+function _setVid(p) {
+  if (String(p.pin || '') !== String(TEACHER_PIN)) {
+    return { ok: false, error: '번호가 맞지 않습니다' };
+  }
+  var key = String(p.key || '').slice(0, 30);
+  if (!key) return { ok: false, error: '영상 자리를 찾지 못했습니다' };
+
+  var v = _vidAll();
+  var id = String(p.id || '').trim();
+  if (id) v[key] = id.slice(0, 20); else delete v[key];
+  PropertiesService.getScriptProperties().setProperty('vid', JSON.stringify(v));
+  return { ok: true, vid: v };
 }
 
 /* ---------- 도우미 ---------- */

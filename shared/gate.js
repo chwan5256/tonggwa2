@@ -47,6 +47,29 @@ function setGate(api, code, open, pin){
   return jsonp(api, { mode:'setgate', code, open: open ? 1 : 0, pin }, 8000);
 }
 
+function vids(api){
+  if(!api) return Promise.resolve(null);
+  return jsonp(api, { mode:'vid' }, 6000)
+    .then(d => (d && d.ok) ? (d.vid || {}) : null)
+    .catch(() => null);
+}
+
+function setVid(api, key, id, pin){
+  return jsonp(api, { mode:'setvid', key, id, pin }, 8000);
+}
+
+/* 유튜브 주소 어떤 형태든 11글자 영상 ID 만 뽑아냅니다.
+   https://youtu.be/XXXXXXXXXXX
+   https://www.youtube.com/watch?v=XXXXXXXXXXX&t=10s
+   https://www.youtube.com/shorts/XXXXXXXXXXX
+   https://www.youtube.com/embed/XXXXXXXXXXX        */
+function ytId(s){
+  s = String(s || '').trim();
+  if(/^[\w-]{11}$/.test(s)) return s;
+  const m = s.match(/(?:v=|youtu\.be\/|shorts\/|embed\/|live\/)([\w-]{11})/);
+  return m ? m[1] : '';
+}
+
 function ping(api){
   if(!api) return Promise.resolve({ ok:false, why:'주소가 비어 있습니다' });
   return jsonp(api, { mode:'ping' }, 7000)
@@ -98,5 +121,5 @@ if(document.readyState === 'loading')
   document.addEventListener('DOMContentLoaded', guard);
 else guard();
 
-return { jsonp, gates, setGate, ping, checkPin, lockPage };
+return { jsonp, gates, setGate, vids, setVid, ytId, ping, checkPin, lockPage };
 })();

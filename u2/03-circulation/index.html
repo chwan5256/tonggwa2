@@ -1,0 +1,343 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>대기 대순환과 해수의 순환 · 통합과학2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=IBM+Plex+Sans+KR:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../../shared/base.css">
+<style>
+.readbar{display:flex;flex-wrap:wrap;gap:10px 26px;align-items:center;margin-top:14px;
+  padding:14px 18px;background:var(--surface-2);border-radius:12px;font-size:15px;color:var(--ink-soft)}
+.readbar b{color:var(--ink);font-variant-numeric:tabular-nums}
+.readbar .st{font-family:var(--mono);font-size:13px;border-radius:999px;padding:4px 13px;
+  border:1px solid var(--rule)}
+.readbar .st.over{border-color:var(--s2);color:var(--s2)}
+.readbar .st.under{border-color:var(--s1);color:var(--s1)}
+</style>
+</head>
+<body>
+
+<div class="topbar"><div class="wrap">
+  <a class="home" href="../../">← 자료실</a>
+  <nav></nav>
+  <button class="tbtn" id="themeBtn" type="button">테마</button>
+</div></div>
+
+<header class="mast"><div class="wrap">
+  <p class="eyebrow">Ⅱ-2. 지구 환경의 변화 · 03차시</p>
+  <h1>대기 대순환과 해수의 순환</h1>
+  <p class="dek">적도는 남고 극지방은 모자랍니다. 지구는 이 불균형을 어떻게 해소할까요. 오늘 배우는 이 구조가 다음 시간 <b>엘니뇨</b>의 전제입니다.</p>
+  <div class="tags">
+    <span class="tag std">[10통과2-02-03]</span>
+    <span class="tag">1. 대기 대순환 · 2. 해수의 표층 순환</span>
+    <span class="tag">지식·이해 · 과정·기능</span>
+  </div>
+</div></header>
+
+<main><div class="wrap">
+
+<!-- 1 -->
+<section class="step" id="s1" data-min="3" data-nav="오늘의 질문">
+  <h2><span class="n">01</span>오늘의 질문</h2>
+  <p class="q">적도는 태양 에너지를 계속 남기고 극지방은 계속 모자란다. 그런데 왜 적도는 끝없이 뜨거워지지 않고, 극지방은 끝없이 차가워지지 않는가?</p>
+  <p>답은 한 문장입니다 — <b>대기와 해수가 에너지를 옮기기 때문</b>입니다. 오늘은 그 ‘옮기는 방식’을 봅니다.</p>
+  <div class="teach-only" data-yt="" data-cap="도입 — 지구의 바람은 왜 이렇게 부는가" data-find="대기 대순환 무역풍 편서풍 설명"></div>
+</section>
+
+<!-- 2 -->
+<section class="step" id="s2" data-min="10" data-nav="에너지 불균형">
+  <h2><span class="n">02</span>위도에 따른 에너지 불균형</h2>
+  <p class="lead">지구는 <b>구형</b>이기 때문에 위도에 따라 태양 복사 에너지 흡수량과 지구 복사 에너지 방출량이 다릅니다.</p>
+
+  <figure class="fig">
+    <p class="figtitle">위도별 흡수량과 방출량</p>
+    <p class="figsub" id="ebsub">손잡이를 움직여 위도를 골라 보세요</p>
+    <svg viewBox="0 0 760 300" role="img" aria-label="저위도에서는 태양 복사 흡수량이 지구 복사 방출량보다 많아 에너지가 남고, 고위도에서는 반대로 모자란다." style="width:100%;height:auto;display:block">
+      <defs>
+        <clipPath id="cpOver"><path d="M60 260 L60 96 C160 100, 240 140, 320 186 L320 260 Z"/></clipPath>
+      </defs>
+      <line x1="60" y1="260" x2="740" y2="260" stroke="var(--chart-axis)" stroke-width="1.4"/>
+      <line x1="60" y1="40" x2="60" y2="260" stroke="var(--chart-axis)" stroke-width="1.4"/>
+      <!-- 남는 곳 / 모자란 곳 음영 -->
+      <path d="M60 96 C160 100, 240 140, 320 186 L320 176 C240 168, 160 150, 60 148 Z" fill="var(--s2)" opacity=".22"/>
+      <path d="M320 186 C420 234, 560 250, 740 254 L740 214 C560 208, 420 192, 320 176 Z" fill="var(--s1)" opacity=".22"/>
+      <!-- 흡수 곡선 -->
+      <path d="M60 96 C160 100, 240 140, 320 186 C420 234, 560 250, 740 254"
+            fill="none" stroke="var(--ochre)" stroke-width="3"/>
+      <!-- 방출 곡선 -->
+      <path d="M60 148 C160 150, 240 168, 320 176 C420 192, 560 208, 740 214"
+            fill="none" stroke="var(--s1)" stroke-width="3" stroke-dasharray="8 6"/>
+      <line id="mk" x1="140" y1="40" x2="140" y2="260" stroke="var(--ink)" stroke-width="1.6" stroke-dasharray="4 4"/>
+      <circle id="mk1" cx="140" cy="104" r="6" fill="var(--ochre)"/>
+      <circle id="mk2" cx="140" cy="150" r="6" fill="var(--s1)"/>
+      <g font-family="IBM Plex Sans KR, sans-serif" font-size="14" font-weight="600">
+        <text x="70" y="86" fill="var(--ochre)">태양 복사 흡수량</text>
+        <text x="480" y="196" fill="var(--s1)">지구 복사 방출량</text>
+      </g>
+      <g font-family="IBM Plex Sans KR, sans-serif" font-size="14" font-weight="600">
+        <text x="150" y="132" fill="var(--s2)">에너지 과잉</text>
+        <text x="470" y="238" fill="var(--s1)">에너지 부족</text>
+      </g>
+      <g font-family="IBM Plex Mono, monospace" font-size="12" fill="var(--ink-faint)" text-anchor="middle">
+        <text x="60" y="282">적도 0°</text><text x="320" y="282">약 38°</text>
+        <text x="530" y="282">60°</text><text x="740" y="282">극 90°</text>
+      </g>
+      <text x="16" y="52" font-family="IBM Plex Mono, monospace" font-size="12" fill="var(--ink-faint)">에너지양</text>
+    </svg>
+
+    <div class="ctrl">
+      <div class="row">
+        <label for="lat">위도</label>
+        <input type="range" id="lat" min="0" max="90" step="1" value="12">
+        <span class="val" id="latv">12°</span>
+      </div>
+    </div>
+    <div class="readbar">
+      <span>이 위도에서는 <b id="ebmsg">—</b></span>
+      <span class="st" id="ebst">—</span>
+    </div>
+
+    <figcaption><b>읽는 법.</b> 두 곡선이 만나는 <b>약 38° 부근</b>을 경계로, 저위도는 흡수가 방출보다 많아 <b>에너지가 남고</b>, 고위도는 방출이 많아 <b>모자랍니다</b>. 그런데도 온도가 계속 벌어지지 않는 것은 남는 에너지가 고위도로 옮겨가기 때문입니다. ※ 관계를 보이기 위한 모식도입니다.</figcaption>
+  </figure>
+
+  <div id="clozeA"></div>
+</section>
+
+<!-- 3 -->
+<section class="step" id="s3" data-min="10" data-nav="대기 대순환">
+  <h2><span class="n">03</span>대기 대순환 — 세 개의 순환 세포</h2>
+  <p class="lead">에너지를 옮기려면 공기가 움직여야 합니다. 그런데 지구가 <b>자전</b>하기 때문에 하나의 큰 고리가 아니라, 북반구와 남반구에 각각 <b>3개의 순환 세포</b>가 만들어집니다.</p>
+
+  <figure class="fig">
+    <p class="figtitle">순환 세포와 지상에서 부는 바람</p>
+    <p class="figsub">낱말을 고른 뒤 그림의 빈칸을 누르세요 (북반구 기준)</p>
+    <svg viewBox="0 0 760 340" role="img" aria-label="북반구에 세 개의 순환 세포가 형성되고, 지표 부근에서 저위도는 무역풍, 중위도는 편서풍, 고위도는 극동풍이 분다." style="width:100%;height:auto;display:block">
+      <rect x="60" y="30" width="640" height="230" fill="var(--surface-2)"/>
+      <rect x="60" y="260" width="640" height="28" fill="var(--rule)"/>
+      <g stroke="var(--rule)" stroke-width="1" stroke-dasharray="4 4">
+        <line x1="273" y1="30" x2="273" y2="260"/><line x1="486" y1="30" x2="486" y2="260"/>
+      </g>
+      <defs>
+        <marker id="ah" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="5.5" markerHeight="5.5" orient="auto-start-reverse">
+          <path d="M0 0 L10 5 L0 10 z" fill="var(--accent)"/></marker>
+        <marker id="aw" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+          <path d="M0 0 L10 5 L0 10 z" fill="var(--ochre)"/></marker>
+      </defs>
+      <g fill="none" stroke="var(--accent)" stroke-width="2.4" stroke-linecap="round">
+        <path d="M70 250 C70 56, 258 56, 266 250" marker-end="url(#ah)"/>
+        <path d="M288 250 C298 108, 466 108, 478 250" marker-end="url(#ah)"/>
+        <path d="M676 250 C676 118, 502 118, 494 250" marker-end="url(#ah)"/>
+      </g>
+      <g stroke="var(--ochre)" stroke-width="3.4" marker-end="url(#aw)">
+        <line x1="250" y1="242" x2="106" y2="242"/>
+        <line x1="300" y1="242" x2="452" y2="242"/>
+        <line x1="668" y1="242" x2="516" y2="242"/>
+      </g>
+      <foreignObject x="96" y="196" width="180" height="42"><div xmlns="http://www.w3.org/1999/xhtml"
+        style="font:13px 'IBM Plex Sans KR',sans-serif"><button class="slot" id="w1" type="button">?</button></div></foreignObject>
+      <foreignObject x="316" y="196" width="180" height="42"><div xmlns="http://www.w3.org/1999/xhtml"
+        style="font:13px 'IBM Plex Sans KR',sans-serif"><button class="slot" id="w2" type="button">?</button></div></foreignObject>
+      <foreignObject x="524" y="196" width="180" height="42"><div xmlns="http://www.w3.org/1999/xhtml"
+        style="font:13px 'IBM Plex Sans KR',sans-serif"><button class="slot" id="w3" type="button">?</button></div></foreignObject>
+      <g font-family="IBM Plex Sans KR, sans-serif" font-size="13" fill="var(--ink-soft)">
+        <text x="88" y="84">에너지 남음 → 상승</text>
+        <text x="300" y="150">위도 30° 부근 → 하강</text>
+        <text x="540" y="152">에너지 부족 → 하강</text>
+      </g>
+      <g font-family="IBM Plex Mono, monospace" font-size="12" fill="var(--ink-faint)" text-anchor="middle">
+        <text x="70" y="308">적도 0°</text><text x="273" y="308">30°</text>
+        <text x="486" y="308">60°</text><text x="690" y="308">극 90°</text>
+      </g>
+      <text x="60" y="332" font-family="IBM Plex Sans KR, sans-serif" font-size="12.5" fill="var(--ink-faint)">※ 북반구 기준. 남반구는 위아래로 대칭입니다.</text>
+    </svg>
+    <figcaption><b>기억할 것.</b> 우리가 <b>지표에서 느끼는 바람</b>은 순환 고리의 <b>아랫부분</b>입니다. 그리고 <b>위도 30° 부근의 하강 기류</b>는 다음 시간 사막이 왜 그 위도에 몰려 있는지를 설명해 줍니다.</figcaption>
+  </figure>
+  <div id="placeA"></div>
+
+  <div id="clozeB"></div>
+</section>
+
+<!-- 4 -->
+<section class="step" id="s4" data-min="9" data-nav="해수의 표층 순환">
+  <h2><span class="n">04</span>해수의 표층 순환</h2>
+  <p class="lead">바람이 계속 한 방향으로 불면 <b>바닷물의 표층도 끌려갑니다.</b> 그래서 표층 해류의 방향은 대기 대순환의 바람 방향을 따라갑니다.</p>
+
+  <figure class="fig">
+    <p class="figtitle">바람이 만드는 표층 순환</p>
+    <p class="figsub">동서로 흐르다가 대륙에 막혀 남북으로 갈라집니다</p>
+    <svg viewBox="0 0 760 320" role="img" aria-label="무역풍과 편서풍에 의해 표층 해류가 동서로 흐르다가 대륙에 막혀 남북으로 갈라지며, 북반구와 남반구에서 대칭적인 순환이 만들어진다." style="width:100%;height:auto;display:block">
+      <rect x="0" y="0" width="760" height="320" fill="var(--surface-2)"/>
+      <rect x="40" y="0" width="80" height="320" fill="var(--rule)"/>
+      <rect x="640" y="0" width="80" height="320" fill="var(--rule)"/>
+      <line x1="0" y1="160" x2="760" y2="160" stroke="var(--ink-faint)" stroke-width="1" stroke-dasharray="6 5"/>
+      <text x="8" y="154" font-family="IBM Plex Mono, monospace" font-size="12" fill="var(--ink-faint)">적도</text>
+      <g font-family="IBM Plex Sans KR, sans-serif" font-size="12.5" fill="var(--ink-soft)" text-anchor="middle">
+        <text x="80" y="300">대륙</text><text x="680" y="300">대륙</text>
+      </g>
+      <defs><marker id="ao" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+        <path d="M0 0 L10 5 L0 10 z" fill="var(--s1)"/></marker></defs>
+      <g fill="none" stroke="var(--s1)" stroke-width="3.4" stroke-linecap="round" marker-end="url(#ao)">
+        <path d="M620 130 L180 130"/>
+        <path d="M150 120 C110 100, 110 70, 150 56"/>
+        <path d="M180 46 L600 46"/>
+        <path d="M630 56 C670 72, 670 104, 632 120"/>
+        <path d="M620 190 L180 190"/>
+        <path d="M150 200 C110 220, 110 250, 150 264"/>
+        <path d="M180 274 L600 274"/>
+        <path d="M630 264 C670 248, 670 216, 632 200"/>
+      </g>
+      <g font-family="IBM Plex Sans KR, sans-serif" font-size="13.5" font-weight="600" fill="var(--ochre)">
+        <text x="380" y="122" text-anchor="middle">← 무역풍이 미는 방향</text>
+        <text x="380" y="40" text-anchor="middle">편서풍이 미는 방향 →</text>
+      </g>
+      <text x="380" y="212" font-family="IBM Plex Sans KR, sans-serif" font-size="13.5" font-weight="600" fill="var(--ochre)" text-anchor="middle">← 무역풍이 미는 방향</text>
+      <text x="380" y="300" font-family="IBM Plex Sans KR, sans-serif" font-size="12.5" fill="var(--ink-faint)" text-anchor="middle">남반구와 북반구에서 대칭적인 순환</text>
+    </svg>
+    <figcaption><b>읽는 법.</b> 저위도에서는 무역풍을 따라 <b>동에서 서로</b>, 중위도에서는 편서풍을 따라 <b>서에서 동으로</b> 흐릅니다. 대륙에 막히면 남북으로 갈라져 큰 고리를 이룹니다.</figcaption>
+  </figure>
+
+  <div id="quizA"></div>
+</section>
+
+<!-- 5 -->
+<section class="step" id="s5" data-min="8" data-nav="정리">
+  <h2><span class="n">05</span>정리 — 두 순환이 하는 일</h2>
+  <div class="note">
+    <span class="lbl">한 문장으로</span>
+    대기와 해수의 순환으로 <b>저위도 지역의 남는 에너지가 고위도 지역으로 이동</b>하여, 위도에 따른 <b>에너지 불균형이 해소</b>됩니다.
+  </div>
+
+  <div id="sortA"></div>
+  <div id="quizB"></div>
+
+  <div class="note warn">
+    <span class="lbl">다음 시간 예고</span>
+    오늘 배운 <b>무역풍</b>이 어느 해에 약해지면 어떻게 될까요? 태평양 적도의 바닷물이 움직이는 방식이 통째로 달라집니다. 그것이 <b>엘니뇨</b>입니다.
+  </div>
+</section>
+
+<!-- 6 -->
+<section class="step" id="s6" data-nav="내 학습 기록">
+  <h2><span class="n">06</span>내 학습 기록</h2>
+  <div id="repA"></div>
+</section>
+
+</div></main>
+
+<footer><div class="wrap">
+  <span>통합과학2 · Ⅱ-2. 지구 환경의 변화 · 03차시</span>
+  <span><a href="../../">자료실로 돌아가기</a></span>
+</div></footer>
+
+<script src="../../shared/lib.js"></script>
+<script src="../../shared/gate.js"></script>
+<script src="../../shared/act.js"></script>
+<script>
+const LESSON = {
+  code: "u2-03", form: "",
+  api : "https://script.google.com/macros/s/AKfycbxGwVShBta72VSwPeJxaVDRWyEgv6Nl2tNsGNjdf_0AIKeI86oDrx806MAwoNJgezStNw/exec"
+};
+TG.theme('themeBtn');
+TG.nav('.topbar nav');
+
+/* 위도별 에너지 수지 — 모식 곡선 위의 값을 읽어 줍니다 */
+(() => {
+  const lat = document.getElementById('lat');
+  const X = v => 60 + v / 90 * 680;
+  const absorb = v => 96 + 158 * Math.pow(v / 90, 1.35);       /* y좌표(작을수록 큼) */
+  const emit   = v => 148 + 66 * Math.pow(v / 90, 1.05);
+  function draw(){
+    const v = +lat.value, x = X(v);
+    document.getElementById('latv').textContent = v + '°';
+    document.getElementById('mk').setAttribute('x1', x);
+    document.getElementById('mk').setAttribute('x2', x);
+    document.getElementById('mk1').setAttribute('cx', x);
+    document.getElementById('mk1').setAttribute('cy', absorb(v));
+    document.getElementById('mk2').setAttribute('cx', x);
+    document.getElementById('mk2').setAttribute('cy', emit(v));
+    const over = absorb(v) < emit(v);         /* 흡수 곡선이 위에 있으면 과잉 */
+    const st = document.getElementById('ebst');
+    document.getElementById('ebmsg').textContent =
+      over ? '흡수량이 방출량보다 많다' : '방출량이 흡수량보다 많다';
+    st.textContent = over ? '에너지 과잉' : '에너지 부족';
+    st.className = 'st ' + (over ? 'over' : 'under');
+    document.getElementById('ebsub').textContent =
+      `위도 ${v}° — ` + (over ? '남는 에너지가 고위도로 옮겨갑니다' : '모자란 만큼 저위도에서 받아 옵니다');
+  }
+  lat.addEventListener('input', draw);
+  draw();
+})();
+
+ACT.cloze('#clozeA', [
+  { t:'지구는 {{0}}이기 때문에 위도에 따라 태양 복사 에너지 흡수량과 지구 복사 에너지 방출량이 다르다. 그 결과 저위도는 에너지 {{1}}, 고위도는 에너지 {{2}} 상태가 된다.',
+    blanks:[
+      { opts:['구형','평평한 판','타원형 궤도'], ans:0,
+        fb:'구형이라 위도가 높을수록 같은 넓이에 도달하는 햇빛의 양이 줄어듭니다.' },
+      { opts:['과잉','부족'], ans:0, fb:'흡수량이 방출량보다 많습니다.' },
+      { opts:['과잉','부족'], ans:1, fb:'방출량이 흡수량보다 많습니다.' }] }
+]);
+
+ACT.place('#placeA', {
+  chips:['무역풍','편서풍','극동풍'],
+  slots:[
+    { el:'#w1', ans:'무역풍', q:'저위도의 지상 바람' },
+    { el:'#w2', ans:'편서풍', q:'중위도의 지상 바람' },
+    { el:'#w3', ans:'극동풍', q:'고위도의 지상 바람' }
+  ]
+});
+
+ACT.cloze('#clozeB', [
+  { t:'지구 자전의 영향으로 북반구와 남반구에 각각 {{0}}개의 순환 세포가 형성된다.',
+    blanks:[{ opts:['1','2','3','4'], ans:2,
+      fb:'자전이 없다면 적도에서 극까지 이어지는 하나의 큰 고리가 됩니다.' }] },
+  { t:'지상에서 부는 바람은 저위도에서 {{0}}, 중위도에서 {{1}}, 고위도에서 극동풍이다.',
+    blanks:[
+      { opts:['무역풍','편서풍','극동풍'], ans:0, fb:'태평양 적도에서 동에서 서로 붑니다.' },
+      { opts:['무역풍','편서풍','극동풍'], ans:1, fb:'우리나라의 날씨가 서쪽에서 동쪽으로 옮겨가는 이유입니다.' }] }
+]);
+
+TG.quiz('#quizA', [
+  { stem:'표층 해류가 발생하는 가장 직접적인 원인은?',
+    opts:['달과 태양의 인력','해수면 위에서 지속적으로 부는 바람','해수의 밀도 차이','지진에 의한 진동'], ans:1,
+    fb:{ right:'해수면 위를 계속 스치는 바람이 표층의 물을 끌고 갑니다. 그래서 표층 해류의 방향은 대기 대순환을 따라갑니다.',
+         wrong:['조석의 원인입니다.','','밀도 차이는 심층 순환의 원인입니다.','해일의 원인입니다.'] } },
+  { stem:'저위도의 표층 해류가 동서 방향으로 흐르다가 남북 방향으로 갈라지는 까닭은?',
+    opts:['지구의 자전이 멈추기 때문','대륙의 분포에 막히기 때문','수온이 낮아지기 때문','바람이 방향을 바꾸기 때문'], ans:1,
+    fb:{ right:'대륙에 부딪히면 갈 곳이 없으므로 남북으로 갈라져 흐르고, 그 결과 북반구와 남반구에서 대칭적인 순환이 만들어집니다.',
+         wrong:['자전은 멈추지 않습니다.','','수온 때문에 방향이 꺾이지는 않습니다.','바람의 방향은 그대로입니다.'] } }
+]);
+
+ACT.sort('#sortA', {
+  bins: [{ id:'atm', name:'대기 대순환' }, { id:'oce', name:'해수의 표층 순환' }],
+  cards: [
+    { t:'무역풍·편서풍·극동풍을 만든다', bin:'atm', why:'순환 세포의 아랫부분이 지상 바람입니다.' },
+    { t:'북반구·남반구에 각각 3개의 세포를 이룬다', bin:'atm', why:'지구 자전 때문입니다.' },
+    { t:'위도 30° 부근에 하강 기류를 만든다', bin:'atm', why:'그래서 그 위도에 사막이 몰려 있습니다.' },
+    { t:'바람에 끌려 표층의 물이 이동한다', bin:'oce', why:'바람이 원인, 해류가 결과입니다.' },
+    { t:'대륙에 막혀 남북으로 갈라져 흐른다', bin:'oce', why:'그래서 큰 고리 모양이 됩니다.' },
+    { t:'동태평양에서 용승을 일으킨다', bin:'oce', why:'표층수가 밀려난 자리를 심층의 찬물이 채웁니다. 다음 시간의 핵심입니다.' }
+  ]
+});
+
+TG.quiz('#quizB', [
+  { stem:'대기 대순환과 해수의 표층 순환이 함께 하는 가장 중요한 역할은?',
+    opts:['지구의 자전 속도를 일정하게 유지한다','저위도의 남는 에너지를 고위도로 옮겨 에너지 불균형을 해소한다',
+          '대기 중 이산화 탄소의 양을 줄인다','지구의 반사율을 높인다'], ans:1,
+    fb:{ right:'이것이 오늘 배운 모든 내용의 결론입니다. 두 순환이 없다면 적도는 계속 뜨거워지고 극지방은 계속 차가워졌을 것입니다.',
+         wrong:['자전 속도와는 관련이 없습니다.','',
+                '해수가 이산화 탄소를 흡수하기는 하지만 순환의 주된 역할은 아닙니다.',
+                '반사율은 눈·얼음·구름이 좌우합니다.'] } }
+]);
+
+ACT.report('#repA', {
+  school:'남강고등학교', term:'2026학년도 1학년 2학기',
+  title:'통합과학2 · 03차시 대기 대순환과 해수의 순환',
+  std:'[10통과2-02-03]', topic:'Ⅱ-2. 지구 환경의 변화 · 1. 대기 대순환 / 2. 해수의 표층 순환'
+});
+</script>
+<script src="../../shared/teach.js"></script>
+</body>
+</html>

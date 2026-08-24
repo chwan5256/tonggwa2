@@ -78,6 +78,20 @@
 .note b{color:var(--ink-soft)}
 .keys{display:grid;gap:7px;margin:12px 0 0}
 .keys div{font-size:14px;color:var(--ink-soft)}
+.vrow{display:grid;grid-template-columns:56px 1fr;gap:6px 14px;padding:14px 16px;
+  border:1px solid var(--rule);border-radius:12px;background:var(--surface)}
+.vrow .no{font-family:var(--mono);font-size:12px;color:var(--ink-faint);padding-top:6px}
+.vrow .cap{font-size:15px;font-weight:600}
+.vrow .hint{grid-column:2;font-size:13px;color:var(--ink-faint);margin-top:-2px}
+.vrow .in{grid-column:2;display:flex;flex-wrap:wrap;gap:9px;margin-top:6px}
+.vrow input{flex:1;min-width:220px;font:inherit;font-size:15px;padding:10px 13px;
+  border:1px solid var(--rule);border-radius:10px;background:var(--surface);color:var(--ink)}
+.vrow input:focus{border-color:var(--accent);outline:none;box-shadow:0 0 0 3px var(--accent-wash)}
+.vrow .st{grid-column:2;font-size:13px;margin-top:7px}
+.vrow .st.ok{color:var(--good)}
+.vrow .st.no{color:var(--danger)}
+.vrow .st.mute{color:var(--ink-faint)}
+.vrow.set{border-color:var(--good)}
 .keys kbd{font-family:var(--mono);font-size:12.5px;border:1px solid var(--rule);border-bottom-width:2px;
   border-radius:6px;padding:2px 7px;background:var(--surface-2);color:var(--ink)}
 </style>
@@ -135,6 +149,18 @@
     </p>
   </div>
 
+  <!-- 수업 영상 -->
+  <div class="panel">
+    <h2>수업 영상</h2>
+    <p class="sub">유튜브 <b>주소를 그대로 붙여 넣으면</b> 됩니다. 어떤 형태든(watch·youtu.be·shorts) 알아서 영상 번호만 뽑아 저장합니다.
+      저장한 영상은 <b>진행 화면(#t)에서만</b> 재생되고 학생 화면에는 나타나지 않습니다.</p>
+    <div class="glist" id="vlist"></div>
+    <p class="note">
+      <b>다음에 또 하실 때.</b> 이 페이지에 들어와 주소만 바꿔 붙이면 끝입니다. 코드를 고치거나 다시 배포할 필요가 없습니다.
+      비우고 저장하면 그 자리는 다시 ‘영상 없음’으로 돌아갑니다.
+    </p>
+  </div>
+
   <!-- 진행 화면 -->
   <div class="panel">
     <h2>수업 진행 화면</h2>
@@ -174,7 +200,7 @@ fetch('manifest.json', { cache:'no-store' })
     MF = m;
     document.getElementById('ftLeft').textContent =
       [m.school, m.course, m.part].filter(Boolean).join(' · ') + ' · 교사 전용';
-    runlist(); connect();
+    runlist(); vlist(); connect();
   });
 
 /* ---------- 연결 확인 ---------- */
@@ -187,7 +213,8 @@ function connect(){
     LIVE = r.ok;
     if(r.ok){
       chip.className = 'chip ok'; t.textContent = '연결됨';
-      return TG2.gates(HUB.api).then(g => { GATE = g || {}; glist(); });
+      return TG2.gates(HUB.api).then(g => { GATE = g || {}; glist(); })
+        .then(() => TG2.vids(HUB.api)).then(v => { VID = v || {}; paint(); });
     }
     chip.className = 'chip no'; t.textContent = '연결 안 됨 — ' + (r.why || '');
     document.getElementById('fix').hidden = false;
@@ -254,6 +281,71 @@ document.getElementById('glist').addEventListener('click', e => {
     row.classList.remove('busy'); b.disabled = false;
     say('no', '연결하지 못했습니다. 위쪽 연결 상태를 확인해 주세요.');
   });
+});
+
+/* ---------- 수업 영상 ---------- */
+let VID = {};
+
+function vlist(){
+  const host = document.getElementById('vlist');
+  const rows = [];
+  MF.lessons.forEach(l => (l.videos || []).forEach((v, n) => {
+    const key = codeOf(l) + '|' + n;
+    rows.push(`<div class="vrow" data-key="${key}">
+      <span class="no">${l.no}차시</span>
+      <span class="cap">${v.cap || '영상 ' + (n + 1)}</span>
+      <span class="hint">유튜브 검색어 · ${v.find || ''}</span>
+      <span class="in">
+        <input type="text" placeholder="유튜브 주소를 붙여 넣으세요" autocomplete="off">
+        <button class="btn ghost" type="button" data-a="save">저장</button>
+        <button class="btn ghost" type="button" data-a="open">열기</button>
+      </span>
+      <span class="st mute">아직 없음</span>
+    </div>`);
+  }));
+  host.innerHTML = rows.join('') ||
+    '<p class="msg mute">아직 영상 자리가 없습니다. 차시 파일에 영상 자리를 만들면 여기에 나타납니다.</p>';
+  paint();
+}
+
+function paint(){
+  document.querySelectorAll('.vrow').forEach(row => {
+    const id = VID[row.dataset.key] || '';
+    const st = row.querySelector('.st');
+    row.classList.toggle('set', !!id);
+    st.className = 'st ' + (id ? 'ok' : 'mute');
+    st.textContent = id ? '저장됨 · ' + id : '아직 없음';
+    if(id && !row.querySelector('input').value) row.querySelector('input').value = 'https://youtu.be/' + id;
+  });
+}
+
+document.getElementById('vlist').addEventListener('click', e => {
+  const b = e.target.closest('[data-a]'); if(!b) return;
+  const row = b.closest('.vrow'), key = row.dataset.key;
+  const inp = row.querySelector('input'), st = row.querySelector('.st');
+
+  if(b.dataset.a === 'open'){
+    const id = VID[key] || TG2.ytId(inp.value);
+    if(!id){ st.className = 'st no'; st.textContent = '먼저 주소를 넣어 주세요.'; return; }
+    window.open('https://www.youtube.com/watch?v=' + id, '_blank', 'noopener');
+    return;
+  }
+
+  if(!PIN){ st.className = 'st no'; st.textContent = '위에서 번호를 먼저 확인해 주세요.'; return; }
+  const raw = inp.value.trim();
+  const id  = raw ? TG2.ytId(raw) : '';
+  if(raw && !id){
+    st.className = 'st no';
+    st.textContent = '유튜브 주소가 아닌 것 같습니다. 주소창의 주소를 그대로 붙여 넣어 주세요.';
+    return;
+  }
+  st.className = 'st mute'; st.textContent = '저장하는 중…';
+  TG2.setVid(HUB.api, key, id, PIN).then(d => {
+    if(!d || !d.ok){ st.className = 'st no'; st.textContent = (d && d.error) || '저장하지 못했습니다.'; return; }
+    VID = d.vid || {}; paint();
+    st.className = 'st ok';
+    st.textContent = id ? '저장했습니다 · ' + id : '비웠습니다.';
+  }).catch(() => { st.className = 'st no'; st.textContent = '연결하지 못했습니다.'; });
 });
 
 /* ---------- 진행 화면 바로가기 ---------- */

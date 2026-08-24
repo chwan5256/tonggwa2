@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>복사 평형과 온실 효과 · 통합과학2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=IBM+Plex+Sans+KR:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../../shared/base.css">
+</head>
+<body>
+
+<div class="topbar"><div class="wrap">
+  <a class="home" href="../../">← 자료실</a>
+  <nav></nav>
+  <button class="tbtn" id="themeBtn" type="button">테마</button>
+</div></div>
+
+<header class="mast"><div class="wrap">
+  <p class="eyebrow">Ⅱ-2. 지구 환경의 변화 · 01차시</p>
+  <h1>복사 평형과 온실 효과</h1>
+  <p class="dek">‘온실효과를 없애자’는 말은 성립하지 않습니다. 오늘 수업이 끝날 때, 그 이유를 <b>숫자로</b> 말할 수 있어야 합니다.</p>
+  <div class="tags">
+    <span class="tag std">[10통과2-02-03]</span>
+    <span class="tag">1. 온실 효과와 지구 열수지</span>
+    <span class="tag">지식·이해 · 과정·기능</span>
+  </div>
+</div></header>
+
+<main><div class="wrap">
+
+<!-- 1 -->
+<section class="step" id="s1" data-min="3" data-nav="오늘의 질문">
+  <h2><span class="n">01</span>오늘의 질문</h2>
+  <p class="q">온실 효과가 없는 지구는 지금보다 얼마나 추울까? 그렇다면 우리가 줄이려는 것은 정확히 무엇인가?</p>
+  <p>세 낱말을 오늘 안에 자기 말로 설명할 수 있어야 합니다 — <b>복사 평형 · 지구 복사 · 온실 효과</b>.</p>
+  <div class="teach-only" data-yt="" data-cap="도입 — 지구는 왜 이 온도일까" data-find="지구 복사 평형 온실효과 설명"></div>
+</section>
+
+<!-- 2 -->
+<section class="step" id="s2" data-min="9" data-nav="두 가지 복사">
+  <h2><span class="n">02</span>태양 복사와 지구 복사</h2>
+  <p class="lead">모든 물체는 자기 온도에 맞는 <b>파장</b>의 복사 에너지를 내보냅니다. 뜨거울수록 짧은 파장, 차가울수록 긴 파장입니다.</p>
+
+  <figure class="fig">
+    <p class="figtitle">파장에 따른 복사 에너지</p>
+    <p class="figsub">태양은 가시광선에서, 지구는 적외선에서 가장 많이 내보냅니다</p>
+    <svg viewBox="0 0 760 250" role="img" aria-label="파장이 짧은 쪽에 태양 복사가, 긴 쪽에 지구 복사가 분포하며 태양은 가시광선 영역에서, 지구는 적외선 영역에서 최대 세기를 보인다." style="width:100%;height:auto;display:block">
+      <defs>
+        <linearGradient id="vis" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="#7B4FD8"/><stop offset=".3" stop-color="#3B7BE0"/>
+          <stop offset=".55" stop-color="#3FA05A"/><stop offset=".78" stop-color="#E0B93B"/>
+          <stop offset="1" stop-color="#D14B3A"/>
+        </linearGradient>
+      </defs>
+      <line x1="50" y1="200" x2="740" y2="200" stroke="var(--chart-axis)" stroke-width="1.4"/>
+      <rect x="196" y="194" width="86" height="12" fill="url(#vis)" opacity=".9"/>
+      <path d="M60 200 C120 200, 150 46, 200 44 C250 42, 280 190, 340 199 L340 200 Z"
+            fill="var(--ochre)" opacity=".55"/>
+      <path d="M420 200 C480 200, 520 100, 570 98 C630 96, 680 190, 735 199 L735 200 Z"
+            fill="var(--s1)" opacity=".5"/>
+      <g font-family="IBM Plex Sans KR, sans-serif" font-size="14" font-weight="600">
+        <text x="150" y="36" fill="var(--ochre)">태양 복사</text>
+        <text x="520" y="88" fill="var(--s1)">지구 복사</text>
+      </g>
+      <g font-family="IBM Plex Sans KR, sans-serif" font-size="13" fill="var(--ink-soft)">
+        <text x="150" y="56">약 6000 K</text>
+        <text x="520" y="108">약 288 K</text>
+      </g>
+      <g font-family="IBM Plex Mono, monospace" font-size="12" fill="var(--ink-faint)" text-anchor="middle">
+        <text x="110" y="224">자외선</text>
+        <text x="239" y="224">가시광선</text>
+        <text x="470" y="224">적외선</text>
+        <text x="700" y="224">전파</text>
+      </g>
+      <text x="740" y="244" font-family="IBM Plex Sans KR, sans-serif" font-size="13" fill="var(--ink-soft)" text-anchor="end">파장이 길어지는 방향 →</text>
+    </svg>
+    <figcaption><b>읽는 법.</b> 가로축은 파장, 곡선의 높이는 그 파장에서 내보내는 에너지의 양입니다. 두 곡선은 <b>겹치지 않을 만큼</b> 떨어져 있습니다. 이 차이가 오늘 배울 모든 것의 출발점입니다.</figcaption>
+  </figure>
+
+  <div id="clozeA"></div>
+
+  <div class="note">
+    <span class="lbl">유인물 대응</span>
+    태양 복사는 <b>감마선에서 전파까지</b> 넓은 범위에 걸쳐 방출되지만 <b>가시광선</b>에서 가장 많습니다.
+    지구의 평균 온도는 약 <b>288 K</b>이고, 파장이 긴 <b>적외선</b> 영역에서 대부분의 에너지를 방출합니다.
+  </div>
+</section>
+
+<!-- 3 -->
+<section class="step" id="s3" data-min="10" data-nav="복사 평형">
+  <h2><span class="n">03</span>복사 평형</h2>
+  <p class="lead">지구는 태양으로부터 흡수한 에너지와 <b>같은 양</b>의 지구 복사를 방출합니다. 그래서 평균 기온이 일정하게 유지됩니다.</p>
+
+  <div class="card">
+    <h3>대기가 전혀 없다면</h3>
+    <p>지구가 받는 태양 복사와, 대기가 전혀 붙잡지 않는다고 가정했을 때 지구가 내보내야 하는 에너지를 맞춰 보면 평균 온도가 나옵니다. 계산하면 <b>약 −19 ℃</b>입니다.</p>
+    <p>실제 지구의 평균 기온은 약 <b>15 ℃</b>. 차이는 <b>34 ℃</b>가 넘습니다. 이 차이를 만든 것이 <b>온실 효과</b>입니다.</p>
+  </div>
+
+  <figure class="fig">
+    <p class="figtitle">평형점을 옮겨 본다</p>
+    <p class="figsub">둘 다 결국 평평해지지만, <b>평평해지는 높이가 다릅니다</b></p>
+
+    <div class="ctrl">
+      <div class="row">
+        <label for="eps">대기가 붙잡는 정도</label>
+        <input type="range" id="eps" min="0.00" max="0.92" step="0.01" value="0.85">
+        <span class="val" id="epsv">0.85</span>
+      </div>
+      <div class="btnrow">
+        <button class="btn ghost" type="button" data-eps="0">대기가 없다면</button>
+        <button class="btn ghost" type="button" data-eps="0.78">현재 대기</button>
+        <button class="btn ghost" type="button" data-eps="0.88">온실기체를 더 늘리면</button>
+      </div>
+    </div>
+
+    <div class="tiles">
+      <div class="tile s1"><p class="k">현재 대기 · 평형 온도</p><p class="v" id="tA">–<span class="u">℃</span></p></div>
+      <div class="tile s2"><p class="k">조절한 대기 · 평형 온도</p><p class="v" id="tB">–<span class="u">℃</span></p></div>
+      <div class="tile"><p class="k">차이</p><p class="v" id="tD">–<span class="u">℃</span></p></div>
+    </div>
+
+    <div class="legend">
+      <span><i style="background:var(--s1)"></i>현재 대기</span>
+      <span><i style="background:var(--s2)"></i>조절한 대기</span>
+    </div>
+    <div class="chartbox"><canvas id="simc" aria-label="시간에 따른 두 지구의 평균 온도 변화 그래프"></canvas></div>
+    <figcaption><b>확인할 것.</b> 두 곡선 모두 오른쪽 끝에서 수평이 됩니다 — 평형에 도달했다는 뜻입니다. 그런데 <b>수평이 되는 높이가 다릅니다.</b> 평형은 ‘변화가 멈춘 상태’이지 ‘같은 온도’가 아닙니다.</figcaption>
+  </figure>
+
+  <details class="card">
+    <summary style="cursor:pointer;font-weight:600">이 그래프를 만든 모형에 대하여</summary>
+    <p style="margin-top:14px">지구를 하나의 덩어리로, 대기를 한 겹으로 단순화한 <b>단층 대기 모형</b>입니다. 태양 상수 1361 W/m², 반사율 0.30을 사용했고, ‘붙잡는 정도’가 0일 때 약 −19 ℃, 0.78일 때 약 15 ℃가 되도록 맞추었습니다.</p>
+    <p>실제 지구에서는 대기 순환, 구름, 해양의 열 저장이 함께 작용하므로 그대로 들어맞지는 않습니다. 가로축의 시간도 실제 연수가 아니라 <b>상대적인 값</b>입니다. 이 모형은 ‘온실기체가 늘면 평형점이 위로 옮겨간다’는 <b>방향</b>을 보기 위한 것입니다.</p>
+  </details>
+</section>
+
+<!-- 4 -->
+<section class="step" id="s4" data-min="10" data-nav="온실 효과">
+  <h2><span class="n">04</span>온실 효과</h2>
+  <p class="lead">대기 중의 온실 기체는 <b>태양 복사는 대부분 통과시키고</b>, <b>지구 복사는 흡수했다가 일부를 지표로 되돌려 보냅니다.</b></p>
+
+  <figure class="fig">
+    <p class="figtitle">온실 효과가 일어나는 길</p>
+    <p class="figsub">통과 → 흡수 → 재복사</p>
+    <svg viewBox="0 0 760 300" role="img" aria-label="태양 복사는 대기를 통과해 지표를 데우고, 지표가 내보낸 적외선을 온실 기체가 흡수하여 일부를 다시 지표로 재복사한다." style="width:100%;height:auto;display:block">
+      <rect x="0" y="60" width="760" height="170" fill="var(--surface-2)"/>
+      <rect x="0" y="230" width="760" height="40" fill="var(--rule)"/>
+      <line x1="0" y1="60" x2="760" y2="60" stroke="var(--rule)" stroke-width="1" stroke-dasharray="4 4"/>
+      <g font-family="IBM Plex Mono, monospace" font-size="12" fill="var(--ink-faint)">
+        <text x="12" y="36">우주</text><text x="12" y="80">대기</text>
+        <text x="12" y="254" fill="var(--ink-soft)">지표</text>
+      </g>
+      <defs>
+        <marker id="m1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5.5" markerHeight="5.5" orient="auto">
+          <path d="M0 0 L10 5 L0 10 z" fill="var(--ochre)"/></marker>
+        <marker id="m2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5.5" markerHeight="5.5" orient="auto">
+          <path d="M0 0 L10 5 L0 10 z" fill="var(--s1)"/></marker>
+        <marker id="m3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5.5" markerHeight="5.5" orient="auto">
+          <path d="M0 0 L10 5 L0 10 z" fill="var(--danger)"/></marker>
+      </defs>
+      <line x1="110" y1="20" x2="150" y2="228" stroke="var(--ochre)" stroke-width="4" marker-end="url(#m1)"/>
+      <text x="60" y="40" font-family="IBM Plex Sans KR, sans-serif" font-size="14" font-weight="600" fill="var(--ochre)">태양 복사</text>
+      <text x="46" y="60" font-family="IBM Plex Sans KR, sans-serif" font-size="13" fill="var(--ink-soft)">대부분 통과</text>
+      <line x1="330" y1="228" x2="330" y2="120" stroke="var(--s1)" stroke-width="4" marker-end="url(#m2)"/>
+      <text x="346" y="150" font-family="IBM Plex Sans KR, sans-serif" font-size="14" font-weight="600" fill="var(--s1)">지구 복사 (적외선)</text>
+      <circle cx="330" cy="112" r="16" fill="var(--s1)" opacity=".25"/>
+      <text x="346" y="176" font-family="IBM Plex Sans KR, sans-serif" font-size="13" fill="var(--ink-soft)">온실 기체가 흡수</text>
+      <line x1="380" y1="120" x2="470" y2="228" stroke="var(--danger)" stroke-width="4" marker-end="url(#m3)"/>
+      <text x="492" y="186" font-family="IBM Plex Sans KR, sans-serif" font-size="14" font-weight="600" fill="var(--danger)">재복사</text>
+      <text x="492" y="206" font-family="IBM Plex Sans KR, sans-serif" font-size="13" fill="var(--ink-soft)">일부가 지표로 되돌아옴</text>
+      <line x1="330" y1="104" x2="330" y2="20" stroke="var(--s1)" stroke-width="2.4" stroke-dasharray="6 5" marker-end="url(#m2)" opacity=".7"/>
+      <text x="252" y="34" font-family="IBM Plex Sans KR, sans-serif" font-size="13" fill="var(--ink-soft)">일부는 우주로</text>
+    </svg>
+    <figcaption><b>핵심.</b> 온실 기체가 붙잡는 것은 <b>태양빛이 아니라 지표가 내보낸 적외선</b>입니다. 그래서 대기가 없을 때보다 지구의 평균 기온이 <b>높게</b> 유지됩니다.</figcaption>
+  </figure>
+
+  <h3>이 문장을 완성하세요</h3>
+  <div id="clozeB"></div>
+
+  <h3>온실 기체 골라내기</h3>
+  <p class="lead">파장이 긴 지구 복사를 잘 흡수하는 기체가 온실 기체입니다. 카드를 고른 뒤 알맞은 칸을 누르세요.</p>
+  <div id="sortA"></div>
+
+  <div class="note warn">
+    <span class="lbl">자주 틀리는 지점</span>
+    ‘담요가 열을 가둔다’는 비유는 <b>무엇을</b> 가두는지 알려주지 않아 이 지점을 놓치게 만듭니다.
+    또 오존층 파괴는 <b>성층권에서 자외선</b>을 다루는 문제이고, 온실 효과는 <b>대류권에서 적외선</b>을 다루는 문제입니다. 층도 파장도 다릅니다.
+  </div>
+</section>
+
+<!-- 5 -->
+<section class="step" id="s5" data-min="8" data-nav="정리 확인">
+  <h2><span class="n">05</span>정리 확인</h2>
+  <div id="quizA"></div>
+</section>
+
+<!-- 6 -->
+<section class="step" id="s6" data-nav="내 학습 기록">
+  <h2><span class="n">06</span>내 학습 기록</h2>
+  <p class="lead">오늘 배운 개념과 내가 푼 것이 한 파일로 저장됩니다.</p>
+  <div id="repA"></div>
+</section>
+
+</div></main>
+
+<footer><div class="wrap">
+  <span>통합과학2 · Ⅱ-2. 지구 환경의 변화 · 01차시</span>
+  <span><a href="../../">자료실로 돌아가기</a></span>
+</div></footer>
+
+<script src="../../shared/lib.js"></script>
+<script src="../../shared/gate.js"></script>
+<script src="../../shared/act.js"></script>
+<script>
+const LESSON = {
+  code: "u2-01", form: "",
+  api : "https://script.google.com/macros/s/AKfycbxGwVShBta72VSwPeJxaVDRWyEgv6Nl2tNsGNjdf_0AIKeI86oDrx806MAwoNJgezStNw/exec"
+};
+
+TG.theme('themeBtn');
+TG.nav('.topbar nav');
+
+ACT.cloze('#clozeA', [
+  { t:'태양 복사 에너지는 파장이 짧은 감마선에서 파장이 긴 전파까지 넓은 범위에 걸쳐 방출되며, {{0}} 영역에서 가장 많은 에너지를 방출한다.',
+    blanks:[{ opts:['자외선','가시광선','적외선'], ans:1,
+      fb:'태양 표면 온도가 약 6000 K이기 때문입니다. 그래서 우리 눈이 이 영역을 보도록 진화했습니다.' }] },
+  { t:'지구의 평균 온도는 약 {{0}}이며, 파장이 긴 {{1}} 영역에서 대부분의 에너지를 방출한다.',
+    blanks:[
+      { opts:['288 K','6000 K','1361 K'], ans:0, fb:'섭씨로는 약 15 ℃입니다.' },
+      { opts:['가시광선','적외선','자외선'], ans:1, fb:'차가운 물체일수록 긴 파장을 내보냅니다.' }] },
+  { t:'지구의 복사 평형이란, 태양으로부터 흡수한 태양 복사 에너지와 {{0}} 양의 지구 복사 에너지를 방출하여 에너지 평형을 이루는 것이다.',
+    blanks:[{ opts:['같은','더 많은','더 적은'], ans:0,
+      fb:'같아야 평균 기온이 일정하게 유지됩니다.' }] }
+]);
+
+ACT.cloze('#clozeB', [
+  { t:'온실 효과란, 대기 중의 온실 기체가 태양 복사 에너지를 대부분 {{0}}시키고, 지표에서 방출하는 지구 복사 에너지를 {{1}}하였다가 일부를 지표로 {{2}}하여, 대기가 없을 때보다 지구의 평균 기온이 {{3}} 유지되는 현상이다.',
+    blanks:[
+      { opts:['통과','반사','흡수'], ans:0, fb:'태양 복사는 대기를 비교적 잘 지나 지표까지 옵니다.' },
+      { opts:['통과','흡수','산란'], ans:1, fb:'파장이 긴 적외선을 온실 기체가 붙잡습니다.' },
+      { opts:['재복사','반사','전도'], ans:0, fb:'흡수한 뒤 사방으로 다시 내보내며, 그중 일부가 지표로 향합니다.' },
+      { opts:['낮게','높게','같게'], ans:1, fb:'그 차이가 약 34 ℃입니다.' }] }
+]);
+
+ACT.sort('#sortA', {
+  bins: [{ id:'y', name:'온실 기체이다' }, { id:'n', name:'온실 기체가 아니다' }],
+  cards: [
+    { t:'수증기 (H₂O)', bin:'y', why:'대기 중 가장 많은 온실 기체입니다.' },
+    { t:'이산화 탄소 (CO₂)', bin:'y', why:'화석 연료 사용으로 크게 늘어난 온실 기체입니다.' },
+    { t:'메테인 (CH₄)', bin:'y', why:'양은 적지만 흡수 능력이 큽니다.' },
+    { t:'오존 (O₃)', bin:'y', why:'성층권의 오존층과는 별개로, 온실 기체이기도 합니다.' },
+    { t:'질소 (N₂)', bin:'n', why:'대기의 약 78%를 차지하지만 적외선을 거의 흡수하지 않습니다.' },
+    { t:'산소 (O₂)', bin:'n', why:'대기의 약 21%이지만 적외선을 거의 흡수하지 않습니다.' }
+  ]
+});
+
+TG.quiz('#quizA', [
+  { stem:'대기 중의 온실 기체가 주로 흡수하는 것은?',
+    opts:['태양에서 오는 가시광선','지표면이 내보내는 적외선','성층권 오존이 방출하는 자외선','우주에서 오는 고에너지 입자'], ans:1,
+    fb:{ right:'태양 복사는 대기를 비교적 잘 통과합니다. 온실 기체가 붙잡는 것은 지표가 데워진 뒤 내보내는 파장이 긴 적외선입니다.',
+         wrong:['가시광선은 대체로 통과해 지표까지 옵니다. 그래서 낮에 밖이 밝습니다.','',
+                '자외선을 흡수하는 것은 성층권의 오존입니다.','지구 자기장의 역할입니다.'] } },
+  { stem:'‘온실 효과가 강화되었다’는 말의 뜻으로 가장 알맞은 것은?',
+    opts:['원래 없던 온실 효과가 새로 생겼다','원래 있던 온실 효과가 이전보다 커졌다','온실 효과가 사라져 지구가 식고 있다','태양이 내보내는 에너지가 갑자기 늘었다'], ans:1,
+    fb:{ right:'온실 효과 자체는 지구를 살 만하게 만들어 온 자연 현상입니다. 문제가 되는 것은 최근에 더해진 몫입니다.',
+         wrong:['온실 효과는 아주 오래전부터 있었습니다. 없었다면 지구 평균 기온은 약 −19 ℃입니다.','',
+                '강화는 커졌다는 뜻입니다.','대기 쪽의 변화를 가리키는 말입니다.'] } },
+  { stem:'복사 평형 상태에 있던 지구에 온실 기체가 늘어나 새로운 복사 평형에 도달했다. 이때의 평균 기온은?',
+    opts:['평형이므로 이전과 같다','이전보다 높다','이전보다 낮다','평형에서는 기온을 정할 수 없다'], ans:1,
+    fb:{ right:'평형은 ‘변화가 멈춘 상태’이지 ‘같은 온도’가 아닙니다. 내보내기 어려워진 만큼 더 높은 온도에서 균형이 맞습니다.',
+         wrong:['들어오는 양과 나가는 양이 같아졌다는 뜻일 뿐입니다.','',
+                '내보내기 어려워졌는데 낮아질 수는 없습니다.','들어오는 양과 나가는 양이 같아지는 온도가 하나로 정해집니다.'] } }
+]);
+
+/* 단층 대기 모형 */
+const S0 = 1361, ALB = 0.30, SIG = 5.670374419e-8;
+const ABS = S0 * (1 - ALB) / 4, EPS_NOW = 0.78;
+const K = 0.008, STEPS = 300, T_START = 250;
+const eqK = e => Math.pow(ABS / (SIG * (1 - e / 2)), 0.25);
+const toC = k => k - 273.15;
+const run = e => { let T = T_START, out = [[0, toC(T)]];
+  for(let i = 1; i <= STEPS; i++){ T += K * (ABS - SIG * Math.pow(T, 4) * (1 - e / 2)); out.push([i, toC(T)]); }
+  return out; };
+const series = e => ([
+  { name:'현재 대기', color:'--s1', pts: run(EPS_NOW) },
+  { name:'조절한 대기', color:'--s2', pts: run(e) }
+]);
+const simChart = TG.chart(document.getElementById('simc'), {
+  series: series(0.85), xLabel:'상대 시간 (임의 단위)', yLabel:'지구 평균 온도 (℃)',
+  xFmt: v => String(Math.round(v)), yFmt: v => v.toFixed(0), tipFmt: v => v.toFixed(1) + ' ℃'
+});
+const epsEl = document.getElementById('eps');
+function refresh(){
+  const e = +epsEl.value;
+  document.getElementById('epsv').textContent = e.toFixed(2);
+  simChart.update(series(e));
+  const a = toC(eqK(EPS_NOW)), b = toC(eqK(e));
+  document.getElementById('tA').innerHTML = a.toFixed(1) + '<span class="u">℃</span>';
+  document.getElementById('tB').innerHTML = b.toFixed(1) + '<span class="u">℃</span>';
+  document.getElementById('tD').innerHTML = (b - a >= 0 ? '+' : '') + (b - a).toFixed(1) + '<span class="u">℃</span>';
+}
+epsEl.addEventListener('input', refresh);
+document.querySelectorAll('[data-eps]').forEach(b =>
+  b.addEventListener('click', () => { epsEl.value = b.dataset.eps; refresh(); }));
+refresh();
+
+ACT.report('#repA', {
+  school:'남강고등학교', term:'2026학년도 1학년 2학기',
+  title:'통합과학2 · 01차시 복사 평형과 온실 효과',
+  std:'[10통과2-02-03]', topic:'Ⅱ-2. 지구 환경의 변화 · 1. 온실 효과와 지구 열수지'
+});
+</script>
+<script src="../../shared/teach.js"></script>
+</body>
+</html>

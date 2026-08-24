@@ -3,60 +3,46 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>평형점이 움직인다 · 통합과학2</title>
+<title>지구 열수지와 지구 온난화 · 통합과학2</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=IBM+Plex+Sans+KR:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <link rel="stylesheet" href="../../shared/base.css">
 <style>
 /* 에너지 저울 */
-.scaleg{background:var(--surface);border:1px solid var(--rule);border-radius:14px;padding:22px 24px}
+.scaleg{background:var(--surface);border:1px solid var(--rule);border-radius:16px;padding:22px 24px}
 .stage{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px}
-.stage button{font:inherit;font-size:14px;border:1px solid var(--rule);background:var(--surface);
-  color:var(--ink-soft);border-radius:9px;padding:8px 15px;cursor:pointer;display:flex;gap:8px;align-items:center}
-.stage button .n{font-family:var(--mono);font-size:11px;color:var(--ink-faint)}
-.stage button.on{background:var(--accent);border-color:var(--accent);color:#fff}
-.stage button.on .n{color:#fff;opacity:.75}
-.stage button:disabled{opacity:.4;cursor:not-allowed}
-
-.beam{display:grid;grid-template-columns:1fr 96px 1fr;gap:14px;align-items:center;margin-bottom:18px}
-@media(max-width:640px){.beam{grid-template-columns:1fr;gap:10px}}
-.side{background:var(--surface-2);border-radius:12px;padding:16px 18px}
+.stage .pill{display:flex;gap:9px;align-items:center;font-size:14.5px;padding:9px 15px}
+.stage .pill .n{font-family:var(--mono);font-size:11px;opacity:.65}
+.beam{display:grid;grid-template-columns:1fr 92px 1fr;gap:14px;align-items:center;margin-bottom:18px}
+@media(max-width:640px){.beam{grid-template-columns:1fr}}
+.side{background:var(--surface-2);border-radius:13px;padding:16px 18px}
 .side .k{margin:0 0 8px;font-family:var(--mono);font-size:11px;letter-spacing:.08em;
   text-transform:uppercase;color:var(--ink-faint)}
 .side .v{margin:0 0 10px;font-family:var(--mono);font-size:26px;font-weight:500;color:var(--ink);
   font-variant-numeric:tabular-nums}
-.side .v i{font-style:normal;font-size:13px;color:var(--ink-faint);margin-left:4px}
+.side .v i{font-style:normal;font-size:13px;color:var(--ink-faint);margin-left:5px}
 .side .bar{height:12px;border-radius:7px;background:var(--rule-soft);overflow:hidden}
 .side .bar i{display:block;height:100%;border-radius:7px;width:0;transition:width .55s cubic-bezier(.4,0,.2,1)}
 .side.inn .bar i{background:var(--ochre)}
 .side.out .bar i{background:var(--s1)}
 @media (prefers-reduced-motion:reduce){.side .bar i{transition:none}}
-.ops{display:flex;flex-direction:column;gap:7px}
-.ops button{font:inherit;font-family:var(--mono);font-size:22px;font-weight:500;cursor:pointer;
-  border:1px solid var(--rule);background:var(--surface);color:var(--ink);border-radius:10px;padding:7px 0}
-.ops button:hover{border-color:var(--accent)}
-.ops button.right{background:var(--good-wash);border-color:var(--good);color:var(--good)}
-.ops button.wrong{background:var(--danger-wash);border-color:var(--danger);color:var(--danger)}
-.ops button:disabled{cursor:default}
-.temp{display:flex;align-items:baseline;gap:10px;padding:13px 16px;background:var(--surface-2);
-  border-radius:11px;margin-bottom:14px}
+.ops{display:grid;gap:7px}
+.ops .pill{font-family:var(--mono);font-size:22px;font-weight:500;text-align:center;padding:8px 0}
+.temp{display:flex;align-items:baseline;gap:11px;padding:13px 17px;background:var(--surface-2);
+  border-radius:12px;margin-bottom:14px}
 .temp .k{font-size:14px;color:var(--ink-faint)}
 .temp .v{font-family:var(--mono);font-size:19px;font-weight:600;color:var(--ink)}
 .temp .v.up{color:var(--s2)}
 .scaleg .say{margin:0;font-size:15.5px;line-height:1.75;color:var(--ink-soft);
-  background:var(--accent-wash);border-radius:10px;padding:14px 17px}
+  background:var(--accent-wash);border-radius:11px;padding:14px 17px}
 .scaleg .say b{color:var(--ink)}
-.scaleg .fb{margin:14px 0 0;font-size:14.5px;line-height:1.7;color:var(--ink-soft);
-  background:var(--surface-2);border-radius:9px;padding:12px 15px}
-.scaleg .fb b{color:var(--ink)}
-
-/* 편차 전환 */
+.scaleg .fb2{margin:14px 0 0;font-size:14.5px;line-height:1.7;color:var(--ink-soft);
+  background:var(--surface-2);border-radius:10px;padding:12px 15px;border-left:3px solid var(--rule)}
+.scaleg .fb2 b{color:var(--ink)}
 .anomctl{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:14px}
 .anomctl .lb{font-size:14px;color:var(--ink-faint);margin-right:4px}
-.anomctl button{font:inherit;font-family:var(--mono);font-size:14px;border:1px solid var(--rule);
-  background:var(--surface);color:var(--ink-soft);border-radius:9px;padding:8px 14px;cursor:pointer}
-.anomctl button.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.anomctl .pill{font-family:var(--mono);font-size:14px;padding:9px 15px}
 </style>
 </head>
 <body>
@@ -68,47 +54,34 @@
 </div></div>
 
 <header class="mast"><div class="wrap">
-  <p class="eyebrow">Ⅱ. 환경과 에너지 · 02차시</p>
-  <h1>평형점이 움직인다</h1>
-  <p class="dek">온실기체가 늘면 왜 기온이 오를까요. 답은 ‘열이 갇힌다’가 아니라 <b>‘평형점이 옮겨간다’</b>입니다. 오늘은 그 문장을 숫자로 만들어 봅니다.</p>
+  <p class="eyebrow">Ⅱ-2. 지구 환경의 변화 · 02차시</p>
+  <h1>지구 열수지와 지구 온난화</h1>
+  <p class="dek">지구가 주고받는 에너지를 <b>숫자로</b> 따라가 봅니다. 그리고 그 숫자가 어디서 어긋나기 시작했는지 확인합니다.</p>
   <div class="tags">
     <span class="tag std">[10통과2-02-03]</span>
-    <span class="tag">열수지 변동 · 기온 편차 · 환경 변화</span>
+    <span class="tag">3. 지구 열수지 · 2. 지구 온난화</span>
     <span class="tag">지식·이해 · 과정·기능</span>
   </div>
 </div></header>
 
 <main><div class="wrap">
 
-<!-- ================= 1 ================= -->
-<section class="step" id="s1" data-min="3" data-nav="어제의 문장">
-  <h2><span class="n">01</span>어제의 문장 두 개</h2>
-  <p class="lead">지난 시간 마지막에 여러분이 쓴 문장 중 두 개를 가져왔습니다. 어느 쪽이 정확한가요?</p>
-
-  <div class="card">
-    <p style="font-family:var(--serif);font-size:19px;margin-bottom:14px">
-      <b>가.</b> “지구를 지키려면 <u>온실효과를 없애야</u> 한다.”</p>
-    <p style="font-family:var(--serif);font-size:19px;margin:0">
-      <b>나.</b> “지구를 지키려면 <u>최근에 늘어난 몫을</u> 줄여야 한다.”</p>
-  </div>
-
+<!-- 1 -->
+<section class="step" id="s1" data-min="3" data-nav="되짚기">
+  <h2><span class="n">01</span>되짚기</h2>
+  <p class="lead">지난 시간의 세 낱말을 확인하고 시작합니다.</p>
   <div id="quizA"></div>
-
-  <div class="note">
-    <span class="lbl">오늘 할 일</span>
-    ‘늘어난 몫’이 정확히 <b>무엇을 얼마나</b> 바꾸는지, 오늘은 그것을 <b>숫자와 그림</b>으로 확인합니다.
-  </div>
 </section>
 
-<!-- ================= 2 ================= -->
-<section class="step" id="s2" data-min="10" data-nav="열수지 변동">
-  <h2><span class="n">02</span>열수지가 어떻게 변동하는가</h2>
-  <p class="lead">먼저 지난 시간의 그림을 되살립니다. 아래 <b>숫자를 고른 뒤 빈칸을 누르세요.</b></p>
+<!-- 2 -->
+<section class="step" id="s2" data-min="10" data-nav="지구 열수지">
+  <h2><span class="n">02</span>지구 열수지</h2>
+  <p class="lead">지구에 들어오는 태양 복사 에너지를 <b>100 단위</b>로 놓고, 어디로 얼마가 가는지 따라갑니다. 숫자를 고른 뒤 그림의 빈칸을 누르세요.</p>
 
   <figure class="fig">
-    <p class="figtitle">지구의 복사 평형 — 빈칸 채우기</p>
-    <p class="figsub">태양 복사를 100이라 할 때</p>
-    <svg viewBox="0 0 760 300" role="img" aria-label="태양 복사 100이 반사·산란, 대기와 구름의 흡수, 지표면의 흡수로 나뉘고, 지구 복사로 우주에 방출되는 흐름을 나타낸 그림." style="width:100%;height:auto;display:block">
+    <p class="figtitle">지구의 복사 평형</p>
+    <p class="figsub">태양 복사 100 = 반사·산란 + 지구 복사</p>
+    <svg viewBox="0 0 760 300" role="img" aria-label="태양 복사 100 중 30은 반사·산란되고 20은 대기와 구름이, 50은 지표면이 흡수하며, 우주로 나가는 지구 복사는 70이다." style="width:100%;height:auto;display:block">
       <rect x="0" y="70" width="760" height="150" fill="var(--surface-2)"/>
       <rect x="0" y="220" width="760" height="34" fill="var(--rule)"/>
       <line x1="0" y1="70" x2="760" y2="70" stroke="var(--rule)" stroke-width="1" stroke-dasharray="4 4"/>
@@ -116,170 +89,153 @@
         <text x="12" y="44">우주</text><text x="12" y="90">대기</text>
         <text x="12" y="243" fill="var(--ink-soft)">지표</text>
       </g>
-      <g fill="var(--ochre)" opacity=".8">
-        <rect x="60" y="22" width="104" height="48"/>
-        <rect x="60" y="70" width="72" height="76"/>
-        <rect x="78" y="146" width="54" height="74"/>
-        <polygon points="78,220 132,220 105,236"/>
-        <rect x="186" y="34" width="30" height="36"/>
-        <polygon points="186,34 216,34 201,20"/>
+      <g fill="var(--ochre)" opacity=".78">
+        <rect x="60" y="22" width="104" height="48"/><rect x="60" y="70" width="72" height="76"/>
+        <rect x="78" y="146" width="54" height="74"/><polygon points="78,220 132,220 105,236"/>
+        <rect x="186" y="34" width="30" height="36"/><polygon points="186,34 216,34 201,20"/>
       </g>
-      <g fill="var(--s1)" opacity=".8">
-        <rect x="500" y="34" width="64" height="112"/>
-        <polygon points="500,34 564,34 532,20"/>
+      <g fill="var(--s1)" opacity=".78">
+        <rect x="500" y="34" width="64" height="112"/><polygon points="500,34 564,34 532,20"/>
       </g>
-      <g font-family="IBM Plex Sans KR, sans-serif" font-size="14" font-weight="600" fill="var(--ink)">
-        <text x="60" y="14">태양 복사 100</text>
-      </g>
-      <foreignObject x="232" y="30" width="150" height="40">
-        <div xmlns="http://www.w3.org/1999/xhtml" style="font:14px 'IBM Plex Sans KR',sans-serif;color:var(--ink)">
-          반사·산란 <button class="slot" id="sl1" type="button">?</button>
-        </div>
-      </foreignObject>
-      <foreignObject x="150" y="128" width="210" height="40">
-        <div xmlns="http://www.w3.org/1999/xhtml" style="font:14px 'IBM Plex Sans KR',sans-serif;color:var(--ink)">
-          대기·구름 흡수 <button class="slot" id="sl2" type="button">?</button>
-        </div>
-      </foreignObject>
-      <foreignObject x="150" y="196" width="210" height="40">
-        <div xmlns="http://www.w3.org/1999/xhtml" style="font:14px 'IBM Plex Sans KR',sans-serif;color:var(--ink)">
-          지표면 흡수 <button class="slot" id="sl3" type="button">?</button>
-        </div>
-      </foreignObject>
-      <foreignObject x="580" y="30" width="176" height="40">
-        <div xmlns="http://www.w3.org/1999/xhtml" style="font:14px 'IBM Plex Sans KR',sans-serif;color:var(--ink)">
-          지구 복사 <button class="slot" id="sl4" type="button">?</button>
-        </div>
-      </foreignObject>
+      <text x="60" y="14" font-family="IBM Plex Sans KR, sans-serif" font-size="14" font-weight="600" fill="var(--ink)">태양 복사 100</text>
+      <foreignObject x="232" y="30" width="160" height="40"><div xmlns="http://www.w3.org/1999/xhtml"
+        style="font:14px 'IBM Plex Sans KR',sans-serif;color:var(--ink)">반사·산란 <button class="slot" id="sl1" type="button">?</button></div></foreignObject>
+      <foreignObject x="150" y="128" width="220" height="40"><div xmlns="http://www.w3.org/1999/xhtml"
+        style="font:14px 'IBM Plex Sans KR',sans-serif;color:var(--ink)">대기·구름 흡수 <button class="slot" id="sl2" type="button">?</button></div></foreignObject>
+      <foreignObject x="150" y="196" width="220" height="40"><div xmlns="http://www.w3.org/1999/xhtml"
+        style="font:14px 'IBM Plex Sans KR',sans-serif;color:var(--ink)">지표면 흡수 <button class="slot" id="sl3" type="button">?</button></div></foreignObject>
+      <foreignObject x="580" y="30" width="176" height="40"><div xmlns="http://www.w3.org/1999/xhtml"
+        style="font:14px 'IBM Plex Sans KR',sans-serif;color:var(--ink)">지구 복사 <button class="slot" id="sl4" type="button">?</button></div></foreignObject>
     </svg>
-    <figcaption><b>확인할 것.</b> 들어온 100 중 되튕겨 나간 몫을 빼면 지구가 실제로 흡수한 양이 나옵니다. 그 양과 <b>나가는 지구 복사가 같을 때</b> 평균 기온이 일정합니다.</figcaption>
+    <figcaption><b>확인할 것.</b> 지구의 <b>반사율</b>은 흡수되지 않고 우주로 되돌아가는 에너지의 비율로 약 30%입니다. 지구는 70%를 흡수하고 그 70%를 그대로 방출합니다.</figcaption>
   </figure>
   <div id="placeA"></div>
 
-  <h3>그래서, 온실기체가 늘면</h3>
-  <p class="lead">아래 문장의 빈칸을 눌러 채우세요. 오늘 수업의 뼈대입니다.</p>
-  <div id="clozeA"></div>
+  <h3>지표·대기·우주 — 어디서나 들어온 만큼 나간다</h3>
+  <p class="lead">지구 열수지는 복사 평형 상태에서 나타나는 <b>지표·대기·우주 사이의 열출입 관계</b>입니다. 세 영역 <b>각각에서</b> 흡수량과 방출량이 같습니다.</p>
 
-  <div class="teach-only" data-cap="온실효과와 지구 복사 — 도입 영상" data-find="온실효과 지구 복사 평형 설명" data-yt=""></div>
+  <figure class="fig">
+    <p class="figtitle">온실 효과를 일으키는 에너지의 양</p>
+    <p class="figsub">지표면이 내보낸 것과 지표로 되돌아오는 것</p>
+    <svg viewBox="0 0 760 250" role="img" aria-label="지표면에서 방출된 144 단위 중 132 단위를 대기의 온실 기체가 흡수하고, 그중 94 단위가 지표로 재복사된다." style="width:100%;height:auto;display:block">
+      <rect x="0" y="40" width="760" height="140" fill="var(--surface-2)"/>
+      <rect x="0" y="180" width="760" height="34" fill="var(--rule)"/>
+      <g font-family="IBM Plex Mono, monospace" font-size="12" fill="var(--ink-faint)">
+        <text x="12" y="62">대기 (온실 기체)</text><text x="12" y="203" fill="var(--ink-soft)">지표</text>
+      </g>
+      <defs><marker id="mu" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5.5" markerHeight="5.5" orient="auto">
+        <path d="M0 0 L10 5 L0 10 z" fill="var(--s1)"/></marker>
+        <marker id="md" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5.5" markerHeight="5.5" orient="auto">
+        <path d="M0 0 L10 5 L0 10 z" fill="var(--danger)"/></marker></defs>
+      <line x1="170" y1="178" x2="170" y2="70" stroke="var(--s1)" stroke-width="9" marker-end="url(#mu)"/>
+      <line x1="290" y1="178" x2="290" y2="30" stroke="var(--s1)" stroke-width="2.6" stroke-dasharray="6 5" marker-end="url(#mu)" opacity=".65"/>
+      <line x1="560" y1="70" x2="560" y2="178" stroke="var(--danger)" stroke-width="7" marker-end="url(#md)"/>
+      <foreignObject x="192" y="86" width="230" height="40"><div xmlns="http://www.w3.org/1999/xhtml"
+        style="font:14px 'IBM Plex Sans KR',sans-serif;color:var(--ink)">지표면 방출 <button class="slot" id="sm1" type="button">?</button></div></foreignObject>
+      <foreignObject x="192" y="128" width="240" height="40"><div xmlns="http://www.w3.org/1999/xhtml"
+        style="font:14px 'IBM Plex Sans KR',sans-serif;color:var(--ink)">대기가 흡수 <button class="slot" id="sm2" type="button">?</button></div></foreignObject>
+      <foreignObject x="580" y="104" width="180" height="40"><div xmlns="http://www.w3.org/1999/xhtml"
+        style="font:14px 'IBM Plex Sans KR',sans-serif;color:var(--ink)">지표로 재복사 <button class="slot" id="sm3" type="button">?</button></div></foreignObject>
+      <text x="306" y="26" font-family="IBM Plex Sans KR, sans-serif" font-size="13" fill="var(--ink-soft)">일부는 대기를 그냥 통과해 우주로</text>
+      <text x="12" y="240" font-family="IBM Plex Sans KR, sans-serif" font-size="12.5" fill="var(--ink-faint)">※ 태양 복사를 100으로 놓았을 때의 상대적인 값입니다.</text>
+    </svg>
+    <figcaption><b>읽는 법.</b> 지표면에서 방출되는 <b>144 단위</b> 중 <b>132 단위</b>가 대기의 온실 기체에 흡수되고, 그중 <b>94 단위</b>가 지표로 재복사되어 온실 효과를 일으킵니다. 지표가 100보다 많은 144를 내보낼 수 있는 것은, 재복사로 되돌아오는 몫이 있기 때문입니다.</figcaption>
+  </figure>
+  <div id="placeB"></div>
 
-  <div class="note warn">
-    <span class="lbl">가장 자주 틀리는 지점</span>
-    온실기체가 붙잡는 것은 <b>태양빛이 아니라 지표가 내보낸 적외선</b>입니다.
-    ‘담요가 열을 가둔다’는 비유는 <b>무엇을</b> 가두는지 알려주지 않아 이 지점을 놓치게 만듭니다.
-  </div>
+  <div class="teach-only" data-yt="" data-cap="지구 열수지 — 숫자로 따라가기" data-find="지구 열수지 100 70 30 설명"></div>
 </section>
 
-<!-- ================= 3 ================= -->
-<section class="step" id="s3" data-min="7" data-nav="에너지 저울">
+<!-- 3 -->
+<section class="step" id="s3" data-min="8" data-nav="에너지 저울">
   <h2><span class="n">03</span>에너지 저울</h2>
-  <p class="lead">지구를 저울이라고 생각해 봅시다. 왼쪽은 <b>들어오는 에너지</b>, 오른쪽은 <b>나가는 에너지</b>입니다. 단계마다 <b>어느 쪽이 큰지</b> 부등호를 고르세요.</p>
+  <p class="lead">지구를 저울로 봅니다. 왼쪽은 <b>들어오는 에너지</b>, 오른쪽은 <b>나가는 에너지</b>. 단계마다 어느 쪽이 큰지 고르세요.</p>
 
   <div class="scaleg">
     <div class="stage" id="stg">
-      <button type="button" data-s="0" class="on"><span class="n">1</span>지금의 지구</button>
-      <button type="button" data-s="1" disabled><span class="n">2</span>온실기체가 늘어난 직후</button>
-      <button type="button" data-s="2" disabled><span class="n">3</span>시간이 흐른 뒤</button>
+      <button type="button" class="pill on" data-s="0"><span class="n">1</span>지금의 지구</button>
+      <button type="button" class="pill" data-s="1" disabled><span class="n">2</span>온실기체가 늘어난 직후</button>
+      <button type="button" class="pill" data-s="2" disabled><span class="n">3</span>시간이 흐른 뒤</button>
     </div>
-
     <div class="temp"><span class="k">지표 평균 기온</span><span class="v" id="tv">15.0 ℃</span></div>
-
     <div class="beam">
-      <div class="side inn">
-        <p class="k">들어오는 에너지 (흡수한 태양 복사)</p>
-        <p class="v" id="vin">240<i>W/m²</i></p>
-        <div class="bar"><i id="bin"></i></div>
-      </div>
+      <div class="side inn"><p class="k">들어오는 에너지 (흡수한 태양 복사)</p>
+        <p class="v" id="vin">240<i>W/m²</i></p><div class="bar"><i id="bin"></i></div></div>
       <div class="ops" id="ops">
-        <button type="button" data-o=">">&gt;</button>
-        <button type="button" data-o="=">=</button>
-        <button type="button" data-o="<">&lt;</button>
+        <button type="button" class="pill" data-o="&gt;">&gt;</button>
+        <button type="button" class="pill" data-o="=">=</button>
+        <button type="button" class="pill" data-o="&lt;">&lt;</button>
       </div>
-      <div class="side out">
-        <p class="k">나가는 에너지 (우주로 나간 지구 복사)</p>
-        <p class="v" id="vout">240<i>W/m²</i></p>
-        <div class="bar"><i id="bout"></i></div>
-      </div>
+      <div class="side out"><p class="k">나가는 에너지 (우주로 나간 지구 복사)</p>
+        <p class="v" id="vout">240<i>W/m²</i></p><div class="bar"><i id="bout"></i></div></div>
     </div>
-
     <p class="say" id="say"></p>
-    <p class="fb" id="sfb" hidden></p>
+    <p class="fb2" id="sfb" hidden></p>
   </div>
 
   <div class="note">
     <span class="lbl">여기서 얻어 갈 문장</span>
-    <b>평형이 사라진 것이 아니라, 평형점이 올라갔습니다.</b> 이 문장이 오늘 서술형의 정답 뼈대입니다.
+    <b>평형이 사라진 것이 아니라, 평형점이 올라갔습니다.</b> 이 문장이 서술형의 정답 뼈대입니다.
   </div>
 </section>
 
-<!-- ================= 4 ================= -->
-<section class="step" id="s4" data-min="8" data-nav="편차라는 말">
-  <h2><span class="n">04</span>두 곡선을 겹쳐 놓고 — ‘편차’라는 말</h2>
-  <p class="lead">모형은 ‘늘면 어떻게 되는가’를 말해 줍니다. 실제로 늘었는지는 <b>관측 자료</b>가 말해 줍니다.</p>
+<!-- 4 -->
+<section class="step" id="s4" data-min="9" data-nav="지구 온난화">
+  <h2><span class="n">04</span>지구 온난화</h2>
+  <p class="lead">이제 이름을 붙일 차례입니다. 아래 문장의 빈칸을 채우세요.</p>
+  <div id="clozeA"></div>
 
   <figure class="fig">
     <p class="figtitle">마우나로아 관측소의 연평균 이산화 탄소 농도</p>
     <p class="figsub" id="csub">하와이 마우나로아 · 1960 ~ 2023년</p>
-
     <div class="anomctl">
       <span class="lb">보는 방법</span>
-      <button type="button" data-b="raw" class="on">농도 그대로</button>
-      <button type="button" data-b="1960">1960년 기준 편차</button>
-      <button type="button" data-b="1990">1990년 기준 편차</button>
+      <button type="button" class="pill on" data-b="raw">농도 그대로</button>
+      <button type="button" class="pill" data-b="1960">1960년 기준 편차</button>
+      <button type="button" class="pill" data-b="1990">1990년 기준 편차</button>
     </div>
-
     <div class="chartbox"><canvas id="co2c" aria-label="1960년부터 2023년까지 마우나로아 연평균 이산화 탄소 농도 그래프"></canvas></div>
     <figcaption><b>출처.</b> NOAA Global Monitoring Laboratory, Mauna Loa 연평균 CO₂
       (1958~1974년 자료는 Scripps 해양연구소 C. D. Keeling 측정분 포함).
       <a href="https://gml.noaa.gov/ccgg/trends/" target="_blank" rel="noopener">gml.noaa.gov/ccgg/trends</a></figcaption>
   </figure>
 
-  <p><b>기준을 바꿔 보세요.</b> 세 버튼을 차례로 눌러 그래프가 어떻게 달라지는지 봅니다. 그런 다음 아래 문제를 푸세요.</p>
+  <p><b>기준을 바꿔 보세요.</b> 세 버튼을 차례로 누른 뒤 아래 문제를 푸세요. 다음 시간부터 이 개념을 계속 씁니다.</p>
   <div id="quizB"></div>
 
   <div class="note">
     <span class="lbl">편차란</span>
     <b>관측값에서 기준값을 뺀 값</b>입니다. 기준을 무엇으로 잡느냐에 따라 <b>숫자는 달라지지만 변화의 경향은 그대로</b>입니다.
     그래서 기상 기관은 평년값을 <b>연속된 30년의 평균</b>으로 약속해 두고, 자료마다 그 기간을 반드시 함께 밝힙니다.
-    다음 시간 엘니뇨에서 이 개념을 다시 씁니다.
   </div>
 </section>
 
-<!-- ================= 5 ================= -->
-<section class="step" id="s5" data-min="8" data-nav="네 갈래 변화">
+<!-- 5 -->
+<section class="step" id="s5" data-min="10" data-nav="그래서 무엇이">
   <h2><span class="n">05</span>그래서 무엇이 달라지는가</h2>
-  <p class="lead">지구온난화가 만드는 변화는 네 갈래로 나뉩니다. <b>카드를 고른 뒤 알맞은 칸을 누르세요.</b></p>
-
+  <p class="lead">지구온난화가 만드는 변화는 네 갈래로 나뉩니다. 카드를 고른 뒤 알맞은 칸을 누르세요.</p>
   <div id="sortA"></div>
 
-  <div class="teach-only" data-cap="지구온난화의 영향 — 뉴스 자료" data-find="지구온난화 해수면 상승 뉴스" data-yt=""></div>
+  <div class="teach-only" data-yt="" data-cap="지구온난화의 영향 — 뉴스 자료" data-find="지구온난화 해수면 상승 뉴스"></div>
 
   <h3>하나만 더 짚고 갑니다</h3>
   <div id="quizC"></div>
-</section>
 
-<!-- ================= 6 ================= -->
-<section class="step" id="s6" data-min="4" data-nav="서술형 연습">
-  <h2><span class="n">06</span>서술형 연습</h2>
-  <p class="lead">중간고사에 나올 형태 그대로입니다. 먼저 스스로 써 보고, 그다음 모범 답안의 뼈대와 견주어 보세요.</p>
+  <h3>서술형 연습</h3>
   <div id="noteA"></div>
 </section>
 
-<!-- ================= 7 ================= -->
-<section class="step" id="s7" data-nav="내 학습 기록">
-  <h2><span class="n">07</span>내 학습 기록</h2>
-  <p class="lead">오늘 푼 문항과 채운 빈칸이 모두 모여 있습니다. <b>PDF로 저장</b>해 두면 시험 공부할 때 그대로 쓸 수 있습니다.</p>
+<!-- 6 -->
+<section class="step" id="s6" data-nav="내 학습 기록">
+  <h2><span class="n">06</span>내 학습 기록</h2>
+  <p class="lead">오늘 배운 개념과 내가 푼 것이 한 파일로 저장됩니다.</p>
   <div id="repA"></div>
-  <div class="note">
-    <span class="lbl">안심하세요</span>
-    이 기록은 <b>여러분 기기 안에만</b> 있습니다. 선생님에게도, 어디에도 전송되지 않습니다.
-    이름 칸은 PDF에 이름을 찍기 위한 것이며 저장되지 않습니다.
-  </div>
 </section>
 
 </div></main>
 
 <footer><div class="wrap">
-  <span>통합과학2 · Ⅱ. 환경과 에너지 · 02차시</span>
+  <span>통합과학2 · Ⅱ-2. 지구 환경의 변화 · 02차시</span>
   <span><a href="../../">자료실로 돌아가기</a></span>
 </div></footer>
 
@@ -287,149 +243,119 @@
 <script src="../../shared/gate.js"></script>
 <script src="../../shared/act.js"></script>
 <script>
-/* ============ 이 차시의 설정 — 여기만 고치면 됩니다 ============ */
 const LESSON = {
-  code: "u2-02",
-  form: "",
+  code: "u2-02", form: "",
   api : "https://script.google.com/macros/s/AKfycbxGwVShBta72VSwPeJxaVDRWyEgv6Nl2tNsGNjdf_0AIKeI86oDrx806MAwoNJgezStNw/exec"
 };
-/* ============================================================ */
-
 TG.theme('themeBtn');
 TG.nav('.topbar nav');
 
-/* ---------------- 1. 어제의 문장 ---------------- */
 TG.quiz('#quizA', [
-  { stem:'두 문장 중 과학적으로 정확한 것은?',
-    opts:['가 — 온실효과를 없애야 한다','나 — 최근에 늘어난 몫을 줄여야 한다',
-          '둘 다 맞다','둘 다 틀리다'], ans:1,
-    fb:{ right:'온실효과가 없었다면 지구 평균 기온은 약 −19 ℃입니다. 온실효과는 지구를 살 만하게 만들어 온 자연 현상이고, 문제가 되는 것은 최근에 <b>더해진 몫</b>입니다.',
-         wrong:['온실효과를 없애면 지구는 사람이 살 수 없을 만큼 추워집니다.','',
-                '‘가’는 성립하지 않는 문장입니다.',
-                '‘나’는 교육과정이 말하는 ‘온실효과 강화’와 정확히 같은 뜻입니다.'] } }
+  { stem:'지구로 들어온 태양 복사를 100이라 하고 그중 30이 반사·산란되어 되돌아간다면, 평균 기온이 일정하려면 지구가 우주로 내보내는 지구 복사는 얼마여야 하는가?',
+    opts:['30','50','70','100'], ans:2,
+    fb:{ right:'들어온 100 중 30은 애초에 흡수되지 않고 되튕겨 나갑니다. 실제로 흡수한 70을 그대로 내보낼 때 균형이 맞습니다.',
+         wrong:['반사·산란된 몫입니다.','지표면이 흡수한 몫만 센 값입니다. 대기와 구름이 흡수한 20도 함께 나가야 합니다.','',
+                '들어온 전부가 흡수되지는 않습니다.'] } },
+  { stem:'다음 중 지구가 주로 방출하는 복사 에너지의 영역은?',
+    opts:['자외선','가시광선','적외선','전파'], ans:2,
+    fb:{ right:'지구의 평균 온도는 약 288 K이라 파장이 긴 적외선 영역에서 대부분을 방출합니다.',
+         wrong:['자외선은 태양 복사 쪽의 짧은 파장입니다.','가시광선에서 최대인 것은 태양입니다.','',
+                '전파는 훨씬 더 긴 파장입니다.'] } }
 ]);
 
-/* ---------------- 2. 열수지 빈칸 ---------------- */
-ACT.place('#placeA', {
-  chips: ['20', '30', '50', '70'],
-  slots: [
-    { el:'#sl1', ans:'30', q:'반사·산란' },
-    { el:'#sl2', ans:'20', q:'대기·구름 흡수' },
-    { el:'#sl3', ans:'50', q:'지표면 흡수' },
-    { el:'#sl4', ans:'70', q:'우주로 나가는 지구 복사' }
-  ]
-});
+ACT.place('#placeA', { chips:['20','30','50','70'], slots:[
+  { el:'#sl1', ans:'30', q:'반사·산란' }, { el:'#sl2', ans:'20', q:'대기·구름 흡수' },
+  { el:'#sl3', ans:'50', q:'지표면 흡수' }, { el:'#sl4', ans:'70', q:'우주로 나가는 지구 복사' } ] });
 
-ACT.cloze('#clozeA', [
-  { t:'온실기체가 흡수하는 것은 태양 복사가 아니라, 지표가 데워진 뒤 내보내는 {{0}} 이다.',
-    blanks:[{ opts:['자외선','적외선(지구 복사)','가시광선'], ans:1,
-      fb:'태양 복사는 대기를 비교적 잘 통과해 지표까지 옵니다. 온실기체가 붙잡는 것은 파장이 긴 적외선입니다.' }] },
-  { t:'온실기체가 늘어나면 지구는 에너지를 우주로 {{0}} 어려워진다.',
-    blanks:[{ opts:['받아들이기','내보내기'], ans:1,
-      fb:'들어오는 양은 그대로인데 나가는 길만 막힙니다.' }] },
-  { t:'그러면 잠시 동안 들어오는 양이 나가는 양보다 {{0}}, 지표의 기온이 오른다.',
-    blanks:[{ opts:['많아져','적어져'], ans:0,
-      fb:'남는 에너지가 지구에 쌓이므로 기온이 오릅니다.' }] },
-  { t:'기온이 오르면 지구가 내보내는 복사도 함께 {{0}}, 결국 다시 균형을 이룬다.',
-    blanks:[{ opts:['늘어나','줄어들어'], ans:0,
-      fb:'뜨거운 물체일수록 더 많이 방출합니다. 그래서 균형이 다시 맞춰집니다.' }] },
-  { t:'다만 그 균형은 이전보다 {{0}} 온도에서 이루어진다. 평형이 사라진 것이 아니라 {{1}} 것이다.',
-    blanks:[
-      { opts:['더 낮은','같은','더 높은'], ans:2,
-        fb:'이것이 지구온난화의 핵심 문장입니다.' },
-      { opts:['평형점이 올라간','평형이 깨진','태양이 뜨거워진'], ans:0,
-        fb:'‘평형 = 변화 없음’이 아니라 ‘들어온 양 = 나간 양’입니다. 그 지점이 위로 옮겨간 것입니다.' }] }
-]);
+ACT.place('#placeB', { chips:['94','132','144'], slots:[
+  { el:'#sm1', ans:'144', q:'지표면 방출' }, { el:'#sm2', ans:'132', q:'대기가 흡수' },
+  { el:'#sm3', ans:'94', q:'지표로 재복사' } ] });
 
-/* ---------------- 3. 에너지 저울 ---------------- */
+/* 에너지 저울 */
 (() => {
   const S = [
     { in:240, out:240, t:15.0, up:false, ans:'=',
       say:'지금의 지구입니다. 흡수한 태양 복사와 우주로 나가는 지구 복사가 <b>같습니다</b>. 그래서 평균 기온이 일정하게 유지됩니다.',
       fb:'들어온 양과 나간 양이 같은 상태를 <b>복사 평형</b>이라고 합니다.' },
     { in:240, out:232, t:15.0, up:false, ans:'>',
-      say:'온실기체가 늘어난 <b>직후</b>입니다. 들어오는 양은 그대로인데, 대기가 붙잡는 몫이 늘어 <b>나가는 양이 줄었습니다</b>.',
-      fb:'남는 에너지(약 8 W/m²)가 지구에 쌓입니다. 이때부터 기온이 오르기 시작합니다.' },
+      say:'온실 기체가 늘어난 <b>직후</b>입니다. 들어오는 양은 그대로인데, 대기가 붙잡는 몫이 늘어 <b>나가는 양이 줄었습니다</b>.',
+      fb:'남는 에너지가 지구에 쌓입니다. 이때부터 기온이 오르기 시작합니다.' },
     { in:240, out:240, t:17.2, up:true, ans:'=',
       say:'시간이 흐른 뒤입니다. 기온이 오르자 지구가 내보내는 복사도 늘어 <b>다시 같아졌습니다</b>. 그런데 기온은 이전보다 <b>높습니다</b>.',
-      fb:'평형이 사라진 것이 아니라 <b>평형점이 올라갔습니다</b>. 두 저울이 다시 균형을 이루었지만 온도계 눈금은 달라졌습니다.' }
+      fb:'평형이 사라진 것이 아니라 <b>평형점이 올라갔습니다</b>. 저울은 다시 균형인데 온도계 눈금이 달라졌습니다.' }
   ];
   const $ = id => document.getElementById(id);
   let cur = 0, done = [false, false, false];
-
   function draw(){
     const s = S[cur];
-    $('vin').innerHTML = s.in + '<i>W/m²</i>';
-    $('vout').innerHTML = s.out + '<i>W/m²</i>';
-    $('bin').style.width = (s.in / 260 * 100) + '%';
-    $('bout').style.width = (s.out / 260 * 100) + '%';
-    $('tv').textContent = s.t.toFixed(1) + ' ℃';
-    $('tv').className = 'v' + (s.up ? ' up' : '');
+    $('vin').innerHTML = s.in + '<i>W/m²</i>'; $('vout').innerHTML = s.out + '<i>W/m²</i>';
+    $('bin').style.width = (s.in / 260 * 100) + '%'; $('bout').style.width = (s.out / 260 * 100) + '%';
+    $('tv').textContent = s.t.toFixed(1) + ' ℃'; $('tv').className = 'v' + (s.up ? ' up' : '');
     $('say').innerHTML = done[cur] ? s.say : '부등호를 골라 보세요. 왼쪽이 큰가요, 같은가요, 오른쪽이 큰가요?';
     $('sfb').hidden = true;
-    document.querySelectorAll('#ops button').forEach(b => {
-      b.className = ''; b.disabled = false;
-      if(done[cur]){ b.disabled = true; if(b.dataset.o === s.ans) b.className = 'right'; }
+    document.querySelectorAll('#ops .pill').forEach(b => {
+      b.className = 'pill'; b.disabled = false;
+      if(done[cur]){ b.disabled = true; if(b.dataset.o === s.ans) b.className = 'pill right'; }
     });
-    document.querySelectorAll('#stg button').forEach((b, i) => {
-      b.classList.toggle('on', i === cur);
-      b.disabled = i > 0 && !done[i - 1];
+    document.querySelectorAll('#stg .pill').forEach((b, i) => {
+      b.classList.toggle('on', i === cur); b.disabled = i > 0 && !done[i - 1];
     });
   }
-
-  document.getElementById('ops').addEventListener('click', e => {
-    const b = e.target.closest('button');
-    if(!b || b.disabled) return;
+  $('ops').addEventListener('click', e => {
+    const b = e.target.closest('.pill'); if(!b || b.disabled) return;
     const s = S[cur], ok = b.dataset.o === s.ans;
-    document.querySelectorAll('#ops button').forEach(x => x.disabled = true);
-    b.className = ok ? 'right' : 'wrong';
-    if(!ok) document.querySelector(`#ops button[data-o="${s.ans}"]`).className = 'right';
+    document.querySelectorAll('#ops .pill').forEach(x => x.disabled = true);
+    b.className = 'pill ' + (ok ? 'right' : 'wrong');
+    if(!ok) document.querySelector('#ops .pill[data-o="' + s.ans + '"]').className = 'pill right';
     $('say').innerHTML = s.say;
     $('sfb').innerHTML = `<b>${ok ? '맞았습니다.' : '다시 볼 지점.'}</b> ${s.fb}`;
     $('sfb').hidden = false;
     done[cur] = true;
-    document.querySelectorAll('#stg button').forEach((x, i) => { x.disabled = i > 0 && !done[i - 1]; });
+    document.querySelectorAll('#stg .pill').forEach((x, i) => { x.disabled = i > 0 && !done[i - 1]; });
     ACT.put({ id:'scale-' + cur, sec:'에너지 저울', kind:'부등호',
-              q:['지금의 지구','온실기체가 늘어난 직후','시간이 흐른 뒤'][cur] + ' — 들어오는 에너지 □ 나가는 에너지',
-              my:b.dataset.o, ans:s.ans, ok });
+      q:['지금의 지구','온실기체가 늘어난 직후','시간이 흐른 뒤'][cur] + ' — 들어오는 에너지 □ 나가는 에너지',
+      my:b.dataset.o, ans:s.ans, ok });
     if(cur < 2) setTimeout(() => { cur++; draw(); }, 2600);
   });
-
-  document.getElementById('stg').addEventListener('click', e => {
-    const b = e.target.closest('button');
-    if(!b || b.disabled) return;
+  $('stg').addEventListener('click', e => {
+    const b = e.target.closest('.pill'); if(!b || b.disabled) return;
     cur = +b.dataset.s; draw();
   });
-
   draw();
 })();
 
-/* ---------------- 4. CO₂ 와 편차 ---------------- */
+ACT.cloze('#clozeA', [
+  { t:'지구 온난화란, 대기 중 {{0}}의 양이 증가하여 {{1}}가 강화되고, 그 결과 지구의 평균 기온이 {{2}}하는 현상이다.',
+    blanks:[
+      { opts:['온실 기체','오존','수증기만'], ans:0, fb:'수증기·이산화 탄소·메테인·오존 등을 통틀어 온실 기체라고 합니다.' },
+      { opts:['오존층 파괴','온실 효과','복사 평형'], ans:1, fb:'없던 것이 생긴 것이 아니라, 원래 있던 것이 커진 것입니다.' },
+      { opts:['상승','하강','유지'], ans:0, fb:'더 높은 온도에서 새로운 평형에 도달하기 때문입니다.' }] },
+  { t:'지구 온난화의 원인은 산업 혁명 이후 급격히 증가한 {{0}} 사용량, 토지 개발, 과도한 {{1}} 등으로 대기 중 온실 기체의 양이 증가하였기 때문이다.',
+    blanks:[
+      { opts:['화석 연료','태양 에너지','지열'], ans:0, fb:'석탄·석유·천연가스를 태우면 이산화 탄소가 나옵니다.' },
+      { opts:['삼림 벌채','해양 개발','도로 포장'], ans:0, fb:'숲은 이산화 탄소를 흡수합니다. 숲이 줄면 흡수하는 몫도 줄어듭니다.' }] }
+]);
+
 /* NOAA GML 마우나로아 연평균 CO₂ (ppm) */
 const CO2 = [[1960,316.91],[1965,320.04],[1970,325.68],[1975,331.13],[1980,338.76],
              [1985,346.35],[1990,354.45],[1995,360.97],[2000,369.71],[2005,379.98],
              [2010,390.10],[2015,401.01],[2020,414.21],[2023,421.08]];
 const baseOf = y => (CO2.find(p => p[0] === y) || CO2[0])[1];
-
 const co2Chart = TG.chart(document.getElementById('co2c'), {
   series:[{ name:'연평균 CO₂', color:'--s1', pts: CO2 }],
   xLabel:'연도', yLabel:'CO₂ 농도 (ppm)',
-  xFmt: v => String(Math.round(v)), yFmt: v => v.toFixed(0),
-  tipFmt: v => v.toFixed(2) + ' ppm'
+  xFmt: v => String(Math.round(v)), yFmt: v => v.toFixed(0), tipFmt: v => v.toFixed(2) + ' ppm'
 });
-
 document.querySelector('.anomctl').addEventListener('click', e => {
-  const b = e.target.closest('button');
-  if(!b) return;
-  document.querySelectorAll('.anomctl button').forEach(x => x.classList.toggle('on', x === b));
+  const b = e.target.closest('.pill'); if(!b) return;
+  document.querySelectorAll('.anomctl .pill').forEach(x => x.classList.toggle('on', x === b));
   const m = b.dataset.b;
   if(m === 'raw'){
     co2Chart.update([{ name:'연평균 CO₂', color:'--s1', pts: CO2 }]);
     document.getElementById('csub').textContent = '하와이 마우나로아 · 1960 ~ 2023년 · 농도 그대로';
   } else {
     const base = baseOf(+m);
-    co2Chart.update([{ name:`${m}년 기준 편차`, color:'--s2',
-      pts: CO2.map(([y, v]) => [y, +(v - base).toFixed(2)]) }]);
+    co2Chart.update([{ name:`${m}년 기준 편차`, color:'--s2', pts: CO2.map(([y, v]) => [y, +(v - base).toFixed(2)]) }]);
     document.getElementById('csub').textContent =
       `하와이 마우나로아 · ${m}년 연평균(${base.toFixed(2)} ppm)을 0으로 놓았을 때의 편차`;
   }
@@ -438,78 +364,58 @@ document.querySelector('.anomctl').addEventListener('click', e => {
 TG.quiz('#quizB', [
   { stem:'기준을 1960년에서 1990년으로 바꾸었더니 그래프의 값이 전부 달라졌다. 그러나 달라지지 않은 것은?',
     opts:['해마다 값이 커지는 경향','2023년의 편차 값','그래프가 0을 지나는 위치','기준 연도의 값'], ans:0,
-    fb:{ right:'편차는 기준을 무엇으로 잡느냐에 따라 <b>값</b>은 달라지지만, <b>변화의 경향</b>은 그대로입니다. 그래서 경향을 비교할 때 편차가 편리합니다.',
-         wrong:['','기준이 달라지면 빼는 값이 달라지므로 편차 값도 달라집니다.',
-                '0을 지나는 곳은 곧 기준 연도이므로 함께 옮겨갑니다.',
-                '기준 연도의 편차는 늘 0입니다. 어느 해를 기준으로 잡았는지에 따라 위치가 바뀝니다.'] } },
-
-  { stem:'“1960년 이후 CO₂ 농도가 꾸준히 올랐다”는 이 자료만으로 “그래서 지구 기온이 올랐다”고 주장할 수 있는가?',
+    fb:{ right:'편차는 기준에 따라 <b>값</b>은 달라지지만 <b>변화의 경향</b>은 그대로입니다.',
+         wrong:['','기준이 달라지면 빼는 값이 달라집니다.','0을 지나는 곳이 곧 기준 연도이므로 함께 옮겨갑니다.',
+                '기준 연도의 편차는 늘 0입니다.'] } },
+  { stem:'“CO₂ 농도가 꾸준히 올랐다”는 이 자료만으로 “그래서 지구 기온이 올랐다”고 주장할 수 있는가?',
     opts:['있다. 60년치나 되므로 충분하다','있다. 두 값이 함께 오르면 인과가 성립한다',
           '없다. 둘을 이어 주는 메커니즘과 기온 관측 자료가 함께 있어야 한다','없다. 관측 자료로는 어떤 주장도 못 한다'], ans:2,
-    fb:{ right:'이 자료는 ‘온실기체가 늘었다’까지만 말해 줍니다. 왜 그것이 기온을 올리는지는 오늘 배운 <b>열수지 메커니즘</b>이, 실제로 올랐는지는 <b>기온 관측 자료</b>가 말해 줍니다.',
-         wrong:['자료가 길어도 그것만으로는 원인을 말할 수 없습니다.',
-                '함께 움직이는 것은 상관입니다. 상관은 인과의 후보일 뿐입니다.','',
-                '관측 자료는 주장의 근거로 반드시 필요합니다. 다만 자료 하나로 결론이 나지는 않습니다.'] } }
+    fb:{ right:'이 자료는 ‘온실 기체가 늘었다’까지만 말해 줍니다. 왜 기온을 올리는지는 <b>열수지 메커니즘</b>이, 실제로 올랐는지는 <b>기온 관측 자료</b>가 말해 줍니다.',
+         wrong:['자료가 길어도 그것만으로는 원인을 말할 수 없습니다.','상관은 인과의 후보일 뿐입니다.','',
+                '관측 자료는 근거로 반드시 필요합니다.'] } }
 ]);
 
-/* ---------------- 5. 네 갈래 분류 ---------------- */
 ACT.sort('#sortA', {
-  bins: [
-    { id:'sea',  name:'해수면 상승' },
-    { id:'ice',  name:'빙권 축소' },
-    { id:'rain', name:'강수·기상 변화' },
-    { id:'life', name:'생태계와 인간 생활' }
-  ],
+  bins: [{ id:'sea', name:'해수면 상승' }, { id:'ice', name:'빙권 축소' },
+         { id:'rain', name:'강수·기상 변화' }, { id:'life', name:'생태계와 인간 생활' }],
   cards: [
-    { t:'바닷물이 데워져 부피가 늘어난다', bin:'sea',
-      why:'해수의 <b>열팽창</b>입니다. 해수면 상승의 두 원인 중 하나입니다.' },
-    { t:'그린란드와 남극의 육상 빙하가 녹아 바다로 흘러든다', bin:'sea',
-      why:'<b>육상</b>에 있던 얼음이 바다로 더해지므로 해수면이 오릅니다.' },
-    { t:'북극 바다 얼음(해빙)의 면적이 줄어든다', bin:'ice',
-      why:'해빙은 이미 바다에 떠 있어 녹아도 해수면을 크게 올리지 않습니다. 빙권의 변화로 봅니다.' },
-    { t:'눈과 얼음이 줄어 햇빛을 되반사하는 비율이 낮아진다', bin:'ice',
-      why:'반사율이 낮아지면 더 많이 흡수해 온난화가 더 진행됩니다.' },
-    { t:'어떤 지역은 가뭄이, 어떤 지역은 호우가 늘어난다', bin:'rain',
-      why:'평균만 오르는 것이 아니라 <b>분포가 넓어집니다</b>.' },
-    { t:'태풍이 강해지는 경향이 나타난다', bin:'rain',
-      why:'따뜻한 해수는 태풍에 더 많은 에너지를 공급합니다.' },
-    { t:'식물의 개화 시기가 빨라진다', bin:'life',
-      why:'생물의 생활 주기가 기온 변화에 반응합니다.' },
-    { t:'모기가 옮기는 감염병의 발생 지역이 넓어진다', bin:'life',
-      why:'매개 생물의 서식 범위가 넓어지면 사람의 건강에 영향을 줍니다.' }
+    { t:'바닷물이 데워져 부피가 늘어난다', bin:'sea', why:'해수의 <b>열팽창</b>입니다.' },
+    { t:'그린란드와 남극의 육상 빙하가 녹아 바다로 흘러든다', bin:'sea', why:'<b>육상</b>의 얼음이 바다로 더해집니다.' },
+    { t:'북극 바다 얼음(해빙)의 면적이 줄어든다', bin:'ice', why:'해빙은 이미 떠 있어 녹아도 해수면을 크게 올리지 않습니다.' },
+    { t:'눈과 얼음이 줄어 햇빛을 되반사하는 비율이 낮아진다', bin:'ice', why:'반사율이 낮아지면 더 많이 흡수해 온난화가 더 진행됩니다.' },
+    { t:'어떤 지역은 가뭄이, 어떤 지역은 호우가 늘어난다', bin:'rain', why:'평균만 오르는 것이 아니라 분포가 넓어집니다.' },
+    { t:'태풍이 강해지는 경향이 나타난다', bin:'rain', why:'따뜻한 해수는 태풍에 더 많은 에너지를 공급합니다.' },
+    { t:'식물의 개화 시기가 빨라진다', bin:'life', why:'생물의 생활 주기가 기온에 반응합니다.' },
+    { t:'모기가 옮기는 감염병의 발생 지역이 넓어진다', bin:'life', why:'매개 생물의 서식 범위가 넓어집니다.' }
   ]
 });
 
 TG.quiz('#quizC', [
   { stem:'북극해에 떠 있는 해빙이 모두 녹으면 해수면은 어떻게 되는가?',
     opts:['크게 오른다','거의 변하지 않는다','오히려 내려간다','알 수 없다'], ans:1,
-    fb:{ right:'떠 있는 얼음은 이미 자기 무게만큼의 물을 밀어내고 있습니다. 해수면을 크게 올리는 것은 <b>육상 빙하</b>가 바다로 더해질 때와 <b>해수의 열팽창</b>입니다.',
-         wrong:['컵에 띄운 얼음이 녹아도 물이 넘치지 않는 것과 같은 이유입니다.','',
-                '내려갈 이유는 없습니다.',
-                '부력으로 설명할 수 있는 문제입니다.'] } }
+    fb:{ right:'떠 있는 얼음은 이미 자기 무게만큼의 물을 밀어내고 있습니다. 해수면을 크게 올리는 것은 <b>육상 빙하</b>와 <b>해수의 열팽창</b>입니다.',
+         wrong:['컵에 띄운 얼음이 녹아도 물이 넘치지 않는 것과 같습니다.','','내려갈 이유는 없습니다.','부력으로 설명할 수 있습니다.'] } }
 ]);
 
-/* ---------------- 6. 서술형 ---------------- */
 ACT.note('#noteA', {
-  prompt: '<b>[문항]</b> <u>들어오는 에너지와 나가는 에너지</u>라는 말을 사용하여, 대기 중 온실기체가 늘어났을 때 지구의 평균 기온이 높아지는 과정을 <b>세 단계</b>로 서술하시오.',
+  prompt: '<b>[문항]</b> <u>들어오는 에너지와 나가는 에너지</u>라는 말을 사용하여, 대기 중 온실 기체가 늘어났을 때 지구의 평균 기온이 높아지는 과정을 <b>세 단계</b>로 서술하시오.',
   ph: '① …\n② …\n③ …',
-  model: `<p>① 온실기체가 늘면 대기가 <b>지구 복사(적외선)</b>를 더 많이 흡수해 <b>나가는 에너지가 줄어든다.</b></p>
+  model: `<p>① 온실 기체가 늘면 대기가 <b>지구 복사(적외선)</b>를 더 많이 흡수해 <b>나가는 에너지가 줄어든다.</b></p>
           <p>② 들어오는 에너지가 나가는 에너지보다 <b>많아져</b> 남는 에너지가 쌓이고, <b>지표 기온이 오른다.</b></p>
-          <p>③ 기온이 오르면 지구 복사도 늘어 <b>다시 들어오는 양과 같아지지만</b>, 그 평형은 <b>이전보다 높은 온도</b>에서 이루어진다.</p>`,
+          <p>③ 기온이 오르면 지구 복사도 늘어 <b>다시 같아지지만</b>, 그 평형은 <b>이전보다 높은 온도</b>에서 이루어진다.</p>`,
   checks: [
-    '‘들어오는 에너지’와 ‘나가는 에너지’라는 말을 <b>둘 다</b> 썼다',
-    '온실기체가 흡수하는 것이 <b>지구 복사(적외선)</b>임을 밝혔다',
+    '‘들어오는 에너지’와 ‘나가는 에너지’를 <b>둘 다</b> 썼다',
+    '온실 기체가 흡수하는 것이 <b>지구 복사(적외선)</b>임을 밝혔다',
     '나가는 양이 <b>줄어든다</b>는 단계를 썼다',
     '기온이 오르면 방출도 <b>늘어난다</b>는 단계를 썼다',
     '마지막에 <b>더 높은 온도에서 다시 평형</b>을 이룬다고 썼다'
   ]
 });
 
-/* ---------------- 7. 기록 ---------------- */
 ACT.report('#repA', {
-  school: '남강고등학교', term: '2026학년도 1학년 2학기',
-  title: '통합과학2 · 02차시 평형점이 움직인다',
-  std: '[10통과2-02-03]', topic: 'Ⅱ-2. 지구 환경의 변화 · 01. 온실효과와 지구온난화'
+  school:'남강고등학교', term:'2026학년도 1학년 2학기',
+  title:'통합과학2 · 02차시 지구 열수지와 지구 온난화',
+  std:'[10통과2-02-03]', topic:'Ⅱ-2. 지구 환경의 변화 · 3. 지구 열수지 / 2. 지구 온난화'
 });
 </script>
 <script src="../../shared/teach.js"></script>

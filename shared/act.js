@@ -62,7 +62,7 @@ function cloze(sel, items){
     });
     return `<div class="ci" data-i="${i}">
       <p class="s"><span class="n">${i + 1}</span><span class="tx">${body}</span></p>
-      <div class="pick" hidden></div>
+      <div class="pick" role="listbox" hidden></div>
       <p class="fb" hidden></p>
     </div>`;
   }).join('');
@@ -75,6 +75,13 @@ function cloze(sel, items){
     const op = ev.target.closest('.pk');
     if(op) choose(op);
   });
+  document.addEventListener('click', ev => {
+    if(!open) return;
+    if(ev.target.closest('.blank') || ev.target.closest('.pick')) return;
+    host.querySelectorAll('.pick').forEach(b => b.hidden = true);
+    host.querySelectorAll('.blank').forEach(b => b.classList.remove('act'));
+    open = null;
+  });
 
   function openPicker(bl){
     const ci = bl.closest('.ci'), i = +bl.dataset.i, k = +bl.dataset.k;
@@ -82,8 +89,11 @@ function cloze(sel, items){
     if(open && open.bl === bl){ box.hidden = true; open = null; return; }
     open = { bl, i, k };
     box.innerHTML = items[i].blanks[k].opts
-      .map((o, j) => `<button class="pk" type="button" data-j="${j}">${esc(o)}</button>`).join('');
+      .map((o, j) => `<button class="pk" type="button" role="option" data-j="${j}">${esc(o)}</button>`).join('');
     box.hidden = false;
+    /* 빈칸 바로 아래에 붙입니다 */
+    box.style.left = Math.max(8, bl.offsetLeft) + 'px';
+    box.style.top  = (bl.offsetTop + bl.offsetHeight + 7) + 'px';
     ci.querySelectorAll('.blank').forEach(b => b.classList.toggle('act', b === bl));
   }
 
@@ -98,17 +108,19 @@ function cloze(sel, items){
     ci.querySelector('.pick').hidden = true;
     open = null;
 
+    const fb = ci.querySelector('.fb');
     if(!ok){
-      const fb = ci.querySelector('.fb');
+      fb.className = 'fb wrong';
       fb.innerHTML = `<b>다시 볼 지점.</b> ${b.fb || ''} 정답은 <b>${esc(b.opts[b.ans])}</b>입니다.`;
       fb.hidden = false;
       setTimeout(() => {
         bl.innerHTML = `<span>${esc(b.opts[b.ans])}</span>`;
         bl.className = 'blank fixed';
-      }, 1400);
+      }, 1500);
     } else {
-      const fb = ci.querySelector('.fb');
+      fb.className = 'fb right';
       if(b.fb){ fb.innerHTML = `<b>맞았습니다.</b> ${b.fb}`; fb.hidden = false; }
+      setTimeout(() => { bl.className = 'blank fixed'; }, 900);
     }
 
     put({ id:`cloze-${sel}-${i}-${k}`, sec:secOf(host), kind:'빈칸',
@@ -128,7 +140,7 @@ function place(sel, cfg){
   const tray = document.createElement('div');
   tray.className = 'tray';
   tray.innerHTML = `<span class="lb">숫자를 고른 뒤, 그림의 빈칸을 누르세요</span>` +
-    cfg.chips.map(c => `<button class="chip" type="button" data-v="${esc(c)}">${esc(c)}</button>`).join('');
+    cfg.chips.map(c => `<button class="pill chip" type="button" data-v="${esc(c)}">${esc(c)}</button>`).join('');
   host.appendChild(tray);
 
   let sel_ = null;
@@ -165,9 +177,11 @@ function sort(sel, cfg){
   host.classList.add('sortg');
   host.innerHTML = `
     <div class="deck" id="${id(sel)}-deck">${cfg.cards.map((c, i) =>
-      `<button class="card" type="button" data-i="${i}">${esc(c.t)}</button>`).join('')}</div>
-    <div class="bins">${cfg.bins.map(b =>
-      `<div class="bin" data-b="${b.id}"><p class="bh">${esc(b.name)}</p><div class="drop"></div></div>`).join('')}</div>
+      `<button class="pill card" type="button" data-i="${i}">${esc(c.t)}</button>`).join('')}</div>
+    <div class="bins">${cfg.bins.map(b => {
+      const n = cfg.cards.filter(c => c.bin === b.id).length;
+      return `<div class="bin" data-b="${b.id}"><p class="bh">${esc(b.name)}<i>${n}장</i></p>
+        <div class="drop"></div></div>`; }).join('')}</div>
     <p class="fb" id="${id(sel)}-fb" hidden></p>`;
 
   let pick = null;
@@ -188,6 +202,7 @@ function sort(sel, cfg){
       pick.classList.add(ok ? 'right' : 'wrong');
       pick.disabled = true;
       if(ok){
+        pick.className = 'pill card right';
         bin.querySelector('.drop').appendChild(pick);
         fb.hidden = true;
       } else {
@@ -195,7 +210,7 @@ function sort(sel, cfg){
         fb.innerHTML = `<b>다시 볼 지점.</b> ‘${esc(card.t)}’ 은 <b>${esc(right ? right.name : '')}</b> 입니다. ${esc(card.why || '')}`;
         fb.hidden = false;
         setTimeout(() => {
-          pick.className = 'card fixed';
+          pick.className = 'pill card done';
           host.querySelector(`.bin[data-b="${card.bin}"] .drop`).appendChild(pick);
         }, 1500);
       }
@@ -294,25 +309,47 @@ function report(sel, cfg){
       : '<p class="empty">아직 푼 것이 없습니다. 위로 올라가 활동을 해 보세요.</p>';
   });
 
-  document.getElementById(uid + '-pdf').addEventListener('click', () => {
+  function makePdf(){
     const nm = document.getElementById(uid + '-nm').value.trim();
     const d = new Date();
     const ymd = `${d.getFullYear()}. ${d.getMonth() + 1}. ${d.getDate()}.`;
     document.getElementById('tg-print').innerHTML = `
       <div class="phd">
-        <p class="pk">${esc(cfg.school || '')} · ${esc(cfg.term || '')}</p>
+        <p class="pk2">${esc(cfg.school || '')} · ${esc(cfg.term || '')}</p>
         <h1>${esc(cfg.title || document.title)}</h1>
         <p class="pm">${esc(cfg.std || '')} · ${esc(cfg.topic || '')}</p>
         <p class="pn">${nm ? '이름 ' + esc(nm) + ' · ' : ''}${ymd}</p>
       </div>
       ${REC.items.length ? table() : '<p>기록된 활동이 없습니다.</p>'}
       <p class="pf">이 문서는 학생 본인의 기기에서 만들어졌습니다. 답안은 어디에도 전송되지 않았습니다.</p>`;
+    /* 접혀 있던 것을 모두 펴고 인쇄합니다 */
+    document.querySelectorAll('details').forEach(d => d.open = true);
     window.print();
-  });
+  }
+  document.getElementById(uid + '-pdf').addEventListener('click', makePdf);
 
   /* 새로고침해도 남아 있게 */
   const old = saved();
   if(old.length){ REC.items = old; refresh(); }
+
+  /* 아래 고정 막대 — 어디서든 바로 받을 수 있게 */
+  const dock = document.createElement('div');
+  dock.className = 'dock';
+  dock.innerHTML = `<div class="wrap">
+    <span class="info" id="${uid}-di">이 페이지의 <b>모든 내용과 내가 푼 기록</b>을 한 파일로 받습니다</span>
+    <button class="btn ghost" type="button" id="${uid}-up">위로</button>
+    <button class="btn" type="button" id="${uid}-dl">PDF 받기</button>
+  </div>`;
+  document.body.appendChild(dock);
+  document.getElementById(uid + '-up')
+    .addEventListener('click', () => host.scrollIntoView({ behavior:'smooth', block:'start' }));
+  document.getElementById(uid + '-dl').addEventListener('click', makePdf);
+
+  document.addEventListener('act:change', () => {
+    const g = REC.items.filter(x => x.ok != null);
+    document.getElementById(uid + '-di').innerHTML =
+      `푼 활동 <b>${REC.items.length}</b>개 · 한 번에 맞힌 것 <b>${g.filter(x => x.ok).length}</b>개`;
+  });
 }
 
 let seq = 0;

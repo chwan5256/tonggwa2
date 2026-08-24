@@ -52,7 +52,7 @@ const CSS = `
   background:var(--surface);color:var(--ink-soft);border-radius:9px;padding:9px 12px;cursor:pointer;
   white-space:nowrap}
 .tbar-t button:hover{border-color:var(--accent);color:var(--ink)}
-.tbar-t button.key{background:var(--accent);border-color:var(--accent);color:#fff}
+.tbar-t button.key{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
 .tbar-t .pos{font-family:var(--mono);font-size:13px;color:var(--ink-faint);
   font-variant-numeric:tabular-nums;white-space:nowrap}
 .tbar-t .ttl{font-weight:600;font-size:15px;color:var(--ink);overflow:hidden;text-overflow:ellipsis;
@@ -80,7 +80,7 @@ const CSS = `
 
 /* 시간 초과 알림 */
 .ttoast{position:fixed;left:50%;top:82px;transform:translate(-50%,-16px);z-index:95;
-  background:var(--danger);color:#fff;font-size:15px;font-weight:600;padding:12px 22px;
+  background:var(--danger);color:var(--on-accent);font-size:15px;font-weight:600;padding:12px 22px;
   border-radius:11px;box-shadow:var(--shadow);opacity:0;pointer-events:none;
   transition:opacity .3s ease,transform .3s ease}
 .ttoast.on{opacity:1;transform:translate(-50%,0)}
@@ -344,11 +344,23 @@ function onMode(){
   go(0); tick();
 }
 /* ---------- 영상 (진행 화면에서만) ---------- */
+let VID = null;
 function mountVideos(){
-  document.querySelectorAll('.teach-only[data-yt]').forEach(box => {
-    if(box.dataset.done) return;
-    box.dataset.done = '1';
-    const id = (box.dataset.yt || '').trim();
+  if(VID === null && typeof TG2 !== 'undefined' && cfg().api){
+    VID = {};                       /* 두 번 부르지 않게 먼저 막아 둡니다 */
+    TG2.vids(cfg().api).then(v => { VID = v || {}; redrawVideos(); });
+  }
+  redrawVideos();
+}
+function redrawVideos(){
+  document.querySelectorAll('.teach-only[data-yt]').forEach((box, n) => {
+    const key = code() + '|' + n;
+    const saved = (VID && VID[key]) || '';
+    const attr = (box.dataset.yt || '').trim();
+    const sig = key + ':' + (saved || attr);
+    if(box.dataset.done === sig) return;
+    box.dataset.done = sig;
+    const id = saved || attr;
     const cap = box.dataset.cap || '';
     const find = box.dataset.find || '';
     box.innerHTML = id
@@ -358,7 +370,8 @@ function mountVideos(){
         (cap ? `<p class="ytcap">${cap}</p>` : '')
       : `<div class="ytnone"><p>${cap || '영상 자리'}</p>
            <span>아직 주소를 넣지 않았습니다. 유튜브에서 <b>${find || '관련 영상'}</b> 으로 찾은 뒤,
-           주소의 <code>v=</code> 뒤 11글자를 이 절의 <code>data-yt</code> 에 넣으세요.</span></div>`;
+           <b>교사 페이지 → 수업 영상</b>에서 주소를 붙여 넣으세요.
+           <br>이 자리의 번호는 <code>${key}</code> 입니다.</span></div>`;
   });
 }
 
