@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>교사 화면 · 통합과학2 자료실</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=IBM+Plex+Sans+KR:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="shared/base.css">
+<style>
+.panel{background:var(--surface);border:1px solid var(--rule);border-radius:16px;
+  padding:24px 26px;margin-bottom:22px;box-shadow:var(--shadow)}
+.panel > h2{margin:0 0 6px;font-size:19px;border:0;padding:0}
+.panel .sub{margin:0 0 20px;font-size:14px;color:var(--ink-soft);line-height:1.72;max-width:64ch}
+
+/* 연결 상태 */
+.conn{display:flex;flex-wrap:wrap;align-items:center;gap:12px}
+.chip{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:13px;
+  border:1px solid var(--rule);border-radius:999px;padding:7px 15px;color:var(--ink-soft)}
+.chip i{width:9px;height:9px;border-radius:50%;background:var(--ink-faint);flex-shrink:0}
+.chip.ok{border-color:var(--good);color:var(--good)}
+.chip.ok i{background:var(--good)}
+.chip.no{border-color:var(--danger);color:var(--danger)}
+.chip.no i{background:var(--danger)}
+.chip.wait i{background:var(--ochre);animation:blink 1s ease-in-out infinite}
+@keyframes blink{50%{opacity:.25}}
+@media (prefers-reduced-motion:reduce){.chip.wait i{animation:none}}
+
+.fixbox{background:var(--danger-wash);border:1px solid var(--danger);border-radius:12px;
+  padding:16px 19px;margin-top:16px;font-size:14.5px;line-height:1.8}
+.fixbox b{color:var(--danger)}
+.fixbox ol{margin:10px 0 0;padding-left:20px}
+.fixbox li{margin-bottom:5px;color:var(--ink)}
+.fixbox[hidden]{display:none}
+
+/* 번호 */
+.pinrow{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.pinrow input{font:inherit;font-size:17px;letter-spacing:.35em;width:140px;text-align:center;
+  padding:10px 12px;border:1px solid var(--rule);border-radius:10px;
+  background:var(--surface);color:var(--ink)}
+.msg{font-size:14px;line-height:1.7}
+.msg.ok{color:var(--good)}
+.msg.no{color:var(--danger)}
+.msg.mute{color:var(--ink-faint)}
+
+/* 차시 목록 */
+.glist{display:grid;gap:10px;margin-top:4px}
+.gchap{font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;color:var(--ink-faint);
+  margin:14px 0 2px;text-transform:uppercase}
+.grow{display:flex;align-items:center;gap:14px;padding:13px 16px;border:1px solid var(--rule);
+  border-radius:12px;background:var(--surface)}
+.grow .no{font-family:var(--mono);font-size:12px;color:var(--ink-faint);white-space:nowrap;width:56px}
+.grow .nm{flex:1;min-width:0}
+.grow .nm b{display:block;font-size:15.5px;font-weight:600;overflow:hidden;
+  text-overflow:ellipsis;white-space:nowrap}
+.grow .nm span{font-size:12.5px;color:var(--ink-faint)}
+.grow .lk{font-size:13px;white-space:nowrap}
+.grow .st{font-family:var(--mono);font-size:12.5px;white-space:nowrap;width:34px;text-align:right}
+.grow.open{border-color:var(--good)}
+.grow.open .st{color:var(--good)}
+.grow.shut{background:var(--surface-2)}
+.grow.shut .st{color:var(--ink-faint)}
+.grow.busy{opacity:.55}
+
+.sw{position:relative;width:54px;height:30px;border-radius:15px;background:var(--rule);
+  border:0;cursor:pointer;flex-shrink:0;transition:background .22s ease;padding:0}
+.sw::after{content:"";position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;
+  background:var(--surface);transition:transform .22s ease;box-shadow:0 1px 3px rgba(0,0,0,.3)}
+.sw[aria-checked=true]{background:var(--good)}
+.sw[aria-checked=true]::after{transform:translateX(24px)}
+.sw:disabled{opacity:.35;cursor:not-allowed}
+@media (prefers-reduced-motion:reduce){.sw,.sw::after{transition:none}}
+
+.note{margin:20px 0 0;padding-top:17px;border-top:1px solid var(--rule-soft);
+  font-size:13px;color:var(--ink-faint);line-height:1.8}
+.note b{color:var(--ink-soft)}
+.keys{display:grid;gap:7px;margin:12px 0 0}
+.keys div{font-size:14px;color:var(--ink-soft)}
+.keys kbd{font-family:var(--mono);font-size:12.5px;border:1px solid var(--rule);border-bottom-width:2px;
+  border-radius:6px;padding:2px 7px;background:var(--surface-2);color:var(--ink)}
+</style>
+</head>
+<body>
+
+<div class="topbar"><div class="wrap">
+  <a class="home" href="./">← 학생 화면</a>
+  <nav style="flex:1"></nav>
+  <button class="tbtn" id="themeBtn" type="button">테마</button>
+</div></div>
+
+<header class="mast"><div class="wrap">
+  <p class="eyebrow">교사 전용</p>
+  <h1>수업 운영 화면</h1>
+  <p class="dek">차시를 열고 닫고, 진행 화면으로 바로 들어갑니다. 이 주소는 학생 화면 어디에도 연결해 두지 않았습니다.</p>
+</div></header>
+
+<main><div class="wrap">
+
+  <!-- 연결 -->
+  <div class="panel">
+    <h2>구글 연결</h2>
+    <p class="sub">차시를 열고 닫은 상태와 학생 응답이 구글에 저장됩니다. 연결이 끊기면 파일에 적힌 기본값(<code>manifest.json</code>의 <code>open</code>)이 그대로 쓰이므로 수업은 멈추지 않습니다.</p>
+    <div class="conn">
+      <span class="chip wait" id="conn"><i></i><span id="connT">확인하는 중…</span></span>
+      <button class="btn ghost" id="retry" type="button">다시 확인</button>
+    </div>
+    <div class="fixbox" id="fix" hidden>
+      <b>연결되지 않았습니다.</b> 아래를 순서대로 확인해 주세요.
+      <ol>
+        <li>Apps Script 편집기에서 <b>Code.gs 전체를 최신 코드로 교체</b>했는지</li>
+        <li>저장한 뒤 <b>배포 관리 → 편집(연필) → 버전: 새 버전 → 배포</b>를 눌렀는지<br>
+            <span style="color:var(--ink-faint)">‘새 배포’를 누르면 주소가 바뀝니다. 반드시 ‘배포 관리 → 편집’입니다.</span></li>
+        <li>배포 설정이 <b>실행 계정 = 나</b>, <b>액세스 권한 = 링크가 있는 모든 사용자</b>인지</li>
+        <li>맨 처음 배포할 때 뜨는 <b>권한 승인</b>을 끝까지 눌렀는지</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- 여닫이 -->
+  <div class="panel">
+    <h2>차시 열고 닫기</h2>
+    <p class="sub">닫아 둔 차시는 학생 목록에서 사라지고, 주소를 직접 입력해도 안내문만 나옵니다. 바꾸면 곧바로 반영됩니다.</p>
+    <div class="pinrow">
+      <input type="password" id="pin" inputmode="numeric" placeholder="••••" aria-label="교사 번호" autocomplete="off">
+      <button class="btn" id="pinBtn" type="button">번호 확인</button>
+      <span class="msg mute" id="pinMsg">번호를 넣으면 스위치가 켜집니다.</span>
+    </div>
+    <div class="glist" id="glist"></div>
+    <p class="note">
+      <b>알아 두실 것.</b> 이것은 잠금이 아니라 <b>허들</b>입니다. 정적 웹사이트에는 서버가 없어 진짜 접근 통제를 걸 수 없고,
+      주소를 정확히 아는 사람은 페이지 소스로 내용을 볼 수 있습니다.
+      그래서 <b>평가 문항·정답·채점기준표는 이 저장소에 올리지 않습니다.</b> 미리보기를 막는 용도로만 쓰세요.
+    </p>
+  </div>
+
+  <!-- 진행 화면 -->
+  <div class="panel">
+    <h2>수업 진행 화면</h2>
+    <p class="sub">차시를 한 절씩 크게 띄우고, 절별 배정 시간을 재고, 학생 응답 분포를 실시간으로 보여 줍니다.</p>
+    <div class="glist" id="runlist"></div>
+    <div class="keys">
+      <div><kbd>←</kbd> <kbd>→</kbd> 절 이동 &nbsp;·&nbsp; <kbd>Space</kbd> 다음 &nbsp;·&nbsp;
+           <kbd>F</kbd> 전체화면 &nbsp;·&nbsp; <kbd>R</kbd> 응답판 &nbsp;·&nbsp; <kbd>Esc</kbd> 나가기</div>
+    </div>
+  </div>
+
+</div></main>
+
+<footer><div class="wrap">
+  <span id="ftLeft">교사 전용 화면</span>
+  <span><a href="./">학생 화면으로</a></span>
+</div></footer>
+
+<script src="shared/lib.js"></script>
+<script src="shared/gate.js"></script>
+<script>
+/* ============ 설정 — index.html 과 같은 주소를 씁니다 ============ */
+const HUB = {
+  api: "https://script.google.com/macros/s/AKfycbxGwVShBta72VSwPeJxaVDRWyEgv6Nl2tNsGNjdf_0AIKeI86oDrx806MAwoNJgezStNw/exec"
+};
+/* ============================================================== */
+
+TG.theme('themeBtn');
+
+let MF = null, GATE = null, LIVE = false, PIN = '';
+const codeOf = l => l.unit + '-' + l.no;
+const isOpen = l => (GATE && codeOf(l) in GATE) ? GATE[codeOf(l)] !== false : l.open !== false;
+
+fetch('manifest.json', { cache:'no-store' })
+  .then(r => r.json())
+  .then(m => {
+    MF = m;
+    document.getElementById('ftLeft').textContent =
+      [m.school, m.course, m.part].filter(Boolean).join(' · ') + ' · 교사 전용';
+    runlist(); connect();
+  });
+
+/* ---------- 연결 확인 ---------- */
+function connect(){
+  const chip = document.getElementById('conn'), t = document.getElementById('connT');
+  chip.className = 'chip wait'; t.textContent = '확인하는 중…';
+  document.getElementById('fix').hidden = true;
+
+  TG2.ping(HUB.api).then(r => {
+    LIVE = r.ok;
+    if(r.ok){
+      chip.className = 'chip ok'; t.textContent = '연결됨';
+      return TG2.gates(HUB.api).then(g => { GATE = g || {}; glist(); });
+    }
+    chip.className = 'chip no'; t.textContent = '연결 안 됨 — ' + (r.why || '');
+    document.getElementById('fix').hidden = false;
+    GATE = null; glist();
+  });
+}
+document.getElementById('retry').addEventListener('click', connect);
+
+/* ---------- 번호 ---------- */
+const pin = document.getElementById('pin'), pinMsg = document.getElementById('pinMsg');
+document.getElementById('pinBtn').addEventListener('click', () => {
+  const v = pin.value.trim();
+  if(!v){ say('no', '번호를 입력해 주세요.'); return; }
+  if(!LIVE){ say('no', '구글에 연결된 뒤에 쓸 수 있습니다. 위쪽 안내를 먼저 확인해 주세요.'); return; }
+  say('mute', '확인하는 중…');
+  TG2.checkPin(HUB.api, v).then(d => {
+    if(d && d.ok){ PIN = v; say('ok', '확인됐습니다. 스위치를 켜고 끌 수 있습니다.'); glist(); }
+    else { PIN = ''; say('no', '번호가 맞지 않습니다.'); glist(); }
+  });
+});
+pin.addEventListener('keydown', e => { if(e.key === 'Enter') document.getElementById('pinBtn').click(); });
+const say = (cls, txt) => { pinMsg.className = 'msg ' + cls; pinMsg.textContent = txt; };
+
+/* ---------- 차시 목록 ---------- */
+function chapName(id){
+  const c = (MF.chapters || []).find(x => x.id === id);
+  const u = MF.units.find(x => x.id === (c && c.unit));
+  return c ? `${u ? u.no + '. ' + u.title : ''} › ${c.no}. ${c.title}` : '';
+}
+
+function glist(){
+  const host = document.getElementById('glist');
+  let last = null;
+  host.innerHTML = MF.lessons.map(l => {
+    const ok = isOpen(l), can = !!PIN && LIVE;
+    let head = '';
+    if(l.chapter !== last){ last = l.chapter; head = `<p class="gchap">${chapName(l.chapter)}</p>`; }
+    return head + `<div class="grow ${ok ? 'open' : 'shut'}" data-code="${codeOf(l)}">
+      <span class="no">${l.no}차시</span>
+      <span class="nm"><b>${l.title}</b><span>${l.topic || ''}</span></span>
+      <span class="st">${ok ? '열림' : '닫힘'}</span>
+      <button class="sw" type="button" role="switch" aria-checked="${ok}"
+              aria-label="${l.title} 열고 닫기" ${can ? '' : 'disabled'}></button>
+    </div>`;
+  }).join('');
+}
+
+document.getElementById('glist').addEventListener('click', e => {
+  const b = e.target.closest('.sw');
+  if(!b || b.disabled) return;
+  const row = b.closest('.grow'), code = row.dataset.code;
+  const next = b.getAttribute('aria-checked') !== 'true';
+  row.classList.add('busy'); b.disabled = true;
+
+  TG2.setGate(HUB.api, code, next, PIN).then(d => {
+    row.classList.remove('busy'); b.disabled = false;
+    if(!d || !d.ok){ say('no', (d && d.error) || '바꾸지 못했습니다.'); return; }
+    GATE = d.open;
+    b.setAttribute('aria-checked', String(next));
+    row.className = 'grow ' + (next ? 'open' : 'shut');
+    row.querySelector('.st').textContent = next ? '열림' : '닫힘';
+    say('ok', row.querySelector('.nm b').textContent + ' — ' + (next ? '열었습니다' : '닫았습니다'));
+  }).catch(() => {
+    row.classList.remove('busy'); b.disabled = false;
+    say('no', '연결하지 못했습니다. 위쪽 연결 상태를 확인해 주세요.');
+  });
+});
+
+/* ---------- 진행 화면 바로가기 ---------- */
+function runlist(){
+  const host = document.getElementById('runlist');
+  let last = null;
+  host.innerHTML = MF.lessons.map(l => {
+    let head = '';
+    if(l.chapter !== last){ last = l.chapter; head = `<p class="gchap">${chapName(l.chapter)}</p>`; }
+    return head + `<div class="grow">
+      <span class="no">${l.no}차시</span>
+      <span class="nm"><b>${l.title}</b><span>${l.topic || ''}</span></span>
+      <a class="lk btn ghost" href="${l.path}#t">진행 화면 열기</a>
+      <a class="lk" href="${l.path}" style="color:var(--ink-faint)">학생 화면</a>
+    </div>`;
+  }).join('');
+}
+</script>
+</body>
+</html>

@@ -43,6 +43,8 @@ function doPost(e) {
 /* ============================================================
    페이지 → 여기 (읽기)
    ?mode=stats   응답 집계   (기본)
+   ?mode=ping    연결 시험
+   ?mode=checkpin&pin=____   번호 확인
    ?mode=gate    차시 공개 상태
    ?mode=setgate&code=u2-03&open=1&pin=____   공개/비공개 전환
    ?callback=fn  붙이면 JSONP 로 돌려줍니다 (브라우저 CORS 우회)
@@ -52,6 +54,8 @@ function doGet(e) {
   var out;
   try {
     if (p.mode === 'gate')          out = { ok: true, open: _gateAll() };
+    else if (p.mode === 'ping')     out = { ok: true, ver: 2 };
+    else if (p.mode === 'checkpin') out = { ok: String(p.pin || '') === String(TEACHER_PIN) };
     else if (p.mode === 'setgate')  out = _setGate(p);
     else                            out = _stats(p);
   } catch (err) {

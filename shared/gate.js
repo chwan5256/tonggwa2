@@ -47,6 +47,18 @@ function setGate(api, code, open, pin){
   return jsonp(api, { mode:'setgate', code, open: open ? 1 : 0, pin }, 8000);
 }
 
+function ping(api){
+  if(!api) return Promise.resolve({ ok:false, why:'주소가 비어 있습니다' });
+  return jsonp(api, { mode:'ping' }, 7000)
+    .then(d => (d && d.ok) ? { ok:true, ver:d.ver || 1 }
+                           : { ok:false, why:'응답이 이상합니다' })
+    .catch(e => ({ ok:false, why: e.message }));
+}
+
+function checkPin(api, pin){
+  return jsonp(api, { mode:'checkpin', pin }, 7000).catch(() => ({ ok:false }));
+}
+
 /* ---------- 차시 페이지 가리기 ---------- */
 const LOCK_CSS = `
 .tg-lock{max-width:560px;margin:14vh auto;padding:0 24px;text-align:center}
@@ -86,5 +98,5 @@ if(document.readyState === 'loading')
   document.addEventListener('DOMContentLoaded', guard);
 else guard();
 
-return { jsonp, gates, setGate, lockPage };
+return { jsonp, gates, setGate, ping, checkPin, lockPage };
 })();

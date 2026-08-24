@@ -9,54 +9,70 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=IBM+Plex+Sans+KR:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <link rel="stylesheet" href="shared/base.css">
 <style>
-/* 오늘 수업 */
-.today{background:var(--surface);border:1px solid var(--accent);border-radius:16px;
-  padding:24px 26px;margin-bottom:34px;display:block;text-decoration:none;color:inherit;
-  box-shadow:var(--shadow)}
-.today:hover{border-color:var(--accent)}
-.today .k{margin:0 0 8px;font-family:var(--mono);font-size:11px;letter-spacing:.14em;
+/* ── 머리말 보강 ── */
+.school{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 14px;margin:0 0 14px}
+.school .nm{font-family:var(--serif);font-size:17px;font-weight:700;color:var(--ink)}
+.school .tm{font-family:var(--mono);font-size:12.5px;color:var(--ink-faint);letter-spacing:.02em}
+
+/* ── 오늘 수업 ── */
+.today{display:block;text-decoration:none;color:inherit;background:var(--surface);
+  border:1px solid var(--accent);border-radius:16px;padding:26px 28px;margin:0 0 40px;
+  box-shadow:var(--shadow);position:relative;overflow:hidden}
+.today::before{content:"";position:absolute;inset:0 auto 0 0;width:4px;background:var(--accent)}
+.today .k{margin:0 0 10px;font-family:var(--mono);font-size:11px;letter-spacing:.15em;
   text-transform:uppercase;color:var(--accent)}
-.today .t{margin:0 0 8px;font-family:var(--serif);font-size:clamp(22px,3vw,30px);font-weight:700;
-  line-height:1.32}
-.today .s{margin:0;font-size:14.5px;color:var(--ink-soft)}
-.today .go{margin-top:16px;display:inline-block;font-size:14.5px;font-weight:600;color:var(--accent)}
+.today .t{margin:0 0 10px;font-family:var(--serif);font-size:clamp(23px,3.1vw,32px);
+  font-weight:700;line-height:1.3}
+.today .s{margin:0;font-size:15px;color:var(--ink-soft);line-height:1.7;max-width:60ch}
+.today .go{margin-top:18px;display:inline-block;font-size:15px;font-weight:600;color:var(--accent)}
+.today:hover .go{text-decoration:underline}
 
-/* 잠긴 카드 */
-.lcard.locked{opacity:.62;pointer-events:none;filter:grayscale(.35)}
-.lcard.locked .t::after{content:" 🔒";font-size:.85em}
-.lockmsg{font-size:13px;color:var(--ink-faint)}
+/* ── 단원 / 중단원 ── */
+.unit{margin-bottom:46px}
+.uhead{display:flex;align-items:baseline;gap:12px;padding-bottom:12px;margin-bottom:6px;
+  border-bottom:2px solid var(--ink)}
+.uhead .rn{font-family:var(--serif);font-size:26px;font-weight:700;color:var(--accent);line-height:1}
+.uhead h2{margin:0;border:0;padding:0;font-size:clamp(21px,2.6vw,27px)}
+.usub{margin:0 0 26px;font-size:14px;color:var(--ink-faint);font-family:var(--mono);letter-spacing:.01em}
+.chap{margin-bottom:30px}
+.chead{display:flex;flex-wrap:wrap;align-items:baseline;gap:10px 14px;margin-bottom:6px}
+.chead .cn{font-family:var(--mono);font-size:12px;color:var(--surface);background:var(--ink-soft);
+  border-radius:5px;padding:3px 9px;letter-spacing:.04em}
+.chead h3{margin:0;font-size:18.5px;font-weight:600}
+.chead .std{font-family:var(--mono);font-size:12px;color:var(--ink-faint)}
+.csub{margin:0 0 16px;font-size:14px;color:var(--ink-soft)}
 
-/* 교사 패널 */
-.tpanel{background:var(--surface);border:1px solid var(--rule);border-radius:16px;padding:24px 26px;
-  margin-bottom:32px;box-shadow:var(--shadow)}
-.tpanel h2{font-size:19px;margin:0 0 6px;border:0;padding:0}
-.tpanel .sub{margin:0 0 18px;font-size:14px;color:var(--ink-soft);line-height:1.7}
-.tpanel .pinrow{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:20px}
-.tpanel input[type=password]{font:inherit;font-size:16px;letter-spacing:.3em;width:130px;
-  padding:9px 13px;border:1px solid var(--rule);border-radius:9px;background:var(--surface);color:var(--ink)}
-.glist{display:grid;gap:9px}
-.grow{display:flex;align-items:center;gap:14px;padding:12px 15px;border:1px solid var(--rule);
-  border-radius:11px;background:var(--surface)}
-.grow .no{font-family:var(--mono);font-size:12px;color:var(--ink-faint);white-space:nowrap}
-.grow .nm{flex:1;font-size:15px;font-weight:500;min-width:0;overflow:hidden;text-overflow:ellipsis;
-  white-space:nowrap}
-.grow .st{font-size:13px;font-family:var(--mono);white-space:nowrap}
-.grow.open{border-color:var(--good)}
-.grow.open .st{color:var(--good)}
-.grow.shut .st{color:var(--ink-faint)}
-.sw{position:relative;width:52px;height:29px;border-radius:15px;background:var(--rule);
-  border:0;cursor:pointer;flex-shrink:0;transition:background .22s ease;padding:0}
-.sw::after{content:"";position:absolute;top:3px;left:3px;width:23px;height:23px;border-radius:50%;
-  background:var(--surface);transition:transform .22s ease;box-shadow:0 1px 3px rgba(0,0,0,.28)}
-.sw[aria-checked=true]{background:var(--good)}
-.sw[aria-checked=true]::after{transform:translateX(23px)}
-.sw:disabled{opacity:.4;cursor:not-allowed}
-@media (prefers-reduced-motion:reduce){.sw,.sw::after{transition:none}}
-.tmsg{margin:16px 0 0;font-size:14px;line-height:1.7}
-.tmsg.ok{color:var(--good)}
-.tmsg.no{color:var(--danger)}
-.tnote{margin:18px 0 0;padding-top:16px;border-top:1px solid var(--rule-soft);
-  font-size:13px;color:var(--ink-faint);line-height:1.75}
+/* ── 차시 카드 ── */
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:14px}
+a.lcard{display:flex;flex-direction:column;gap:8px;background:var(--surface);border:1px solid var(--rule);
+  border-radius:13px;padding:19px 21px;text-decoration:none;color:inherit;transition:border-color .18s,transform .18s}
+a.lcard:hover{border-color:var(--accent);transform:translateY(-2px)}
+a.lcard .no{margin:0;font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;color:var(--accent)}
+a.lcard .t{margin:0;font-family:var(--serif);font-size:18px;font-weight:700;line-height:1.4}
+a.lcard .sm{margin:0;font-size:13.5px;color:var(--ink-soft);line-height:1.62}
+a.lcard .foot{margin-top:4px;padding-top:11px;border-top:1px solid var(--rule-soft);
+  display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--ink-faint)}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--rule);flex-shrink:0}
+.dot.used{background:var(--good)}
+a.lcard.locked{opacity:.55;pointer-events:none;filter:grayscale(.4)}
+a.lcard.locked .t::after{content:" 🔒";font-size:.8em}
+@media (prefers-reduced-motion:reduce){a.lcard{transition:none}a.lcard:hover{transform:none}}
+
+/* ── 안내 ── */
+.howto{background:var(--surface-2);border-radius:14px;padding:22px 26px;margin:8px 0 44px}
+.howto h3{margin:0 0 12px;font-size:16px;font-weight:600}
+.howto ol{margin:0;padding-left:20px}
+.howto li{font-size:14.5px;color:var(--ink-soft);line-height:1.75;margin-bottom:5px}
+.howto li:last-child{margin-bottom:0}
+.howto b{color:var(--ink)}
+
+/* ── 꼬리말 ── */
+.ftr{border-top:1px solid var(--rule);margin-top:20px;background:var(--surface)}
+.ftr .wrap{padding:32px 24px 46px;display:grid;gap:8px}
+.ftr .l1{font-family:var(--serif);font-size:16px;font-weight:700;color:var(--ink)}
+.ftr .l2{font-size:14px;color:var(--ink-soft);line-height:1.75}
+.ftr .l3{font-family:var(--mono);font-size:12px;color:var(--ink-faint);margin-top:6px;line-height:1.8}
+.ftr a{color:var(--accent)}
 </style>
 </head>
 <body>
@@ -68,21 +84,32 @@
 </div></div>
 
 <header class="mast"><div class="wrap">
-  <p class="eyebrow">2022 개정 교육과정 · 고등학교 1학년</p>
+  <div class="school" id="school"></div>
+  <p class="eyebrow">2022 개정 교육과정 · 공통과목</p>
   <h1>통합과학2 수업 자료실</h1>
-  <p class="dek">차시별 수업 자료를 모아 둔 곳입니다. 카드를 누르면 그 차시 자료가 열립니다. 별도 로그인이나 설치 없이 태블릿·크롬북·PC에서 그대로 열립니다.</p>
+  <p class="dek">차시별 수업 자료를 모아 둔 곳입니다. 카드를 누르면 그 차시 자료가 열립니다. 로그인도 설치도 필요 없고, 태블릿·크롬북·PC에서 그대로 열립니다.</p>
   <div class="tags" id="hdTags"></div>
 </div></header>
 
 <main><div class="wrap">
-  <div id="teachPanel"></div>
   <div id="todayBox"></div>
+
+  <div class="howto">
+    <h3>이렇게 쓰면 됩니다</h3>
+    <ol>
+      <li>수업이 시작되면 맨 위 <b>‘오늘 수업’</b> 카드를 누릅니다.</li>
+      <li>화면을 따라 내려가며 <b>질문에 답하고, 자료를 직접 움직여</b> 봅니다. 답을 고르면 해설이 바로 나옵니다.</li>
+      <li>수업이 끝난 뒤에도 <b>언제든 다시 들어와</b> 복습할 수 있습니다. 자물쇠 표시가 있는 차시는 아직 열리지 않은 것입니다.</li>
+    </ol>
+  </div>
+
   <div class="units" id="units"><div class="empty">불러오는 중…</div></div>
 </div></main>
 
-<footer><div class="wrap">
-  <span id="ftLeft">통합과학2 · 지구과학 파트</span>
-  <span>자료 문의는 담당 선생님께</span>
+<footer class="ftr"><div class="wrap">
+  <span class="l1" id="ft1"></span>
+  <span class="l2" id="ft2"></span>
+  <span class="l3" id="ft3"></span>
 </div></footer>
 
 <script src="shared/lib.js"></script>
@@ -96,7 +123,6 @@ const HUB = {
 
 TG.theme('themeBtn');
 
-const isTeacher = location.hash === '#t';
 let MF = null, GATE = null;
 
 Promise.all([
@@ -109,10 +135,10 @@ Promise.all([
     document.getElementById('units').innerHTML =
       `<div class="empty"><b>목록을 불러오지 못했습니다.</b><br>
        이 페이지를 컴퓨터에서 파일로 직접 열면(<code>file://</code>) 브라우저 보안 정책 때문에 목록이 표시되지 않습니다.<br>
-       GitHub Pages 주소로 열면 정상적으로 보입니다.</div>`;
+       인터넷 주소로 열면 정상적으로 보입니다.</div>`;
   });
 
-/* 공개 여부 — 구글에 저장된 값이 우선, 없으면 manifest 의 open, 그것도 없으면 열림 */
+/* 공개 여부 — 교사가 켜고 끈 값이 우선, 없으면 manifest 의 open */
 const codeOf = l => l.unit + '-' + l.no;
 function isOpen(l){
   if(GATE && codeOf(l) in GATE) return GATE[codeOf(l)] !== false;
@@ -121,134 +147,72 @@ function isOpen(l){
 
 function render(){
   const m = MF;
-  document.title = m.course + ' 수업 자료실';
-  document.querySelector('h1').textContent = m.course + ' 수업 자료실';
-  document.getElementById('ftLeft').textContent =
-    [m.course, m.part, m.teacher].filter(Boolean).join(' · ');
+  document.title = `${m.course} 수업 자료실 · ${m.school || ''}`;
+
+  document.getElementById('school').innerHTML =
+    `<span class="nm">${m.school || ''}</span><span class="tm">${m.term || ''}</span>`;
 
   const opened = m.lessons.filter(isOpen);
   document.getElementById('hdTags').innerHTML =
     `<span class="tag std">${m.part || ''}</span>` +
-    `<span class="tag">열린 차시 ${opened.length}개</span>` +
-    (isTeacher ? `<span class="tag">교사 화면</span>` : '');
+    `<span class="tag">열린 차시 ${opened.length}개</span>`;
 
-  /* 오늘 수업 — 열린 것 중 가장 최근 차시 */
-  const box = document.getElementById('todayBox');
+  /* 오늘 수업 */
   const today = opened.slice().sort((a, b) => (a.no > b.no ? -1 : 1))[0];
-  box.innerHTML = today ? `
+  document.getElementById('todayBox').innerHTML = today ? `
     <a class="today" href="${today.path}">
       <p class="k">오늘 수업</p>
       <p class="t">${today.title}</p>
-      <p class="s">${today.no}차시 · ${today.std}</p>
+      <p class="s">${today.no}차시 · ${today.topic || ''}<br>${today.sum || ''}</p>
       <span class="go">열기 →</span>
     </a>` : '';
 
-  /* 차시 목록 */
+  /* 대단원 → 중단원 → 차시 */
   const host = document.getElementById('units');
   host.innerHTML = m.units.map(u => {
-    const ls = m.lessons.filter(l => l.unit === u.id)
-                        .filter(l => isTeacher || isOpen(l));
-    if(!ls.length) return '';
+    const chaps = (m.chapters || []).filter(c => c.unit === u.id);
+    const inner = chaps.map(c => {
+      const ls = m.lessons.filter(l => l.chapter === c.id && isOpen(l));
+      if(!ls.length) return '';
+      return `<div class="chap">
+        <div class="chead">
+          <span class="cn">${u.no}-${c.no}</span>
+          <h3>${c.title}</h3>
+          <span class="std">${c.std || ''}</span>
+        </div>
+        <p class="csub">${c.sub || ''}</p>
+        <div class="cards">${ls.map(card).join('')}</div>
+      </div>`;
+    }).join('');
+    if(!inner) return '';
     return `<section class="unit">
-      <h2>${u.title}</h2>
-      <p class="lead">${u.sub || ''}</p>
-      <div class="cards">${ls.map(l => {
-        const ok = isOpen(l);
-        return `<a class="lcard${ok ? '' : ' locked'}" href="${ok ? l.path : '#'}">
-          <p class="no">${u.id.toUpperCase()} · ${l.no}차시</p>
-          <p class="t">${l.title}</p>
-          <span class="s">${l.std}</span>
-          <div class="foot">
-            <span class="dot ${l.used ? 'used' : ''}"></span>
-            <span class="${ok ? '' : 'lockmsg'}">${
-              ok ? (l.used ? '수업 사용 ' + l.used : '아직 수업에 쓰지 않음')
-                 : '아직 열리지 않았습니다'}</span>
-          </div>
-        </a>`; }).join('')}</div>
+      <div class="uhead"><span class="rn">${u.no}</span><h2>${u.title}</h2></div>
+      <p class="usub">${u.sub || ''}</p>
+      ${inner}
     </section>`;
-  }).join('') || '<div class="empty">아직 열린 차시가 없습니다.</div>';
+  }).join('') || '<div class="empty">아직 열린 차시가 없습니다. 수업 시간에 다시 들어와 주세요.</div>';
 
-  if(isTeacher) teacherPanel();
+  /* 꼬리말 */
+  document.getElementById('ft1').textContent =
+    [m.school, m.term].filter(Boolean).join(' · ');
+  document.getElementById('ft2').textContent =
+    m.contact || '';
+  document.getElementById('ft3').textContent =
+    [m.course + ' ' + (m.part || ''), '2022 개정 교육과정', '담당 ' + (m.teacher || '')]
+      .filter(Boolean).join('  ·  ');
 }
 
-/* ---------- 교사 패널 (#t) ---------- */
-function teacherPanel(){
-  const host = document.getElementById('teachPanel');
-  host.innerHTML = `
-    <div class="tpanel">
-      <h2>차시 열고 닫기</h2>
-      <p class="sub">번호를 입력하면 스위치가 켜집니다. 닫아 둔 차시는 학생 화면의 목록에서 사라지고, 주소로 들어가도 안내문만 보입니다.</p>
-      <div class="pinrow">
-        <input type="password" id="pin" inputmode="numeric" placeholder="••••" aria-label="교사 번호">
-        <button class="btn" id="pinBtn" type="button">확인</button>
-        <span class="tmsg" id="pinMsg"></span>
-      </div>
-      <div class="glist" id="glist"></div>
-      <p class="tnote">
-        <b>알아 두실 것.</b> 이것은 잠금이 아니라 <b>허들</b>입니다. 정적 웹사이트에는 서버가 없어 진짜 접근 통제를 걸 수 없고,
-        주소를 정확히 아는 사람은 페이지 소스로 내용을 볼 수 있습니다.
-        그래서 <b>평가 문항·정답·채점기준표는 이 저장소에 올리지 않습니다.</b>
-        수업 자료를 미리 보는 것을 막는 용도로만 쓰세요.
-      </p>
-    </div>`;
-
-  const glist = document.getElementById('glist');
-  glist.innerHTML = MF.lessons.map(l => {
-    const ok = isOpen(l);
-    return `<div class="grow ${ok ? 'open' : 'shut'}" data-code="${codeOf(l)}">
-      <span class="no">${l.unit.toUpperCase()} · ${l.no}</span>
-      <span class="nm">${l.title}</span>
-      <span class="st">${ok ? '열림' : '닫힘'}</span>
-      <button class="sw" type="button" role="switch" aria-checked="${ok}"
-              aria-label="${l.title} 열고 닫기" disabled></button>
-    </div>`;
-  }).join('');
-
-  const pin = document.getElementById('pin'), msg = document.getElementById('pinMsg');
-
-  document.getElementById('pinBtn').addEventListener('click', () => {
-    if(!pin.value.trim()){ msg.className = 'tmsg no'; msg.textContent = '번호를 입력해 주세요.'; return; }
-    /* 번호는 첫 전환 때 실제로 확인됩니다 */
-    glist.querySelectorAll('.sw').forEach(b => b.disabled = false);
-    msg.className = 'tmsg ok';
-    msg.textContent = '스위치를 켜고 끌 수 있습니다.';
-  });
-  pin.addEventListener('keydown', e => { if(e.key === 'Enter') document.getElementById('pinBtn').click(); });
-
-  glist.addEventListener('click', e => {
-    const b = e.target.closest('.sw');
-    if(!b || b.disabled) return;
-    const row = b.closest('.grow'), code = row.dataset.code;
-    const next = b.getAttribute('aria-checked') !== 'true';
-    b.disabled = true;
-    TG2.setGate(HUB.api, code, next, pin.value.trim())
-      .then(d => {
-        b.disabled = false;
-        if(!d || !d.ok){
-          msg.className = 'tmsg no';
-          msg.textContent = (d && d.error) || '바꾸지 못했습니다.';
-          return;
-        }
-        GATE = d.open;
-        b.setAttribute('aria-checked', String(next));
-        row.className = 'grow ' + (next ? 'open' : 'shut');
-        row.querySelector('.st').textContent = next ? '열림' : '닫힘';
-        msg.className = 'tmsg ok';
-        msg.textContent = row.querySelector('.nm').textContent + ' — ' + (next ? '열었습니다' : '닫았습니다');
-      })
-      .catch(() => {
-        b.disabled = false;
-        msg.className = 'tmsg no';
-        msg.textContent = '연결하지 못했습니다. Apps Script 배포를 확인해 주세요.';
-      });
-  });
+function card(l){
+  return `<a class="lcard" href="${l.path}">
+    <p class="no">${l.no}차시 · ${l.topic || ''}</p>
+    <p class="t">${l.title}</p>
+    <p class="sm">${l.sum || ''}</p>
+    <div class="foot">
+      <span class="dot ${l.used ? 'used' : ''}"></span>
+      <span>${l.used ? '수업 사용 ' + l.used : '수업 예정'}</span>
+    </div>
+  </a>`;
 }
-
-/* 교사 화면은 T 키로도 열립니다 */
-document.addEventListener('keydown', e => {
-  if(/^(INPUT|TEXTAREA)$/.test(e.target.tagName)) return;
-  if((e.key === 't' || e.key === 'T') && location.hash !== '#t'){ location.hash = 't'; location.reload(); }
-});
 </script>
 </body>
 </html>

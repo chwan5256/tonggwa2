@@ -167,7 +167,11 @@ figure.fig figcaption b{color:var(--ink-soft)}
 :root[data-theme="dark"] .btn,:root:not([data-theme="light"]) .btn{color:#0F1416}
 @media(prefers-color-scheme:light){:root:not([data-theme="dark"]) .btn{color:#fff}}
 .btn:hover{opacity:.88}.btn:active{transform:translateY(1px)}
-.btn.ghost{background:transparent;color:var(--accent);border-color:var(--rule)}
+/* ghost 버튼은 위 두 줄(테마별 .btn 글자색)보다 우선순위가 높아야 합니다.
+   그렇지 않으면 밝은 화면에서 흰 글자가 되어 버튼이 빈 상자로 보입니다. */
+.btn.ghost,
+:root:not([data-theme="light"]) .btn.ghost,
+:root:not([data-theme="dark"]) .btn.ghost{background:transparent;color:var(--accent);border-color:var(--rule)}
 .btn.ghost:hover{border-color:var(--accent)}
 
 /* 결과 타일 */
