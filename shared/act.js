@@ -309,6 +309,42 @@ function report(sel, cfg){
       : '<p class="empty">아직 푼 것이 없습니다. 위로 올라가 활동을 해 보세요.</p>';
   });
 
+  /* 인쇄 창을 바로 띄우면 '대상'이 실제 프린터로 잡혀 있어
+     아무 일도 일어나지 않은 것처럼 보입니다. 두 단계를 먼저 알려 줍니다. */
+  function askPdf(){
+    let mask = document.getElementById('tg-pdfmask');
+    if(!mask){
+      mask = document.createElement('div');
+      mask.id = 'tg-pdfmask';
+      mask.className = 'pdfmask';
+      mask.innerHTML = `<div class="pdfbox" role="dialog" aria-modal="true" aria-label="PDF로 저장하는 방법">
+        <h3>PDF로 저장하는 방법</h3>
+        <p class="lead2">잠시 뒤 <b>인쇄 창</b>이 열립니다. 두 가지만 확인하세요.</p>
+        <ol>
+          <li>왼쪽 <b>대상(프린터)</b>을 <b>‘PDF로 저장’</b>으로 바꿉니다</li>
+          <li>아래 <b>저장</b>을 누르고 파일 이름을 정합니다</li>
+        </ol>
+        <p class="hint"><b>아이패드·크롬북</b>이라면 공유 단추에서 ‘프린트’를 고른 뒤,
+          미리보기를 두 손가락으로 벌리면 PDF로 저장할 수 있습니다.<br>
+          창이 안 열리면 키보드 <b>Ctrl</b>+<b>P</b>(맥은 <b>⌘</b>+<b>P</b>)를 눌러도 됩니다.</p>
+        <div class="row">
+          <button class="btn ghost" type="button" data-x="no">닫기</button>
+          <button class="btn" type="button" data-x="go">인쇄 창 열기</button>
+        </div>
+      </div>`;
+      document.body.appendChild(mask);
+      mask.addEventListener('click', e => {
+        if(e.target === mask || e.target.dataset.x === 'no'){ mask.hidden = true; return; }
+        if(e.target.dataset.x === 'go'){ mask.hidden = true; makePdf(); }
+      });
+      document.addEventListener('keydown', e => {
+        if(e.key === 'Escape' && !mask.hidden) mask.hidden = true;
+      });
+    }
+    mask.hidden = false;
+    mask.querySelector('[data-x="go"]').focus();
+  }
+
   function makePdf(){
     const nm = document.getElementById(uid + '-nm').value.trim();
     const d = new Date();
@@ -324,9 +360,13 @@ function report(sel, cfg){
       <p class="pf">이 문서는 학생 본인의 기기에서 만들어졌습니다. 답안은 어디에도 전송되지 않았습니다.</p>`;
     /* 접혀 있던 것을 모두 펴고 인쇄합니다 */
     document.querySelectorAll('details').forEach(d => d.open = true);
+    /* 저장되는 파일 이름은 문서 제목을 따라갑니다 */
+    const old = document.title;
+    document.title = [(cfg.title || old).replace(/[\\/:*?"<>|]/g, ' '), nm].filter(Boolean).join('_');
     window.print();
+    setTimeout(() => { document.title = old; }, 1200);
   }
-  document.getElementById(uid + '-pdf').addEventListener('click', makePdf);
+  document.getElementById(uid + '-pdf').addEventListener('click', askPdf);
 
   /* 새로고침해도 남아 있게 */
   const old = saved();
@@ -343,7 +383,7 @@ function report(sel, cfg){
   document.body.appendChild(dock);
   document.getElementById(uid + '-up')
     .addEventListener('click', () => host.scrollIntoView({ behavior:'smooth', block:'start' }));
-  document.getElementById(uid + '-dl').addEventListener('click', makePdf);
+  document.getElementById(uid + '-dl').addEventListener('click', askPdf);
 
   document.addEventListener('act:change', () => {
     const g = REC.items.filter(x => x.ok != null);

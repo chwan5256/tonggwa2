@@ -40,6 +40,12 @@
 .scaleg .fb2{margin:14px 0 0;font-size:14.5px;line-height:1.7;color:var(--ink-soft);
   background:var(--surface-2);border-radius:10px;padding:12px 15px;border-left:3px solid var(--rule)}
 .scaleg .fb2 b{color:var(--ink)}
+.scale2{display:flex;justify-content:space-between;font-family:var(--mono);font-size:11.5px;
+  color:var(--ink-faint);margin-top:-4px;padding:0 2px}
+#gh path{transition:d .3s cubic-bezier(.4,0,.2,1)}
+#gh circle{transition:opacity .3s ease}
+#gh rect{transition:opacity .3s ease}
+@media (prefers-reduced-motion:reduce){#gh path,#gh circle,#gh rect{transition:none}}
 .anomctl{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:14px}
 .anomctl .lb{font-size:14px;color:var(--ink-faint);margin-right:4px}
 .anomctl .pill{font-family:var(--mono);font-size:14px;padding:9px 15px}
@@ -61,6 +67,11 @@
     <span class="tag std">[10통과2-02-03]</span>
     <span class="tag">3. 지구 열수지 · 2. 지구 온난화</span>
     <span class="tag">지식·이해 · 과정·기능</span>
+  </div>
+  <div class="stdbar">
+    <p class="k">성취기준 <span class="code">[10통과2-02-03]</span></p>
+    <p>온실효과 강화로 인한 지구온난화의 메커니즘을 이해하고, 엘니뇨, 사막화 등과 같은 현상이 지구 환경과 인간 생활에 미치는 영향과 대처 방안을 분석할 수 있다.</p>
+    <p class="sub"><b>이 차시가 맡는 부분</b> — ‘온실효과 강화로 인한 지구온난화의 <b>메커니즘</b>’ 전체를 다룹니다 — 지구 열수지가 어떻게 어긋나 기온이 오르는지.</p>
   </div>
 </div></header>
 
@@ -116,32 +127,79 @@
 
   <figure class="fig">
     <p class="figtitle">온실 효과를 일으키는 에너지의 양</p>
-    <p class="figsub">지표면이 내보낸 것과 지표로 되돌아오는 것</p>
-    <svg viewBox="0 0 760 250" role="img" aria-label="지표면에서 방출된 144 단위 중 132 단위를 대기의 온실 기체가 흡수하고, 그중 94 단위가 지표로 재복사된다." style="width:100%;height:auto;display:block">
-      <rect x="0" y="40" width="760" height="140" fill="var(--surface-2)"/>
-      <rect x="0" y="180" width="760" height="34" fill="var(--rule)"/>
+    <p class="figsub" id="ghsub">온실 기체의 양을 바꾸면 세 숫자가 함께 움직입니다</p>
+
+    <svg id="gh" viewBox="0 0 800 400" role="img" aria-label="지표면이 방출한 에너지 중 일부를 대기의 온실 기체가 흡수하고, 그중 일부를 지표로 재복사한다. 온실 기체의 양에 따라 세 값과 지표 온도가 함께 달라진다." style="width:100%;height:auto;display:block">
+      <rect x="0" y="0" width="800" height="96" fill="var(--surface-2)" opacity=".5"/>
+      <rect id="atm" x="0" y="96" width="800" height="168" fill="var(--accent)" opacity=".10"/>
+      <rect x="0" y="264" width="800" height="46" fill="var(--rule)"/>
+      <line x1="0" y1="96" x2="800" y2="96" stroke="var(--rule)" stroke-width="1" stroke-dasharray="5 5"/>
+      <line x1="0" y1="264" x2="800" y2="264" stroke="var(--ink-faint)" stroke-width="1.4"/>
       <g font-family="IBM Plex Mono, monospace" font-size="12" fill="var(--ink-faint)">
-        <text x="12" y="62">대기 (온실 기체)</text><text x="12" y="203" fill="var(--ink-soft)">지표</text>
+        <text x="12" y="26">우주</text><text x="12" y="118">대기 (온실 기체)</text>
+        <text x="12" y="288" fill="var(--ink-soft)">지표</text>
       </g>
-      <defs><marker id="mu" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5.5" markerHeight="5.5" orient="auto">
-        <path d="M0 0 L10 5 L0 10 z" fill="var(--s1)"/></marker>
-        <marker id="md" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5.5" markerHeight="5.5" orient="auto">
-        <path d="M0 0 L10 5 L0 10 z" fill="var(--danger)"/></marker></defs>
-      <line x1="170" y1="178" x2="170" y2="70" stroke="var(--s1)" stroke-width="9" marker-end="url(#mu)"/>
-      <line x1="290" y1="178" x2="290" y2="30" stroke="var(--s1)" stroke-width="2.6" stroke-dasharray="6 5" marker-end="url(#mu)" opacity=".65"/>
-      <line x1="560" y1="70" x2="560" y2="178" stroke="var(--danger)" stroke-width="7" marker-end="url(#md)"/>
-      <foreignObject x="192" y="86" width="230" height="40"><div xmlns="http://www.w3.org/1999/xhtml"
-        style="font:14px 'IBM Plex Sans KR',sans-serif;color:var(--ink)">지표면 방출 <button class="slot" id="sm1" type="button">?</button></div></foreignObject>
-      <foreignObject x="192" y="128" width="240" height="40"><div xmlns="http://www.w3.org/1999/xhtml"
-        style="font:14px 'IBM Plex Sans KR',sans-serif;color:var(--ink)">대기가 흡수 <button class="slot" id="sm2" type="button">?</button></div></foreignObject>
-      <foreignObject x="580" y="104" width="180" height="40"><div xmlns="http://www.w3.org/1999/xhtml"
-        style="font:14px 'IBM Plex Sans KR',sans-serif;color:var(--ink)">지표로 재복사 <button class="slot" id="sm3" type="button">?</button></div></foreignObject>
-      <text x="306" y="26" font-family="IBM Plex Sans KR, sans-serif" font-size="13" fill="var(--ink-soft)">일부는 대기를 그냥 통과해 우주로</text>
-      <text x="12" y="240" font-family="IBM Plex Sans KR, sans-serif" font-size="12.5" fill="var(--ink-faint)">※ 태양 복사를 100으로 놓았을 때의 상대적인 값입니다.</text>
+      <g id="ghdots" opacity=".5"></g>
+
+      <path id="aSun"  fill="var(--ochre)" opacity=".85"/>
+      <path id="aUp"   fill="var(--s1)"    opacity=".85"/>
+      <path id="aThru" fill="var(--s1)"    opacity=".5"/>
+      <path id="aBack" fill="var(--danger)" opacity=".85"/>
+
+      <g font-family="IBM Plex Sans KR, sans-serif" font-size="13.5" font-weight="600">
+        <text x="66"  y="40" fill="var(--ochre)">지표면 흡수</text>
+        <text x="66"  y="60" fill="var(--ink-soft)" font-weight="400" font-size="12.5">태양 복사 중 50</text>
+        <text x="250" y="40" fill="var(--s1)">지표면 방출</text>
+        <text x="250" y="60" fill="var(--ink-soft)" font-weight="400" font-size="12.5">적외선</text>
+        <text x="560" y="40" fill="var(--danger)">지표로 재복사</text>
+        <text x="560" y="60" fill="var(--ink-soft)" font-weight="400" font-size="12.5">이것이 온실 효과</text>
+      </g>
+      <g font-family="IBM Plex Mono, monospace" font-size="17" font-weight="500">
+        <text id="vUp"   x="250" y="176" fill="var(--s1)">144</text>
+        <text id="vAbs"  x="380" y="176" fill="var(--accent)">132</text>
+        <text id="vBack" x="560" y="176" fill="var(--danger)">94</text>
+        <text x="112" y="176" fill="var(--ochre)" text-anchor="middle">50</text>
+      </g>
+      <text id="lAbs" x="380" y="196" font-family="IBM Plex Sans KR, sans-serif" font-size="12.5" fill="var(--ink-soft)">대기가 흡수</text>
+      <text id="lThru" x="250" y="88" font-family="IBM Plex Sans KR, sans-serif" font-size="12.5" fill="var(--ink-faint)">통과 12</text>
+      <text x="12" y="340" font-family="IBM Plex Sans KR, sans-serif" font-size="12.5" fill="var(--ink-faint)">※ 태양 복사를 100으로 놓았을 때의 상대적인 값입니다. 관계의 방향을 보이기 위한 모식 모형입니다.</text>
     </svg>
-    <figcaption><b>읽는 법.</b> 지표면에서 방출되는 <b>144 단위</b> 중 <b>132 단위</b>가 대기의 온실 기체에 흡수되고, 그중 <b>94 단위</b>가 지표로 재복사되어 온실 효과를 일으킵니다. 지표가 100보다 많은 144를 내보낼 수 있는 것은, 재복사로 되돌아오는 몫이 있기 때문입니다.</figcaption>
+
+    <div class="ctrl">
+      <div class="row">
+        <label for="gg">대기 중 온실 기체의 양</label>
+        <input type="range" id="gg" min="0.880" max="0.950" step="0.001" value="0.9167">
+        <span class="val" id="ggv">지금</span>
+      </div>
+      <div class="scale2"><span>← 적음</span><span>지금</span><span>많음 →</span></div>
+      <div class="btnrow">
+        <button class="btn ghost" type="button" data-g="0.885">온실 기체가 적을 때</button>
+        <button class="btn ghost" type="button" data-g="0.9167">지금의 대기</button>
+        <button class="btn ghost" type="button" data-g="0.945">온실 기체가 많을 때</button>
+      </div>
+    </div>
+
+    <div class="tiles">
+      <div class="tile s1"><p class="k">지표면 방출</p><p class="v" id="tUp">144</p></div>
+      <div class="tile"><p class="k">대기가 흡수</p><p class="v" id="tAbs">132</p></div>
+      <div class="tile s2"><p class="k">지표로 재복사</p><p class="v" id="tBack">94</p></div>
+      <div class="tile"><p class="k">지표 평균 기온</p><p class="v" id="tTmp">15.0<span class="u">℃</span></p></div>
+    </div>
+
+    <figcaption><b>읽는 법.</b> 지금의 대기에서는 지표면이 방출한 <b>144</b> 단위 중 <b>132</b> 단위를 온실 기체가 흡수하고, 그중 <b>94</b> 단위가 지표로 되돌아옵니다.
+      <b>손잡이를 오른쪽으로 밀어 보세요.</b> 온실 기체가 늘면 대기가 붙잡는 몫이 늘고, 지표로 되돌려 보내는 <b>재복사 94가 커집니다</b>.
+      지표는 그만큼 더 데워져 방출량도 함께 커지고, 결국 <b>더 높은 온도</b>에서 다시 균형을 이룹니다.</figcaption>
   </figure>
-  <div id="placeB"></div>
+
+  <div class="note">
+    <span class="lbl">숫자가 맞물리는 방식</span>
+    지표는 태양에서 받은 <b>50</b>과 대기가 되돌려 준 <b>재복사</b>를 합한 만큼을 내보냅니다. 지금의 대기에서는 <b>50 + 94 = 144</b>로 딱 맞습니다.
+    재복사가 커지면 지표가 받는 양이 늘어 방출도 커지고, 그 방출이 다시 대기에 더 많이 흡수됩니다 — <b>서로가 서로를 키우는 고리</b>입니다.
+  </div>
+
+  <h3>지금의 대기에서 읽어 보기</h3>
+  <p class="lead">손잡이를 <b>‘지금의 대기’</b>에 두고, 그림에서 읽은 숫자로 문장을 완성하세요.</p>
+  <div id="clozeB"></div>
 
   <div class="teach-only" data-yt="" data-cap="지구 열수지 — 숫자로 따라가기" data-find="지구 열수지 100 70 30 설명"></div>
 </section>
@@ -267,9 +325,93 @@ ACT.place('#placeA', { chips:['20','30','50','70'], slots:[
   { el:'#sl1', ans:'30', q:'반사·산란' }, { el:'#sl2', ans:'20', q:'대기·구름 흡수' },
   { el:'#sl3', ans:'50', q:'지표면 흡수' }, { el:'#sl4', ans:'70', q:'우주로 나가는 지구 복사' } ] });
 
-ACT.place('#placeB', { chips:['94','132','144'], slots:[
-  { el:'#sm1', ans:'144', q:'지표면 방출' }, { el:'#sm2', ans:'132', q:'대기가 흡수' },
-  { el:'#sm3', ans:'94', q:'지표로 재복사' } ] });
+ACT.cloze('#clozeB', [
+  { t:'지표면에서 방출되는 {{0}} 단위의 에너지 중 {{1}} 단위는 대기의 온실 기체에 흡수되어, 지표로 {{2}} 단위만큼 재복사하여 온실 효과를 일으킨다.',
+    blanks:[
+      { opts:['100','132','144'], ans:2, fb:'지표는 태양에서 받은 50과 재복사 94를 합한 만큼을 내보냅니다.' },
+      { opts:['94','132','144'], ans:1, fb:'방출한 144 중 대기가 붙잡는 몫입니다. 나머지 12는 대기를 그냥 통과합니다.' },
+      { opts:['50','94','132'], ans:1, fb:'이 되돌아온 몫이 바로 온실 효과의 크기입니다.' }] },
+  { t:'온실 기체의 양이 늘어나면 대기가 흡수하는 몫이 커지고, 지표로 재복사하는 양은 {{0}}. 그 결과 지표의 평균 기온은 {{1}}.',
+    blanks:[
+      { opts:['늘어난다','줄어든다','변하지 않는다'], ans:0, fb:'손잡이를 오른쪽으로 밀었을 때 94가 커지는 것을 확인했습니다.' },
+      { opts:['올라간다','내려간다','그대로다'], ans:0, fb:'되돌아오는 에너지가 늘면 지표는 더 데워집니다.' }] }
+]);
+
+/* ---- 온실 효과 인터랙티브 ----
+   지표 에너지 균형 :  방출 E = 태양 흡수 50 + 재복사 R
+   대기 흡수 A = g·E,  재복사 R = r·A   (r = 94/132)
+   → E = 50 / (1 − r·g)
+   g = 0.9167 일 때 E=144, A=132, R=94 로 유인물 값과 정확히 맞습니다.       */
+(() => {
+  const R_RATIO = 94 / 132, SUN = 50, G_NOW = 0.9167;
+  const E0 = SUN / (1 - R_RATIO * G_NOW);        /* 지금의 대기에서 144 */
+  const K = 0.62;                     /* 값 → 화살표 굵기 */
+  const $ = id => document.getElementById(id);
+  const gg = $('gg');
+
+  /* 대기 중 온실 기체 점 */
+  const dots = [];
+  let seed = 7;
+  const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+  for(let i = 0; i < 46; i++) dots.push([30 + rnd() * 740, 108 + rnd() * 144, 2.4 + rnd() * 2.2]);
+  $('ghdots').innerHTML = dots.map(([x, y, r], i) =>
+    `<circle data-i="${i}" cx="${x.toFixed(0)}" cy="${y.toFixed(0)}" r="${r.toFixed(1)}" fill="var(--accent)"/>`).join('');
+
+  /* 위로 향하는 화살표 (아래 y0 → 위 y1) */
+  const up = (cx, w, y0, y1) => {
+    const h = Math.max(10, w * 0.9), hw = Math.max(w * 0.78, w / 2 + 5);
+    return `M${cx - w / 2} ${y0} L${cx - w / 2} ${y1 + h} L${cx - hw} ${y1 + h} L${cx} ${y1} L${cx + hw} ${y1 + h} L${cx + w / 2} ${y1 + h} L${cx + w / 2} ${y0} Z`;
+  };
+  /* 아래로 향하는 화살표 (위 y0 → 아래 y1) */
+  const dn = (cx, w, y0, y1) => {
+    const h = Math.max(10, w * 0.9), hw = Math.max(w * 0.78, w / 2 + 5);
+    return `M${cx - w / 2} ${y0} L${cx - w / 2} ${y1 - h} L${cx - hw} ${y1 - h} L${cx} ${y1} L${cx + hw} ${y1 - h} L${cx + w / 2} ${y1 - h} L${cx + w / 2} ${y0} Z`;
+  };
+
+  function draw(g){
+    const E = SUN / (1 - R_RATIO * g);
+    const A = g * E, Rb = R_RATIO * A, T = E - A;
+    const tempK = 288.15 * Math.pow(E / E0, 0.25);
+    const tempC = tempK - 273.15;
+
+    $('aSun').setAttribute('d',  dn(112, SUN * K, 70, 262));
+    $('aUp').setAttribute('d',   up(310, E * K, 262, 130));
+    $('aThru').setAttribute('d', up(310, Math.max(5, T * K), 130, 20));
+    $('aBack').setAttribute('d', dn(618, Rb * K, 130, 262));
+
+    $('vUp').textContent = E.toFixed(0);
+    $('vAbs').textContent = A.toFixed(0);
+    $('vBack').textContent = Rb.toFixed(0);
+    $('lThru').textContent = '통과 ' + T.toFixed(0);
+    $('vUp').setAttribute('x', String(310 - E * K / 2 - 46));
+    $('vAbs').setAttribute('x', String(310 + E * K / 2 + 14));
+    $('lAbs').setAttribute('x', String(310 + E * K / 2 + 14));
+    $('vBack').setAttribute('x', String(618 + Rb * K / 2 + 12));
+
+    $('tUp').textContent = E.toFixed(0);
+    $('tAbs').textContent = A.toFixed(0);
+    $('tBack').textContent = Rb.toFixed(0);
+    $('tTmp').innerHTML = tempC.toFixed(1) + '<span class="u">℃</span>';
+
+    /* 온실 기체 점의 개수·진하기 */
+    const n = Math.round((g - 0.86) / 0.10 * 46);
+    $('ghdots').querySelectorAll('circle').forEach((c, i) =>
+      c.setAttribute('opacity', i < n ? '1' : '0.12'));
+    $('atm').setAttribute('opacity', (0.06 + (g - 0.88) * 1.6).toFixed(3));
+
+    const near = Math.abs(g - G_NOW) < 0.004;
+    $('ggv').textContent = near ? '지금' : (g < G_NOW ? '적음' : '많음');
+    $('ghsub').textContent = near
+      ? '지금의 대기 — 유인물의 144 · 132 · 94 와 같습니다'
+      : (g < G_NOW ? '온실 기체가 적을 때 — 재복사가 줄고 지표가 식습니다'
+                   : '온실 기체가 많을 때 — 재복사가 늘고 지표가 더워집니다');
+  }
+
+  gg.addEventListener('input', () => draw(+gg.value));
+  document.querySelectorAll('[data-g]').forEach(b =>
+    b.addEventListener('click', () => { gg.value = b.dataset.g; draw(+gg.value); }));
+  draw(G_NOW);
+})();
 
 /* 에너지 저울 */
 (() => {

@@ -358,6 +358,33 @@ a.lcard .foot{display:flex;gap:10px;align-items:center;font-size:12.5px;color:va
 .dock .btn{padding:10px 18px;font-size:14.5px}
 :root[data-teach] .dock{display:none}
 
+
+/* ---------- 성취기준 띠 ---------- */
+.stdbar{background:var(--surface);border:1px solid var(--rule);border-left:4px solid var(--accent);
+  border-radius:0 13px 13px 0;padding:16px 20px;margin:22px 0 0;max-width:none}
+.stdbar .k{margin:0 0 7px;font-family:var(--mono);font-size:10.5px;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--accent)}
+.stdbar .code{font-family:var(--mono);font-size:13px;color:var(--accent);font-weight:500}
+.stdbar p{margin:0;max-width:none;font-family:var(--serif);font-size:15.5px;line-height:1.75;color:var(--ink)}
+.stdbar .sub{margin:9px 0 0;font-family:var(--sans);font-size:13.5px;color:var(--ink-faint);line-height:1.7}
+.stdbar .sub b{color:var(--ink-soft);font-weight:500}
+
+/* ---------- PDF 안내 ---------- */
+.pdfmask{position:fixed;inset:0;z-index:120;background:rgba(0,0,0,.45);
+  display:grid;place-items:center;padding:24px;backdrop-filter:blur(3px)}
+.pdfmask[hidden]{display:none}
+.pdfbox{background:var(--surface);border-radius:18px;box-shadow:var(--shadow);
+  max-width:520px;width:100%;padding:28px 30px}
+.pdfbox h3{margin:0 0 6px;font-family:var(--serif);font-size:21px;font-weight:700}
+.pdfbox .lead2{margin:0 0 18px;font-size:14.5px;color:var(--ink-soft);line-height:1.7}
+.pdfbox ol{margin:0 0 20px;padding-left:22px}
+.pdfbox li{font-size:15.5px;line-height:1.8;color:var(--ink);margin-bottom:8px}
+.pdfbox li b{color:var(--accent)}
+.pdfbox .hint{margin:0 0 18px;font-size:13.5px;color:var(--ink-faint);line-height:1.7;
+  background:var(--surface-2);border-radius:10px;padding:12px 15px}
+.pdfbox .row{display:flex;flex-wrap:wrap;gap:10px;justify-content:flex-end}
+@media print{.pdfmask{display:none!important}}
+
 /* ---------- 인쇄 (PDF 저장) ----------
    화면 내용(개념·그림·표)을 그대로 싣고, 맨 뒤에 내가 푼 기록을 붙입니다. */
 @media print{
