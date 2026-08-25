@@ -55,44 +55,36 @@
 <!-- 2 -->
 <section class="step" id="s2" data-min="10" data-nav="에너지 불균형">
   <h2><span class="n">02</span>위도에 따른 에너지 불균형</h2>
-  <p class="lead">지구는 <b>구형</b>이기 때문에 위도에 따라 태양 복사 에너지 흡수량과 지구 복사 에너지 방출량이 다릅니다.</p>
+  <p class="lead">지구는 <b>구형</b>이기 때문에 위도에 따라 <b>태양 복사 에너지 흡수량</b>이 다릅니다. 그 결과 위도마다 기온이 달라지고, 따라서 <b>지구 복사 에너지 방출량</b>도 위도에 따라 달라집니다.</p>
 
   <figure class="fig">
     <p class="figtitle">위도별 흡수량과 방출량</p>
     <p class="figsub" id="ebsub">손잡이를 움직여 위도를 골라 보세요</p>
-    <svg viewBox="0 0 760 300" role="img" aria-label="저위도에서는 태양 복사 흡수량이 지구 복사 방출량보다 많아 에너지가 남고, 고위도에서는 반대로 모자란다." style="width:100%;height:auto;display:block">
-      <defs>
-        <clipPath id="cpOver"><path d="M60 260 L60 96 C160 100, 240 140, 320 186 L320 260 Z"/></clipPath>
-      </defs>
-      <line x1="60" y1="260" x2="740" y2="260" stroke="var(--chart-axis)" stroke-width="1.4"/>
-      <line x1="60" y1="40" x2="60" y2="260" stroke="var(--chart-axis)" stroke-width="1.4"/>
-      <!-- 남는 곳 / 모자란 곳 음영 -->
-      <path d="M60 96 C160 100, 240 140, 320 186 L320 176 C240 168, 160 150, 60 148 Z" fill="var(--s2)" opacity=".22"/>
-      <path d="M320 186 C420 234, 560 250, 740 254 L740 214 C560 208, 420 192, 320 176 Z" fill="var(--s1)" opacity=".22"/>
-      <!-- 흡수 곡선 -->
-      <path d="M60 96 C160 100, 240 140, 320 186 C420 234, 560 250, 740 254"
-            fill="none" stroke="var(--ochre)" stroke-width="3"/>
-      <!-- 방출 곡선 -->
-      <path d="M60 148 C160 150, 240 168, 320 176 C420 192, 560 208, 740 214"
-            fill="none" stroke="var(--s1)" stroke-width="3" stroke-dasharray="8 6"/>
-      <line id="mk" x1="140" y1="40" x2="140" y2="260" stroke="var(--ink)" stroke-width="1.6" stroke-dasharray="4 4"/>
-      <circle id="mk1" cx="140" cy="104" r="6" fill="var(--ochre)"/>
+    <svg id="eb" viewBox="0 0 760 300" role="img" aria-label="저위도에서는 태양 복사 흡수량이 지구 복사 방출량보다 많아 에너지가 남고, 위도 약 38도를 경계로 고위도에서는 반대로 모자란다." style="width:100%;height:auto;display:block">
+      <path id="ebOver"  fill="var(--s2)" opacity=".22" d=""/>
+      <path id="ebUnder" fill="var(--s1)" opacity=".22" d=""/>
+      <path id="ebAbs" fill="none" stroke="var(--ochre)" stroke-width="3" d=""/>
+      <path id="ebEmi" fill="none" stroke="var(--s1)" stroke-width="3" stroke-dasharray="8 6" d=""/>
+      <line x1="60" y1="264" x2="740" y2="264" stroke="var(--chart-axis)" stroke-width="1.4"/>
+      <line x1="60" y1="36" x2="60" y2="264" stroke="var(--chart-axis)" stroke-width="1.4"/>
+      <line id="ebCross" x1="347" y1="36" x2="347" y2="264" stroke="var(--ink-faint)" stroke-width="1" stroke-dasharray="3 4"/>
+      <line id="mk" x1="140" y1="36" x2="140" y2="264" stroke="var(--ink)" stroke-width="1.6" stroke-dasharray="4 4"/>
+      <circle id="mk1" cx="140" cy="100" r="6" fill="var(--ochre)"/>
       <circle id="mk2" cx="140" cy="150" r="6" fill="var(--s1)"/>
       <g font-family="IBM Plex Sans KR, sans-serif" font-size="14" font-weight="600">
-        <text x="70" y="86" fill="var(--ochre)">태양 복사 흡수량</text>
-        <text x="480" y="196" fill="var(--s1)">지구 복사 방출량</text>
-      </g>
-      <g font-family="IBM Plex Sans KR, sans-serif" font-size="14" font-weight="600">
-        <text x="150" y="132" fill="var(--s2)">에너지 과잉</text>
-        <text x="470" y="238" fill="var(--s1)">에너지 부족</text>
+        <text x="96" y="46" fill="var(--ochre)">태양 복사 흡수량</text>
+        <text x="470" y="200" fill="var(--s1)">지구 복사 방출량</text>
       </g>
       <g font-family="IBM Plex Mono, monospace" font-size="12" fill="var(--ink-faint)" text-anchor="middle">
-        <text x="60" y="282">적도 0°</text><text x="320" y="282">약 38°</text>
-        <text x="530" y="282">60°</text><text x="740" y="282">극 90°</text>
+        <text x="60" y="286">적도 0°</text><text x="347" y="286">약 38°</text>
+        <text x="513" y="286">60°</text><text x="740" y="286">극 90°</text>
       </g>
-      <text x="16" y="52" font-family="IBM Plex Mono, monospace" font-size="12" fill="var(--ink-faint)">에너지양</text>
+      <text x="16" y="48" font-family="IBM Plex Mono, monospace" font-size="12" fill="var(--ink-faint)">에너지양</text>
     </svg>
-
+    <div class="legend">
+      <span><i style="background:var(--s2);opacity:.5"></i>에너지 과잉 (저위도)</span>
+      <span><i style="background:var(--s1);opacity:.5"></i>에너지 부족 (고위도)</span>
+    </div>
     <div class="ctrl">
       <div class="row">
         <label for="lat">위도</label>
@@ -105,7 +97,8 @@
       <span class="st" id="ebst">—</span>
     </div>
 
-    <figcaption><b>읽는 법.</b> 두 곡선이 만나는 <b>약 38° 부근</b>을 경계로, 저위도는 흡수가 방출보다 많아 <b>에너지가 남고</b>, 고위도는 방출이 많아 <b>모자랍니다</b>. 그런데도 온도가 계속 벌어지지 않는 것은 남는 에너지가 고위도로 옮겨가기 때문입니다. ※ 관계를 보이기 위한 모식도입니다.</figcaption>
+    <figcaption><b>읽는 법.</b> 두 곡선이 만나는 <b>약 38° 부근</b>을 경계로, 저위도는 흡수가 방출보다 많아 <b>에너지가 남고</b>(주황), 고위도는 방출이 많아 <b>모자랍니다</b>(파랑). 그런데도 온도가 계속 벌어지지 않는 것은 남는 에너지가 고위도로 옮겨가기 때문입니다.
+      <br>※ 곡선의 모양은 실제 관측의 경향을 본떠 그린 <b>모식도</b>이며, 눈금의 값 자체를 외울 필요는 없습니다.</figcaption>
   </figure>
 
   <div id="clozeA"></div>
@@ -133,8 +126,8 @@
       </defs>
       <g fill="none" stroke="var(--accent)" stroke-width="2.4" stroke-linecap="round">
         <path d="M70 250 C70 56, 258 56, 266 250" marker-end="url(#ah)"/>
-        <path d="M288 250 C298 108, 466 108, 478 250" marker-end="url(#ah)"/>
-        <path d="M676 250 C676 118, 502 118, 494 250" marker-end="url(#ah)"/>
+        <path d="M478 250 C478 108, 300 108, 288 250" marker-end="url(#ah)"/>
+        <path d="M494 250 C494 118, 660 118, 676 250" marker-end="url(#ah)"/>
       </g>
       <g stroke="var(--ochre)" stroke-width="3.4" marker-end="url(#aw)">
         <line x1="250" y1="242" x2="106" y2="242"/>
@@ -147,10 +140,11 @@
         style="font:13px 'IBM Plex Sans KR',sans-serif"><button class="slot" id="w2" type="button">?</button></div></foreignObject>
       <foreignObject x="524" y="196" width="180" height="42"><div xmlns="http://www.w3.org/1999/xhtml"
         style="font:13px 'IBM Plex Sans KR',sans-serif"><button class="slot" id="w3" type="button">?</button></div></foreignObject>
-      <g font-family="IBM Plex Sans KR, sans-serif" font-size="13" fill="var(--ink-soft)">
-        <text x="88" y="84">에너지 남음 → 상승</text>
-        <text x="300" y="150">위도 30° 부근 → 하강</text>
-        <text x="540" y="152">에너지 부족 → 하강</text>
+      <g font-family="IBM Plex Sans KR, sans-serif" font-size="13" font-weight="600" fill="var(--ink-soft)">
+        <text x="72"  y="52" text-anchor="start">적도 상승</text>
+        <text x="277" y="52" text-anchor="middle">30° 하강</text>
+        <text x="486" y="52" text-anchor="middle">60° 상승</text>
+        <text x="688" y="52" text-anchor="end">극 하강</text>
       </g>
       <g font-family="IBM Plex Mono, monospace" font-size="12" fill="var(--ink-faint)" text-anchor="middle">
         <text x="70" y="308">적도 0°</text><text x="273" y="308">30°</text>
@@ -158,7 +152,10 @@
       </g>
       <text x="60" y="332" font-family="IBM Plex Sans KR, sans-serif" font-size="12.5" fill="var(--ink-faint)">※ 북반구 기준. 남반구는 위아래로 대칭입니다.</text>
     </svg>
-    <figcaption><b>기억할 것.</b> 우리가 <b>지표에서 느끼는 바람</b>은 순환 고리의 <b>아랫부분</b>입니다. 그리고 <b>위도 30° 부근의 하강 기류</b>는 다음 시간 사막이 왜 그 위도에 몰려 있는지를 설명해 줍니다.</figcaption>
+    <figcaption><b>읽는 법.</b> 공기는 <b>적도</b>와 <b>위도 60°</b>에서 올라가고, <b>위도 30°</b>와 <b>극</b>에서 내려옵니다.
+      에너지가 남는 적도에서 올라간 공기가 고위도로 옮겨 가고, 모자란 극에서 내려온 공기가 저위도로 돌아옵니다.
+      우리가 <b>지표에서 느끼는 바람</b>은 이 고리의 <b>아랫부분</b>입니다.
+      그리고 <b>위도 30° 부근의 하강 기류</b>는 다음 시간 사막이 왜 그 위도에 몰려 있는지를 설명해 줍니다.</figcaption>
   </figure>
   <div id="placeA"></div>
 
@@ -248,36 +245,60 @@ const LESSON = {
 TG.theme('themeBtn');
 TG.nav('.topbar nav');
 
-/* 위도별 에너지 수지 — 모식 곡선 위의 값을 읽어 줍니다 */
+/* ---- 위도별 에너지 수지 ----
+   곡선·음영·점·판정을 모두 아래 두 식 하나에서 만듭니다.
+   실제 관측의 경향을 본떠, 두 곡선이 위도 약 38°에서 만나도록 맞추었습니다.  */
 (() => {
-  const lat = document.getElementById('lat');
   const X = v => 60 + v / 90 * 680;
-  const absorb = v => 96 + 158 * Math.pow(v / 90, 1.35);       /* y좌표(작을수록 큼) */
-  const emit   = v => 148 + 66 * Math.pow(v / 90, 1.05);
+  const Y = e => 264 - (e - 40) / 280 * 216;          /* 에너지 → y좌표 */
+  const ABS = v => 300 * (0.24 + 0.76 * Math.cos(v * Math.PI / 180));
+  const EMI = v => 265 - 95 * Math.pow(v / 90, 2.2);
+
+  /* 교차 위도 찾기 */
+  let cross = 0;
+  for(let v = 0; v <= 90; v += 0.1){ if(ABS(v) <= EMI(v)){ cross = v; break; } }
+
+  const line = f => {
+    let d = '';
+    for(let v = 0; v <= 90; v += 1) d += (v ? 'L' : 'M') + X(v).toFixed(1) + ' ' + Y(f(v)).toFixed(1) + ' ';
+    return d.trim();
+  };
+  const band = (v0, v1) => {
+    let d = '';
+    for(let v = v0; v <= v1; v += 1) d += (d ? 'L' : 'M') + X(v).toFixed(1) + ' ' + Y(ABS(v)).toFixed(1) + ' ';
+    for(let v = v1; v >= v0; v -= 1) d += 'L' + X(v).toFixed(1) + ' ' + Y(EMI(v)).toFixed(1) + ' ';
+    return d + 'Z';
+  };
+
+  const $ = id => document.getElementById(id);
+  $('ebAbs').setAttribute('d', line(ABS));
+  $('ebEmi').setAttribute('d', line(EMI));
+  $('ebOver').setAttribute('d', band(0, Math.round(cross)));
+  $('ebUnder').setAttribute('d', band(Math.round(cross), 90));
+  $('ebCross').setAttribute('x1', X(cross).toFixed(1));
+  $('ebCross').setAttribute('x2', X(cross).toFixed(1));
+
+  const lat = $('lat');
   function draw(){
     const v = +lat.value, x = X(v);
-    document.getElementById('latv').textContent = v + '°';
-    document.getElementById('mk').setAttribute('x1', x);
-    document.getElementById('mk').setAttribute('x2', x);
-    document.getElementById('mk1').setAttribute('cx', x);
-    document.getElementById('mk1').setAttribute('cy', absorb(v));
-    document.getElementById('mk2').setAttribute('cx', x);
-    document.getElementById('mk2').setAttribute('cy', emit(v));
-    const over = absorb(v) < emit(v);         /* 흡수 곡선이 위에 있으면 과잉 */
-    const st = document.getElementById('ebst');
-    document.getElementById('ebmsg').textContent =
-      over ? '흡수량이 방출량보다 많다' : '방출량이 흡수량보다 많다';
+    $('latv').textContent = v + '°';
+    $('mk').setAttribute('x1', x); $('mk').setAttribute('x2', x);
+    $('mk1').setAttribute('cx', x); $('mk1').setAttribute('cy', Y(ABS(v)));
+    $('mk2').setAttribute('cx', x); $('mk2').setAttribute('cy', Y(EMI(v)));
+    const over = ABS(v) > EMI(v);
+    const st = $('ebst');
+    $('ebmsg').textContent = over ? '흡수량이 방출량보다 많다' : '방출량이 흡수량보다 많다';
     st.textContent = over ? '에너지 과잉' : '에너지 부족';
     st.className = 'st ' + (over ? 'over' : 'under');
-    document.getElementById('ebsub').textContent =
-      `위도 ${v}° — ` + (over ? '남는 에너지가 고위도로 옮겨갑니다' : '모자란 만큼 저위도에서 받아 옵니다');
+    $('ebsub').textContent = `위도 ${v}° — ` +
+      (over ? '남는 에너지가 고위도로 옮겨갑니다' : '모자란 만큼 저위도에서 받아 옵니다');
   }
   lat.addEventListener('input', draw);
   draw();
 })();
 
 ACT.cloze('#clozeA', [
-  { t:'지구는 {{0}}이기 때문에 위도에 따라 태양 복사 에너지 흡수량과 지구 복사 에너지 방출량이 다르다. 그 결과 저위도는 에너지 {{1}}, 고위도는 에너지 {{2}} 상태가 된다.',
+  { t:'지구는 {{0}}이기 때문에 위도에 따라 태양 복사 에너지 흡수량이 다르고, 그 결과 지구 복사 에너지 방출량도 위도에 따라 다르다. 그래서 저위도는 에너지 {{1}}, 고위도는 에너지 {{2}} 상태가 된다.',
     blanks:[
       { opts:['구형','평평한 판','타원형 궤도'], ans:0,
         fb:'구형이라 위도가 높을수록 같은 넓이에 도달하는 햇빛의 양이 줄어듭니다.' },
@@ -323,7 +344,7 @@ ACT.sort('#sortA', {
     { t:'위도 30° 부근에 하강 기류를 만든다', bin:'atm', why:'그래서 그 위도에 사막이 몰려 있습니다.' },
     { t:'바람에 끌려 표층의 물이 이동한다', bin:'oce', why:'바람이 원인, 해류가 결과입니다.' },
     { t:'대륙에 막혀 남북으로 갈라져 흐른다', bin:'oce', why:'그래서 큰 고리 모양이 됩니다.' },
-    { t:'동태평양에서 용승을 일으킨다', bin:'oce', why:'표층수가 밀려난 자리를 심층의 찬물이 채웁니다. 다음 시간의 핵심입니다.' }
+    { t:'표층수가 밀려난 자리를 심층의 찬물이 채운다', bin:'oce', why:'이것이 <b>용승</b>입니다. 다음 시간 엘니뇨의 핵심이 됩니다.' }
   ]
 });
 

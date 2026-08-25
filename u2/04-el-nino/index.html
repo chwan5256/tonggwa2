@@ -318,7 +318,7 @@
       <button type="button" data-stage="0" class="on"><span class="n">1</span>수온 그대로 보기</button>
       <button type="button" data-stage="1"><span class="n">2</span>기준선 정하기</button>
       <button type="button" data-stage="2"><span class="n">3</span>편차로 보기</button>
-      <button type="button" data-stage="3"><span class="n">4</span>엘니뇨 판정</button>
+      <button type="button" data-stage="3"><span class="n">4</span>엘니뇨 판정해 보기</button>
     </div>
 
     <div class="cv"><canvas id="anom" aria-label="해수면 온도 시계열과 기준선, 편차 막대, 엘니뇨 판정 구간을 보여주는 그래프"></canvas></div>
@@ -338,6 +338,7 @@
       <span>기준값 <b id="roBase">—</b></span>
       <span>가장 큰 양(+)의 편차 <b id="roMax">—</b></span>
       <span>+0.5 ℃ 이상이 5개월 이상 이어진 구간 <b id="roCount">—</b></span>
+      <span style="font-size:13px;color:var(--ink-faint)">※ 간이 기준입니다. 실제 기상청·NOAA 판정은 <b>3개월 이동평균한 편차</b>를 씁니다.</span>
     </div>
 
     <p class="datacard" id="dataCard"></p>
@@ -419,7 +420,7 @@ TG.quiz('#quizA', [
   { stem:'적도 지방과 극지방 중 태양 에너지를 더 많이 받는 곳은 적도이다. 그런데도 적도가 끝없이 뜨거워지지 않는 까닭은?',
     opts:['적도에서는 태양 에너지가 반사되기 때문','대기와 해수의 순환이 남는 에너지를 고위도로 옮기기 때문','적도의 대기가 더 두껍기 때문','적도에서는 지구 복사가 일어나지 않기 때문'], ans:1,
     fb:{ right:'남는 곳에서 모자란 곳으로 에너지를 옮기는 것이 대기 대순환과 해수 순환의 역할입니다.',
-         wrong:['반사율이 위도에 따라 크게 다르지는 않습니다.','',
+         wrong:['적도가 끝없이 뜨거워지지 않는 까닭은 반사 때문이 아니라, 남는 에너지가 순환을 타고 고위도로 옮겨가기 때문입니다.','',
                 '대기의 두께로는 이 불균형이 해소되지 않습니다.',
                 '지구 복사는 어디서나 일어납니다. 다만 받는 양과 내보내는 양이 위도마다 다릅니다.'] } },
 
@@ -472,11 +473,17 @@ TG.quiz('#quizA', [
     /* --- 워커 순환 고리 --- */
     const gap = SX - cx;
     const cell = $('cell');
-    if(gap < 130){
+    /* 엘니뇨 구간에서는 동서 순환 자체가 흐트러집니다.
+       상승역이 동쪽으로 옮겨가면 하강역도 함께 서쪽으로 옮겨가므로,
+       고리를 그대로 두면 '페루에 하강 기류'라는 잘못된 그림이 됩니다. */
+    if(n < 0.34 || gap < 130){
       cell.setAttribute('opacity', '0');
-      $('cellLbl').setAttribute('opacity', '0');
+      $('cellLbl').setAttribute('opacity', n < 0.34 ? '0.85' : '0');
+      $('cellLbl').setAttribute('x', '318');
+      $('cellLbl').textContent = '동서 순환이 약해져 고리가 흐트러집니다';
     } else {
       cell.setAttribute('opacity', (0.30 + 0.45 * n).toFixed(2));
+      $('cellLbl').textContent = '공기가 도는 큰 고리 (워커 순환 · 참고 용어)';
       $('cellLbl').setAttribute('opacity', gap < 300 ? '0' : (0.45 + 0.4 * n).toFixed(2));
       $('cellLbl').setAttribute('x', String(((cx + SX) / 2).toFixed(0)));
       const midX = (cx + SX) / 2;
@@ -778,7 +785,7 @@ TG.quiz('#quizA', [
       if(DATA.length < 24) throw new Error('자료가 너무 짧습니다');
       const first = DATA[0].label, last = DATA[DATA.length - 1].label;
       META = `<b>자료</b> Niño 3.4 해역 월평균 해수면 온도 · ${first} ~ ${last} (${DATA.length}개월) &nbsp;·&nbsp; `
-           + `<b>단위</b> ℃ &nbsp;·&nbsp; <b>결측</b> 값이 없는 달은 제외했습니다 &nbsp;·&nbsp; `
+           + `<b>단위</b> ℃ &nbsp;·&nbsp; <b>결측</b> 값이 비어 있는 달은 제외했습니다 &nbsp;·&nbsp; `
            + `<b>출처와 취득일</b>은 <code>data/nino34.csv</code> 머리글에 적혀 있습니다.`;
       base = 27; start();
     })
