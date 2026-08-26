@@ -6,7 +6,7 @@
 :root{
   /* 지면 */
   --ground:#F7F5F1; --surface:#FFFFFF; --surface-2:#F1EEE8;
-  --ink:#191E22; --ink-soft:#525A62; --ink-faint:#7D858C;
+  --ink:#191E22; --ink-soft:#525A62; --ink-faint:#656D74;
   --rule:#DFD9CF; --rule-soft:#EBE6DE;
   /* UI 강조 */
   --accent:#1D5E6B; --accent-wash:#E4EEEF; --on-accent:#FFFFFF;
@@ -15,6 +15,8 @@
   --good:#1F6B3A; --good-wash:#E4F0E8;
   /* 차트 계열색 (dataviz 검증 통과 — 임의로 바꾸지 마세요) */
   --s1:#2a78d6; --s2:#eb6834;
+  /* 같은 계열의 글자용 색 — 작은 글자는 대비 4.5:1 을 넘어야 합니다 */
+  --s1-ink:#1A5AAB; --s2-ink:#B34413;
   --chart-surface:#FFFFFF; --chart-grid:#E8E4DC; --chart-axis:#B9B2A6;
 
   --shadow:0 1px 2px rgba(25,30,34,.05), 0 8px 24px -12px rgba(25,30,34,.18);
@@ -24,25 +26,27 @@
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
   --ground:#131719; --surface:#1A1F22; --surface-2:#20262A;
-  --ink:#EDEAE4; --ink-soft:#AEB5BB; --ink-faint:#7F878E;
+  --ink:#EDEAE4; --ink-soft:#AEB5BB; --ink-faint:#949BA1;
   --rule:#2C3439; --rule-soft:#242B30;
   --accent:#63B4C0; --accent-wash:#16323A; --on-accent:#0F1416;
   --ochre:#D0A264; --ochre-wash:#2C2519;
   --danger:#E0806B; --danger-wash:#33201C;
   --good:#6FBE8B; --good-wash:#18291E;
   --s1:#3987e5; --s2:#d95926;
+  --s1-ink:#7DB4F0; --s2-ink:#EE9270;
   --chart-surface:#1A1F22; --chart-grid:#2A3237; --chart-axis:#525A62;
   --shadow:0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.6);
 }}
 :root[data-theme="dark"]{
   --ground:#131719; --surface:#1A1F22; --surface-2:#20262A;
-  --ink:#EDEAE4; --ink-soft:#AEB5BB; --ink-faint:#7F878E;
+  --ink:#EDEAE4; --ink-soft:#AEB5BB; --ink-faint:#949BA1;
   --rule:#2C3439; --rule-soft:#242B30;
   --accent:#63B4C0; --accent-wash:#16323A; --on-accent:#0F1416;
   --ochre:#D0A264; --ochre-wash:#2C2519;
   --danger:#E0806B; --danger-wash:#33201C;
   --good:#6FBE8B; --good-wash:#18291E;
   --s1:#3987e5; --s2:#d95926;
+  --s1-ink:#7DB4F0; --s2-ink:#EE9270;
   --chart-surface:#1A1F22; --chart-grid:#2A3237; --chart-axis:#525A62;
   --shadow:0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.6);
 }
@@ -51,7 +55,7 @@
 html{scroll-behavior:smooth}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
 body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--sans);
-  font-size:17px;line-height:1.75;-webkit-font-smoothing:antialiased}
+  font-size:calc(17px * var(--tg-scale, 1));line-height:1.75;-webkit-font-smoothing:antialiased}
 a{color:var(--accent)}
 a:hover{text-decoration-thickness:2px}
 :focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:4px}
@@ -62,7 +66,7 @@ a:hover{text-decoration-thickness:2px}
 .mast .wrap{padding:38px 24px 30px}
 .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.15em;text-transform:uppercase;color:var(--ochre);margin:0 0 12px}
 h1{font-family:var(--serif);font-weight:700;font-size:clamp(28px,4.2vw,42px);line-height:1.26;margin:0 0 12px;letter-spacing:-.01em;text-wrap:balance}
-.dek{margin:0;max-width:62ch;color:var(--ink-soft);font-size:17px;font-weight:300}
+.dek{margin:0;max-width:62ch;color:var(--ink-soft);font-size:calc(17px * var(--tg-scale, 1));font-weight:300}
 .tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
 .tag{font-family:var(--mono);font-size:12px;color:var(--ink-soft);background:var(--surface-2);
   border:1px solid var(--rule-soft);border-radius:999px;padding:5px 12px}
@@ -116,12 +120,12 @@ code{font-family:var(--mono);font-size:.88em;background:var(--surface-2);padding
 /* ---------- 퀴즈 ---------- */
 .quiz{display:grid;gap:16px}
 .qi{background:var(--surface);border:1px solid var(--rule);border-radius:12px;padding:20px 22px}
-.qi .stem{font-size:17px;font-weight:500;margin:0 0 14px;display:flex;gap:11px}
+.qi .stem{font-size:calc(17px * var(--tg-scale, 1));font-weight:500;margin:0 0 14px;display:flex;gap:11px}
 .qi .stem .no{font-family:var(--mono);font-size:13px;color:var(--ochre);flex:none;padding-top:3px}
 .opts{display:grid;gap:9px}
 .opt{display:flex;gap:12px;align-items:flex-start;width:100%;text-align:left;cursor:pointer;
   background:var(--surface-2);border:1px solid var(--rule-soft);border-radius:9px;padding:13px 16px;
-  font-family:var(--sans);font-size:16px;line-height:1.55;color:var(--ink);transition:border-color .15s,background .15s}
+  font-family:var(--sans);font-size:calc(16px * var(--tg-scale, 1));line-height:1.55;color:var(--ink);transition:border-color .15s,background .15s}
 .opt:hover:not(:disabled){border-color:var(--accent)}
 .opt .mk{font-family:var(--mono);font-size:13px;color:var(--ink-faint);flex:none;padding-top:2px}
 .opt.right{background:var(--good-wash);border-color:var(--good)}
@@ -129,7 +133,7 @@ code{font-family:var(--mono);font-size:.88em;background:var(--surface-2);padding
 .opt.wrong{background:var(--danger-wash);border-color:var(--danger)}
 .opt.wrong .mk{color:var(--danger)}
 .opt:disabled{cursor:default}
-.fb{margin:13px 0 0;font-size:15.5px;line-height:1.68;color:var(--ink-soft);
+.fb{margin:13px 0 0;font-size:calc(15.5px * var(--tg-scale, 1));line-height:1.68;color:var(--ink-soft);
   padding:13px 16px;border-radius:8px;background:var(--surface-2);border-left:3px solid var(--ink-faint)}
 .fb.right{border-left-color:var(--good)}
 .fb.wrong{border-left-color:var(--danger)}
@@ -159,7 +163,7 @@ figure.fig figcaption b{color:var(--ink-soft)}
 @media(max-width:600px){.ctrl .row{grid-template-columns:1fr;gap:6px}}
 .ctrl label{font-size:15px;font-weight:500}
 .ctrl input[type=range]{width:100%;accent-color:var(--s2);height:26px}
-.ctrl .val{font-family:var(--mono);font-size:15px;color:var(--s2);font-variant-numeric:tabular-nums;min-width:64px;text-align:right}
+.ctrl .val{font-family:var(--mono);font-size:15px;color:var(--s2-ink);font-variant-numeric:tabular-nums;min-width:64px;text-align:right}
 .btnrow{display:flex;flex-wrap:wrap;gap:10px}
 .btn{appearance:none;cursor:pointer;font-family:var(--sans);font-size:15px;font-weight:500;
   border-radius:9px;padding:11px 20px;border:1px solid var(--accent);background:var(--accent);
@@ -220,7 +224,7 @@ a.lcard .foot{display:flex;gap:10px;align-items:center;font-size:12.5px;color:va
 /* ---------- 공통 조작 언어 ----------
    빈칸·칩·카드·상자를 한 가지 모양으로 통일합니다.
    기본은 '고르는 것'이고, 고르면 상태가 색으로만 바뀝니다.        */
-.pill{font:inherit;font-size:15px;line-height:1.35;cursor:pointer;
+.pill{font:inherit;font-size:calc(15px * var(--tg-scale, 1));line-height:1.35;cursor:pointer;
   border:1px solid var(--rule);background:var(--surface);color:var(--ink);
   border-radius:10px;padding:10px 16px;text-align:left;
   transition:border-color .16s,background .16s,color .16s,box-shadow .16s}
@@ -235,7 +239,7 @@ a.lcard .foot{display:flex;gap:10px;align-items:center;font-size:12.5px;color:va
 .cloze{display:grid;gap:12px}
 .ci{position:relative;background:var(--surface);border:1px solid var(--rule);border-radius:14px;
   padding:18px 22px}
-.ci .s{margin:0;display:flex;gap:14px;align-items:baseline;font-size:17px;line-height:2.1}
+.ci .s{margin:0;display:flex;gap:14px;align-items:baseline;font-size:calc(17px * var(--tg-scale, 1));line-height:2.1}
 .ci .s .n{font-family:var(--mono);font-size:12px;color:var(--ink-faint);flex-shrink:0;padding-top:5px}
 .ci .tx{flex:1}
 
@@ -308,7 +312,7 @@ a.lcard .foot{display:flex;gap:10px;align-items:center;font-size:12.5px;color:va
 @media (prefers-reduced-motion:reduce){.sortg .bin{transition:none}}
 
 /* ---------- 서술형 ---------- */
-.noteg .pr{margin:0 0 13px;font-size:16.5px;line-height:1.75}
+.noteg .pr{margin:0 0 13px;font-size:calc(16.5px * var(--tg-scale, 1));line-height:1.75}
 .noteg textarea{width:100%;min-height:130px;font:inherit;font-size:16px;line-height:1.85;
   padding:15px 17px;border:1px solid var(--rule);border-radius:13px;background:var(--surface);
   color:var(--ink);resize:vertical}
@@ -383,7 +387,8 @@ a.lcard .foot{display:flex;gap:10px;align-items:center;font-size:12.5px;color:va
 .pdfbox .hint{margin:0 0 18px;font-size:13.5px;color:var(--ink-faint);line-height:1.7;
   background:var(--surface-2);border-radius:10px;padding:12px 15px}
 .pdfbox .row{display:flex;flex-wrap:wrap;gap:10px;justify-content:flex-end}
-@media print{.pdfmask{display:none!important}}
+@media print{
+  :root{--tg-scale:1 !important}   /* 인쇄는 늘 보통 크기로 — A4 짜임을 지킵니다 */.pdfmask{display:none!important}}
 
 /* ---------- 인쇄 (PDF 저장) ----------
    화면 내용(개념·그림·표)을 그대로 싣고, 맨 뒤에 내가 푼 기록을 붙입니다. */

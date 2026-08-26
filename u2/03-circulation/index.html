@@ -14,8 +14,8 @@
 .readbar b{color:var(--ink);font-variant-numeric:tabular-nums}
 .readbar .st{font-family:var(--mono);font-size:13px;border-radius:999px;padding:4px 13px;
   border:1px solid var(--rule)}
-.readbar .st.over{border-color:var(--s2);color:var(--s2)}
-.readbar .st.under{border-color:var(--s1);color:var(--s1)}
+.readbar .st.over{border-color:var(--s2);color:var(--s2-ink)}
+.readbar .st.under{border-color:var(--s1);color:var(--s1-ink)}
 </style>
 </head>
 <body>
@@ -43,6 +43,7 @@
 </div></header>
 
 <main><div class="wrap">
+  <div id="meBar"></div>
 
 <!-- 1 -->
 <section class="step" id="s1" data-min="3" data-nav="오늘의 질문">
@@ -236,6 +237,8 @@
 
 <script src="../../shared/lib.js"></script>
 <script src="../../shared/gate.js"></script>
+<script src="../../shared/me.js"></script>
+<script src="../../shared/qr.js"></script>
 <script src="../../shared/act.js"></script>
 <script>
 const LESSON = {
@@ -244,6 +247,17 @@ const LESSON = {
 };
 TG.theme('themeBtn');
 TG.nav('.topbar nav');
+
+/* 반·이름 줄 (글자 크기 조절 포함) — 진행 화면에서는 띄우지 않습니다 */
+if(location.hash !== '#t'){
+  ME.bar('meBar');
+  /* 반 목록이 도착한 뒤에 묻습니다. 먼저 물으면 반 단추가 기본값으로 채워집니다. */
+  TG2.state(LESSON.api).then(st => {
+    const cls = (st && st.cls && st.cls.length) ? st.cls : null;
+    if(cls) ME.bar('meBar', cls);
+    ME.askOnce(cls ? { cls } : undefined);
+  });
+}
 
 /* ---- 위도별 에너지 수지 ----
    곡선·음영·점·판정을 모두 아래 두 식 하나에서 만듭니다.

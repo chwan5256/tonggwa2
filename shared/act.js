@@ -11,11 +11,40 @@
      ACT.report(sel, cfg)    오늘 한 것 모아 보기 + PDF 저장
 
    원칙
-     · 채점은 전부 학생 기기 안에서 끝납니다. 어디로도 보내지 않습니다.
-     · 이름은 PDF에만 쓰이며 저장·전송되지 않습니다.
+     · 채점은 전부 학생 기기 안에서 끝납니다. 정답 판정이 서버로 가지 않습니다.
+     · 선생님 화면의 '분포'를 위해 **무엇을 골랐는지만** 익명으로 보냅니다.
+       보내는 것 : 차시 코드 · 문항 코드 · 고른 선택지 · (서술형이면) 짧은 문장 · 반
+       보내지 않는 것 : 이름 · 학번 · 맞았는지 틀렸는지
+     · **이름은 이 기기 밖으로 절대 나가지 않습니다.** PDF와 기록표에만 씁니다.
      · 손가락으로도 되게 만듭니다. 끌어놓기 대신 '고르고 → 놓기'를 씁니다.
    ========================================================================== */
 const ACT = (() => {
+
+/* ---------- 익명 전송 ----------
+   선생님 진행 화면의 응답 분포를 위해서만 보냅니다.
+   fetch 의 no-cors 로 던지고 답은 받지 않습니다(fire-and-forget).
+   Apps Script 는 CORS 머리글을 주지 않아 답을 읽으려 하면 막히는데,
+   우리는 애초에 답이 필요 없으므로 이 방식이 맞습니다.
+   text/plain 을 쓰는 이유는 preflight(OPTIONS) 를 만들지 않기 위해서입니다. */
+function send(o){
+  const api = (typeof LESSON === 'object' && LESSON && LESSON.api) || '';
+  if(!api) return;
+  if(location.hash === '#t') return;          /* 교사 진행 화면은 보내지 않습니다 */
+
+  const body = {
+    lesson: (typeof LESSON === 'object' && LESSON.code) || '',
+    item:   String(o.item   || '').slice(0, 40),
+    choice: String(o.choice || '').slice(0, 20),
+    text:   String(o.text   || '').slice(0, 300),
+    /* 반만 붙입니다. 이름은 붙이지 않습니다 — 이 줄을 고치지 마세요. */
+    cls:    (typeof ME === 'object' && ME && ME.cls) ? ME.cls() : ''
+  };
+  try{
+    fetch(api, { method:'POST', mode:'no-cors',
+                 headers:{ 'Content-Type':'text/plain;charset=utf-8' },
+                 body: JSON.stringify(body) }).catch(() => {});
+  }catch(e){}
+}
 
 /* ---------- 기록 ---------- */
 const REC = { items: [] };
@@ -25,7 +54,9 @@ function put(o){
   const i = REC.items.findIndex(x => x.id === o.id);
   if(i < 0) REC.items.push(o); else REC.items[i] = o;
   try{ localStorage.setItem(KEY(), JSON.stringify(REC.items)); }catch(e){}
-  document.dispatchEvent(new CustomEvent('act:change'));
+  /* '방금 바뀐 항목'을 함께 실어 보냅니다.
+     같은 id 는 제자리 교체되므로 '배열의 마지막 = 방금 바뀐 것'이 아닙니다. */
+  document.dispatchEvent(new CustomEvent('act:change', { detail: o }));
 }
 function saved(){
   try{ return JSON.parse(localStorage.getItem(KEY()) || '[]'); }catch(e){ return []; }
@@ -40,9 +71,36 @@ const secOf = el => {
 /* lib.js 의 객관식 결과도 함께 모읍니다 */
 document.addEventListener('tg:quiz', e => {
   const d = e.detail;
-  put({ id:'quiz-' + d.host + '-' + d.i, sec:d.sec, kind:'객관식',
-        q:d.stem, my:d.picked, ans:d.answer, ok:d.ok });
+  const item = 'quiz-' + d.host + '-' + d.i;
+  put({ id:item, sec:d.sec, kind:'객관식', q:d.stem, my:d.picked, ans:d.answer, ok:d.ok });
+  /* 맞았는지(ok)는 보내지 않습니다. 무엇을 골랐는지만 보냅니다. */
+  send({ item, choice: d.picked });
 });
+
+/* 진도 기록 — 몇 문항을 풀었고 어디까지 봤는지 (기기 안에만) */
+document.addEventListener('act:change', e => {
+  if(typeof ME !== 'object' || !ME || !ME.mark) return;
+  const code = (typeof LESSON === 'object' && LESSON.code) || '';
+  const it = e.detail;
+  if(!code || !it) return;
+  ME.mark(code, it.id, countAsk(), it.sec || '');
+});
+
+/* ---------- 진도의 분모 ----------
+   기록은 '빈칸 하나'·'슬롯 하나'·'카드 한 장' 단위로 남습니다.
+   그래서 분모도 같은 단위로 세야 합니다.
+   문장 덩어리(.ci)를 세면 분모가 실제보다 작아져
+   절반만 풀어도 '다 풀었습니다'가 떠 버립니다.
+   각 활동이 만들 때 스스로 등록한 수를 쓰고, 없으면 DOM 으로 셉니다. */
+let ASK_N = 0;
+function askAdd(n){ ASK_N += Number(n) || 0; }
+function countAsk(){
+  /* 객관식은 lib.js 의 TG.quiz 가 그리므로 여기서 등록되지 않습니다.
+     화면에 그려진 문항 수를 그때그때 세어 더합니다. */
+  const quiz = document.querySelectorAll('.qi').length;
+  if(ASK_N || quiz) return ASK_N + quiz;
+  return document.querySelectorAll('.blank, .noteg, .sortg .card, .slot, [data-ask]').length || 0;
+}
 
 /* ==========================================================================
    빈칸 채우기
@@ -52,6 +110,7 @@ document.addEventListener('tg:quiz', e => {
 function cloze(sel, items){
   const host = document.querySelector(sel);
   if(!host) return;
+  askAdd(items.reduce((n, it) => n + (it.blanks ? it.blanks.length : 0), 0));
   host.classList.add('cloze');
   host.innerHTML = items.map((it, i) => {
     let n = -1;
@@ -135,6 +194,7 @@ function cloze(sel, items){
    슬롯은 HTML 에 <button class="slot" id="sl1"></button> 로 미리 둡니다.
    ========================================================================== */
 function place(sel, cfg){
+  askAdd((cfg && cfg.slots ? cfg.slots.length : 0));
   const host = document.querySelector(sel);
   if(!host) return;
   const tray = document.createElement('div');
@@ -172,6 +232,7 @@ function place(sel, cfg){
    cfg = { bins:[{id,name}], cards:[{t, bin, why}] }
    ========================================================================== */
 function sort(sel, cfg){
+  askAdd((cfg && cfg.cards ? cfg.cards.length : 0));
   const host = document.querySelector(sel);
   if(!host) return;
   host.classList.add('sortg');
@@ -229,6 +290,7 @@ function sort(sel, cfg){
 function note(sel, cfg){
   const host = document.querySelector(sel);
   if(!host) return;
+  askAdd(1);
   const uid = id(sel);
   host.classList.add('noteg');
   host.innerHTML = `
@@ -252,6 +314,8 @@ function note(sel, cfg){
   document.getElementById(uid + '-go').addEventListener('click', () => {
     if(!ta.value.trim()){ ta.focus(); return; }
     document.getElementById(uid + '-af').hidden = false;
+    /* 선생님 화면에 문장 몇 개를 익명으로 띄웁니다. 이름은 붙지 않습니다. */
+    send({ item:'note-' + sel, text: ta.value.trim().slice(0, 300) });
     record();
   });
   host.addEventListener('change', e => { if(e.target.matches('.checks input')) record(); });
@@ -260,6 +324,13 @@ function note(sel, cfg){
 /* ==========================================================================
    오늘 한 것 모아 보기 + PDF 저장
    ========================================================================== */
+/* 위에서 한 번 넣어 둔 반·이름을 가져옵니다. 없으면 빈 칸으로 둡니다. */
+function meLabel(){
+  if(typeof ME !== 'object' || !ME || !ME.get) return '';
+  const m = ME.get();
+  return m ? [m.cls, m.name].filter(Boolean).join(' ') : '';
+}
+
 function report(sel, cfg){
   const host = document.querySelector(sel);
   if(!host) return;
@@ -268,7 +339,8 @@ function report(sel, cfg){
     <div class="rep">
       <div class="rrow">
         <label for="${uid}-nm">이름 <span>(내 파일에만 쓰입니다. 전송되지 않습니다)</span></label>
-        <input id="${uid}-nm" type="text" placeholder="예: 1학년 3반 홍길동" autocomplete="off">
+        <input id="${uid}-nm" type="text" value="${esc(meLabel())}"
+               placeholder="예: 1학년 3반 홍길동" autocomplete="off">
       </div>
       <div class="stat" id="${uid}-st"></div>
       <div class="btnrow">
@@ -281,6 +353,12 @@ function report(sel, cfg){
 
   const st = document.getElementById(uid + '-st');
   const pv = document.getElementById(uid + '-pv');
+
+  /* 위쪽 '내 정보'에서 반·이름을 뒤늦게 넣어도 이 칸이 따라옵니다. */
+  document.addEventListener('tg:me', () => {
+    const el = document.getElementById(uid + '-nm');
+    if(el && !el.value.trim()) el.value = meLabel();
+  });
 
   function refresh(){
     const g = REC.items.filter(x => x.ok != null);
@@ -346,7 +424,7 @@ function report(sel, cfg){
   }
 
   function makePdf(){
-    const nm = document.getElementById(uid + '-nm').value.trim();
+    const nm = document.getElementById(uid + '-nm').value.trim() || meLabel();
     const d = new Date();
     const ymd = `${d.getFullYear()}. ${d.getMonth() + 1}. ${d.getDate()}.`;
     document.getElementById('tg-print').innerHTML = `
@@ -395,5 +473,6 @@ function report(sel, cfg){
 let seq = 0;
 function id(){ return 'a' + (++seq); }
 
-return { cloze, place, sort, note, report, put, items: () => REC.items };
+return { cloze, place, sort, note, report, put, send, countAsk,
+         items: () => REC.items };
 })();

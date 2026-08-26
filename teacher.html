@@ -35,15 +35,45 @@
 .fixbox li{margin-bottom:5px;color:var(--ink)}
 .fixbox[hidden]{display:none}
 
-/* 번호 */
-.pinrow{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
-.pinrow input{font:inherit;font-size:17px;letter-spacing:.35em;width:140px;text-align:center;
-  padding:10px 12px;border:1px solid var(--rule);border-radius:10px;
-  background:var(--surface);color:var(--ink)}
 .msg{font-size:14px;line-height:1.7}
 .msg.ok{color:var(--good)}
 .msg.no{color:var(--danger)}
 .msg.mute{color:var(--ink-faint)}
+
+/* ── 입장 문 ── */
+#door{position:fixed;inset:0;z-index:200;background:var(--ground);
+  display:flex;align-items:center;justify-content:center;padding:24px;overflow:auto}
+#door[hidden]{display:none}
+.door{width:100%;max-width:460px;background:var(--surface);border:1px solid var(--rule);
+  border-radius:18px;padding:36px 34px 30px;box-shadow:var(--shadow)}
+.door .ic{font-size:34px;line-height:1;margin:0 0 16px;opacity:.55}
+.door h1{font-family:var(--serif);font-size:24px;margin:0 0 8px;border:0;padding:0}
+.door .lead{margin:0 0 26px;font-size:14.5px;color:var(--ink-soft);line-height:1.75}
+.step{border-top:1px solid var(--rule-soft);padding-top:20px;margin-top:20px}
+.step:first-of-type{border-top:0;padding-top:0;margin-top:0}
+.step .k{margin:0 0 10px;font-family:var(--mono);font-size:11px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--ink-faint);display:flex;align-items:center;gap:8px}
+.step .k b{display:inline-flex;align-items:center;justify-content:center;width:19px;height:19px;
+  border-radius:50%;background:var(--rule);color:var(--ink-soft);font-size:11px;font-family:var(--sans)}
+.step.done .k b{background:var(--good);color:#fff}
+.step.done .k{color:var(--good)}
+.step:disabled{opacity:.4}
+fieldset.step{border:0;border-top:1px solid var(--rule-soft);margin-inline:0;padding-inline:0;min-inline-size:0}
+.door input{width:100%;font:inherit;font-size:16px;padding:12px 14px;border:1px solid var(--rule);
+  border-radius:11px;background:var(--surface);color:var(--ink)}
+.door input:focus{border-color:var(--accent);outline:none;box-shadow:0 0 0 3px var(--accent-wash)}
+.door .row{display:flex;gap:9px;margin-top:10px}
+.door .row .btn{flex-shrink:0}
+.door .who{margin-top:9px;font-size:13.5px;color:var(--good);word-break:break-all}
+.door .st{margin-top:10px;font-size:13.5px;line-height:1.7;min-height:1.2em}
+.door .st.no{color:var(--danger)}
+.door .st.mute{color:var(--ink-faint)}
+.door .st.ok{color:var(--good)}
+.door .keep{display:flex;align-items:center;gap:8px;margin-top:16px;font-size:13.5px;color:var(--ink-soft)}
+.door .foot{margin-top:24px;padding-top:16px;border-top:1px solid var(--rule-soft);
+  font-size:12.5px;color:var(--ink-faint);line-height:1.75}
+#gbtn{margin-top:2px;min-height:44px}
+.door .orline{margin:14px 0 10px;font-size:12.5px;color:var(--ink-faint);text-align:center}
 
 /* 차시 목록 */
 .glist{display:grid;gap:10px;margin-top:4px}
@@ -63,6 +93,7 @@
 .grow.shut{background:var(--surface-2)}
 .grow.shut .st{color:var(--ink-faint)}
 .grow.busy{opacity:.55}
+.grow.now{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-wash)}
 
 .sw{position:relative;width:54px;height:30px;border-radius:15px;background:var(--rule);
   border:0;cursor:pointer;flex-shrink:0;transition:background .22s ease;padding:0}
@@ -72,6 +103,52 @@
 .sw[aria-checked=true]::after{transform:translateX(24px)}
 .sw:disabled{opacity:.35;cursor:not-allowed}
 @media (prefers-reduced-motion:reduce){.sw,.sw::after{transition:none}}
+
+/* 오늘 수업 고르기 */
+.todaypick{display:grid;gap:9px}
+.tpick{display:flex;align-items:center;gap:13px;padding:12px 16px;border:1px solid var(--rule);
+  border-radius:12px;background:var(--surface);cursor:pointer}
+.tpick input{width:18px;height:18px;flex-shrink:0;accent-color:var(--accent);margin:0}
+.tpick .no{font-family:var(--mono);font-size:12px;color:var(--ink-soft);width:56px;flex-shrink:0}
+.tpick b{font-size:15.5px;font-weight:600}
+.tpick span.sm{font-size:12.5px;color:var(--ink-soft);margin-left:auto;white-space:nowrap}
+.tpick.on{border-color:var(--accent);background:var(--accent-wash)}
+.tpick.auto{border-style:dashed}
+.tpick.shut b{color:var(--ink-faint);text-decoration:line-through}
+
+/* 계정 */
+.wlist{display:grid;gap:9px;margin:0 0 14px}
+.wrow{display:flex;align-items:center;gap:12px;padding:11px 15px;border:1px solid var(--rule);
+  border-radius:11px;background:var(--surface)}
+.wrow input{flex:1;min-width:0;font:inherit;font-size:14.5px;padding:7px 10px;border:1px solid transparent;
+  border-radius:8px;background:transparent;color:var(--ink)}
+.wrow input:focus{border-color:var(--accent);background:var(--surface);outline:none}
+.wrow .me{font-family:var(--mono);font-size:11px;color:var(--accent);border:1px solid var(--accent);
+  border-radius:999px;padding:2px 8px;white-space:nowrap}
+.wrow .x{font:inherit;font-size:16px;line-height:1;border:1px solid var(--rule);background:var(--surface);
+  color:var(--ink-faint);border-radius:8px;width:32px;height:32px;cursor:pointer;flex-shrink:0}
+.wrow .x:hover{border-color:var(--danger);color:var(--danger)}
+.wrow .x:disabled{opacity:.25;cursor:not-allowed}
+/* 한 번에 시작 */
+.grow .go1{font:inherit;font-size:13.5px;font-weight:600;white-space:nowrap;border:1px solid var(--accent);
+  background:var(--accent);color:var(--on-accent);border-radius:9px;padding:9px 14px;cursor:pointer}
+.grow .go1:disabled{opacity:.35;cursor:not-allowed}
+.bulk{display:flex;flex-wrap:wrap;gap:9px;margin:0 0 16px}
+.qrwrap{display:flex;flex-wrap:wrap;gap:22px;align-items:flex-start}
+.qrwrap .pic{width:190px;flex-shrink:0}
+.qrwrap .pic svg{width:100%;height:auto;display:block;border:1px solid var(--rule);border-radius:10px}
+.qrwrap .tx{flex:1;min-width:240px}
+.qrwrap .tx p{margin:0 0 10px;font-size:14px;color:var(--ink-soft);line-height:1.72}
+.qrwrap .tx code{font-size:12.5px;word-break:break-all}
+.clsrow{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 14px}
+.clsrow .c{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--rule);
+  border-radius:999px;padding:6px 8px 6px 14px;background:var(--surface);font-size:14px}
+.clsrow .c button{font:inherit;font-size:14px;line-height:1;border:0;background:var(--surface-2);
+  color:var(--ink-soft);border-radius:50%;width:22px;height:22px;cursor:pointer}
+.clsrow .c button:hover{background:var(--danger);color:#fff}
+.pinbox{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:6px}
+.pinbox input{font:inherit;font-size:16px;width:180px;padding:10px 13px;border:1px solid var(--rule);
+  border-radius:10px;background:var(--surface);color:var(--ink)}
 
 .note{margin:20px 0 0;padding-top:17px;border-top:1px solid var(--rule-soft);
   font-size:13px;color:var(--ink-faint);line-height:1.8}
@@ -94,20 +171,57 @@
 .vrow.set{border-color:var(--good)}
 .keys kbd{font-family:var(--mono);font-size:12.5px;border:1px solid var(--rule);border-bottom-width:2px;
   border-radius:6px;padding:2px 7px;background:var(--surface-2);color:var(--ink)}
+.whoami{font-family:var(--mono);font-size:12px;color:var(--ink-faint)}
 </style>
 </head>
 <body>
 
+<!-- ══════════ 입장 문 — 계정 확인 → 비밀번호 ══════════ -->
+<div id="door" role="dialog" aria-modal="true" aria-labelledby="doorH">
+  <div class="door">
+    <p class="ic">🔑</p>
+    <h1 id="doorH" tabindex="-1">교사 화면</h1>
+    <p class="lead">허용된 계정으로 확인한 뒤 비밀번호를 넣어야 들어올 수 있습니다.
+      두 가지가 모두 맞아야 열립니다.</p>
+
+    <div class="step" id="s1">
+      <p class="k"><b>1</b> 계정 확인</p>
+      <div id="gbtn"></div>
+      <div id="manual" hidden>
+        <p class="orline">구글 로그인을 쓸 수 없는 상태입니다. 계정 주소를 직접 넣어 주세요.</p>
+        <input type="email" id="mail" placeholder="선생님 계정 주소" autocomplete="username" spellcheck="false">
+        <div class="row"><button class="btn" id="mailBtn" type="button">확인</button></div>
+      </div>
+      <p class="who" id="who1" hidden></p>
+      <p class="st mute" id="st1" role="status" aria-live="polite">계정을 확인하는 중…</p>
+    </div>
+
+    <fieldset class="step" id="s2" disabled>
+      <p class="k"><b>2</b> 비밀번호</p>
+      <input type="password" id="pw" placeholder="비밀번호" autocomplete="current-password">
+      <div class="row"><button class="btn" id="pwBtn" type="button">들어가기</button></div>
+      <label class="keep"><input type="checkbox" id="keep" checked> 이 브라우저에서 12시간 동안 기억</label>
+      <p class="st mute" id="st2" role="status" aria-live="polite"></p>
+    </fieldset>
+
+    <p class="foot">이것은 <b>허들</b>입니다. 정적 웹사이트에는 서버가 없어 완전한 접근 통제를 걸 수 없습니다.
+      그래서 평가 문항·정답·채점기준표는 애초에 이 저장소에 두지 않습니다.
+      <a href="./">← 학생 화면으로</a></p>
+  </div>
+</div>
+
 <div class="topbar"><div class="wrap">
   <a class="home" href="./">← 학생 화면</a>
   <nav style="flex:1"></nav>
+  <span class="whoami" id="whoami"></span>
+  <button class="tbtn" id="lockBtn" type="button">잠그기</button>
   <button class="tbtn" id="themeBtn" type="button">테마</button>
 </div></div>
 
 <header class="mast"><div class="wrap">
   <p class="eyebrow">교사 전용</p>
   <h1>수업 운영 화면</h1>
-  <p class="dek">차시를 열고 닫고, 진행 화면으로 바로 들어갑니다. 이 주소는 학생 화면 어디에도 연결해 두지 않았습니다.</p>
+  <p class="dek">오늘 수업을 정하고, 차시를 열고 닫고, 진행 화면으로 바로 들어갑니다. 이 주소는 학생 화면 어디에도 연결해 두지 않았습니다.</p>
 </div></header>
 
 <main><div class="wrap">
@@ -115,7 +229,7 @@
   <!-- 연결 -->
   <div class="panel">
     <h2>구글 연결</h2>
-    <p class="sub">차시를 열고 닫은 상태와 학생 응답이 구글에 저장됩니다. 연결이 끊기면 파일에 적힌 기본값(<code>manifest.json</code>의 <code>open</code>)이 그대로 쓰이므로 수업은 멈추지 않습니다.</p>
+    <p class="sub">설정과 학생 응답이 구글에 저장됩니다. 연결이 끊기면 파일에 적힌 기본값(<code>manifest.json</code>)이 그대로 쓰이므로 수업은 멈추지 않습니다.</p>
     <div class="conn">
       <span class="chip wait" id="conn"><i></i><span id="connT">확인하는 중…</span></span>
       <button class="btn ghost" id="retry" type="button">다시 확인</button>
@@ -125,28 +239,108 @@
       <ol>
         <li>Apps Script 편집기에서 <b>Code.gs 전체를 최신 코드로 교체</b>했는지</li>
         <li>저장한 뒤 <b>배포 관리 → 편집(연필) → 버전: 새 버전 → 배포</b>를 눌렀는지<br>
-            <span style="color:var(--ink-faint)">‘새 배포’를 누르면 주소가 바뀝니다. 반드시 ‘배포 관리 → 편집’입니다.</span></li>
+            <span style="color:var(--ink-soft)">‘새 배포’를 누르면 주소가 바뀝니다. 반드시 ‘배포 관리 → 편집’입니다.</span></li>
         <li>배포 설정이 <b>실행 계정 = 나</b>, <b>액세스 권한 = 링크가 있는 모든 사용자</b>인지</li>
         <li>맨 처음 배포할 때 뜨는 <b>권한 승인</b>을 끝까지 눌렀는지</li>
       </ol>
     </div>
   </div>
 
+  <!-- 오늘 수업 -->
+  <div class="panel">
+    <h2>오늘 수업</h2>
+    <p class="sub">학생 자료실 맨 위 <b>‘오늘 수업’</b> 카드에 어떤 차시를 띄울지 정합니다.
+      <b>자동</b>으로 두면 열려 있는 차시 중 가장 뒤엣것이 올라갑니다. 바꾸면 학생 화면에 곧바로 반영됩니다.</p>
+    <div class="todaypick" id="tpick"></div>
+    <p class="msg mute" id="tMsg" style="margin-top:12px"></p>
+  </div>
+
   <!-- 여닫이 -->
   <div class="panel">
     <h2>차시 열고 닫기</h2>
-    <p class="sub">닫아 둔 차시는 학생 목록에서 사라지고, 주소를 직접 입력해도 안내문만 나옵니다. 바꾸면 곧바로 반영됩니다.</p>
-    <div class="pinrow">
-      <input type="password" id="pin" inputmode="numeric" placeholder="••••" aria-label="교사 번호" autocomplete="off">
-      <button class="btn" id="pinBtn" type="button">번호 확인</button>
-      <span class="msg mute" id="pinMsg">번호를 넣으면 스위치가 켜집니다.</span>
+    <p class="sub">닫아 둔 차시는 학생 목록에서 사라지고, 주소를 직접 입력해도 안내문만 나옵니다. 바꾸면 곧바로 반영됩니다.
+      들어올 때 비밀번호를 이미 확인했으므로 여기서 다시 넣지 않아도 됩니다.</p>
+    <div class="bulk">
+      <button class="btn ghost" id="bAll" type="button">전체 열기</button>
+      <button class="btn ghost" id="bNone" type="button">전체 닫기</button>
+      <button class="btn ghost" id="bToday" type="button">오늘 것만 열기</button>
     </div>
     <div class="glist" id="glist"></div>
+    <p class="msg mute" id="gMsg" style="margin-top:12px"></p>
     <p class="note">
-      <b>알아 두실 것.</b> 이것은 잠금이 아니라 <b>허들</b>입니다. 정적 웹사이트에는 서버가 없어 진짜 접근 통제를 걸 수 없고,
-      주소를 정확히 아는 사람은 페이지 소스로 내용을 볼 수 있습니다.
-      그래서 <b>평가 문항·정답·채점기준표는 이 저장소에 올리지 않습니다.</b> 미리보기를 막는 용도로만 쓰세요.
+      <b>알아 두실 것.</b> 이것은 잠금이 아니라 <b>허들</b>입니다. 주소를 정확히 아는 사람은 페이지 소스로 내용을 볼 수 있습니다.
+      미리보기를 막는 용도로만 쓰세요.
     </p>
+  </div>
+
+  <!-- 계정과 비밀번호 -->
+  <div class="panel">
+    <h2>들어올 수 있는 계정</h2>
+    <p class="sub">이 목록에 있는 계정만 위 입장 문을 통과합니다. 주소를 고치거나, 줄을 지우거나, 새로 더한 뒤 <b>저장</b>을 누르세요.
+      계정은 최소 한 개가 남아 있어야 합니다.</p>
+    <div class="wlist" id="wlist"></div>
+    <div class="row" style="display:flex;gap:9px;flex-wrap:wrap">
+      <button class="btn ghost" id="wAdd" type="button">＋ 계정 추가</button>
+      <button class="btn" id="wSave" type="button">저장</button>
+    </div>
+    <p class="msg mute" id="wMsg" style="margin-top:12px"></p>
+
+    <p class="note" style="margin-bottom:0"><b>비밀번호 바꾸기</b></p>
+    <div class="pinbox">
+      <input type="password" id="np1" placeholder="새 비밀번호" autocomplete="new-password">
+      <input type="password" id="np2" placeholder="한 번 더" autocomplete="new-password">
+      <button class="btn ghost" id="npBtn" type="button">바꾸기</button>
+      <span class="msg mute" id="npMsg"></span>
+    </div>
+    <div class="fixbox" id="hashBox" hidden style="background:var(--ochre-wash);border-color:var(--ochre)">
+      <b style="color:var(--ochre)">예비 비밀번호도 함께 바꿔 주세요.</b>
+      구글에 닿지 못할 때 쓰는 예비 경로는 <code>teacher.html</code> 안의 지문을 봅니다.
+      이 값을 바꾸지 않으면 <b>옛 비밀번호로 계속 들어올 수 있습니다.</b>
+      <ol>
+        <li><code>teacher.html</code> 의 <code>fallbackPinHash</code> 를 아래 값으로 바꿉니다</li>
+        <li>저장하고 GitHub Desktop 에서 커밋·푸시합니다</li>
+      </ol>
+      <p style="font-family:var(--mono);font-size:12.5px;word-break:break-all;margin:10px 0 0;
+                padding:10px 12px;background:var(--surface);border-radius:8px" id="hashVal"></p>
+    </div>
+    <p class="note">
+      <b>잠겼을 때.</b> 비밀번호를 잊었거나, 내 계정을 실수로 지웠거나, 여러 번 틀려 막혔을 때는
+      Apps Script 편집기에서 <code>설정초기화</code> 함수를 실행하세요.
+      맨 처음 비밀번호와 계정 목록으로 돌아갑니다.
+    </p>
+  </div>
+
+  <!-- 반 목록 -->
+  <div class="panel">
+    <h2>반 목록</h2>
+    <p class="sub">학생이 처음 들어올 때 고르는 반입니다. 여기서 정한 반으로 응답이 나뉘어 쌓이고,
+      진행 화면에서 <b>반별로 골라 볼 수</b> 있습니다. 학생 이름은 저장되지 않습니다.</p>
+    <div class="clsrow" id="clsrow"></div>
+    <div style="display:flex;gap:9px;flex-wrap:wrap">
+      <input type="text" id="clsNew" placeholder="예) 3반" maxlength="12"
+             style="font:inherit;font-size:15px;padding:9px 13px;border:1px solid var(--rule);
+                    border-radius:10px;background:var(--surface);color:var(--ink);width:140px">
+      <button class="btn ghost" id="clsAdd" type="button">＋ 더하기</button>
+      <button class="btn" id="clsSave" type="button">저장</button>
+    </div>
+    <p class="msg mute" id="clsMsg" style="margin-top:12px"></p>
+  </div>
+
+  <!-- 접속 QR -->
+  <div class="panel">
+    <h2>학생 접속 QR</h2>
+    <p class="sub">칠판에 띄우면 학생이 주소를 받아 적지 않고 카메라로 바로 들어옵니다.
+      진행 화면 첫 절에도 같은 그림이 자동으로 나옵니다.</p>
+    <div class="qrwrap">
+      <div class="pic" id="qrPic"></div>
+      <div class="tx">
+        <p><b>학생 자료실 주소</b><br><code id="qrUrl"></code></p>
+        <p>구글 클래스룸에는 <b>이 주소만</b> 올리세요. 교사 화면 주소는 어디에도 걸려 있지 않습니다.</p>
+        <button class="btn ghost" id="qrCopy" type="button">주소 복사</button>
+        <button class="btn ghost" id="qrBig" type="button">크게 띄우기</button>
+        <span class="msg mute" id="qrMsg"></span>
+      </div>
+    </div>
   </div>
 
   <!-- 수업 영상 -->
@@ -181,88 +375,373 @@
 
 <script src="shared/lib.js"></script>
 <script src="shared/gate.js"></script>
+<script src="shared/qr.js"></script>
 <script>
-/* ============ 설정 — index.html 과 같은 주소를 씁니다 ============ */
+/* ══════════════ 설정 — 여기만 고치면 됩니다 ══════════════ */
 const HUB = {
-  api: "https://script.google.com/macros/s/AKfycbxGwVShBta72VSwPeJxaVDRWyEgv6Nl2tNsGNjdf_0AIKeI86oDrx806MAwoNJgezStNw/exec"
+  api: "https://script.google.com/macros/s/AKfycbxGwVShBta72VSwPeJxaVDRWyEgv6Nl2tNsGNjdf_0AIKeI86oDrx806MAwoNJgezStNw/exec",
+
+  /* 구글 로그인 클라이언트 ID.
+     비워 두면 계정 주소를 직접 입력하는 방식으로 넘어갑니다.
+     발급 방법은 README 의 '구글 로그인 붙이기' 절에 적어 두었습니다. */
+  clientId: "",
+
+  /* 구글에 닿지 못할 때만 쓰는 예비 값 — 이 파일은 누구나 소스를 볼 수 있으므로
+     비밀번호는 그대로 적지 않고 지문(SHA-256)만 둡니다. */
+  fallbackWho: ["cadrical@gmail.com", "chwan5256@namkang.sen.hs.kr"],
+  fallbackPinHash: "743392a6cfca212568fbd1ca6b693f91f583f67672f2698b000dc20e062ddf6e"
 };
-/* ============================================================== */
+/* ═════════════════════════════════════════════════════════ */
 
 TG.theme('themeBtn');
 
-let MF = null, GATE = null, LIVE = false, PIN = '';
+const KEY = 'tg2.teacher.pass';
+const NEED_VER = TG2.NEED_VER;    /* Code.gs 의 VER 과 같아야 합니다 */
+
+/* 서버·파일에서 온 문자열을 화면에 넣기 전에 반드시 통과시킵니다. */
+const esc = s => String(s == null ? '' : s)
+  .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+  .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+let MF = null, GATE = null, TODAY = '', VID = {}, LIVE = false, CLS = [];
+let PIN = '', ME = '', OFFLINE = false, STALE = false, WHO_OK = false;
+
 const codeOf = l => l.unit + '-' + l.no;
 const isOpen = l => (GATE && codeOf(l) in GATE) ? GATE[codeOf(l)] !== false : l.open !== false;
+const $ = id => document.getElementById(id);
 
-fetch('manifest.json', { cache:'no-store' })
-  .then(r => r.json())
-  .then(m => {
-    MF = m;
-    document.getElementById('ftLeft').textContent =
-      [m.school, m.course, m.part].filter(Boolean).join(' · ') + ' · 교사 전용';
-    runlist(); vlist(); connect();
+/* ══════════════ 입장 문 ══════════════ */
+const door = $('door');
+const s1 = $('s1'), s2 = $('s2');
+const say1 = (c, t) => { $('st1').className = 'st ' + c; $('st1').textContent = t; };
+const say2 = (c, t) => { $('st2').className = 'st ' + c; $('st2').textContent = t; };
+
+/* 기억해 둔 통행증이 있으면 문을 건너뜁니다. */
+(function resume(){
+  let v = null;
+  try{ v = JSON.parse(localStorage.getItem(KEY) || 'null'); }catch(e){}
+  if(!(v && v.until > Date.now() && v.pin && v.me)){ openDoor(); return; }
+
+  /* 기억해 둔 값을 그대로 믿지 않습니다.
+     다른 기기에서 비밀번호를 바꿨거나 계정이 빠졌을 수 있고,
+     저장값 자체를 손으로 고쳐 넣을 수도 있습니다.                     */
+  Promise.all([ TG2.chkWho(HUB.api, v.me), TG2.checkPin(HUB.api, v.pin) ])
+    .then(([w, k]) => {
+      if(w === false || k === false){ forget(); openDoor(); return; }
+      if(w === null || k === null) OFFLINE = true;   /* 물어보지 못함 — 통과시키되 표시 */
+      ME = v.me; PIN = v.pin; enter();
+    });
+})();
+
+function forget(){ try{ localStorage.removeItem(KEY); }catch(e){} }
+
+function openDoor(){
+  door.hidden = false;
+  document.body.style.overflow = 'hidden';
+  /* 문이 열려 있는 동안 뒤쪽 본문은 탭·낭독기에서도 닿지 않게 합니다. */
+  document.querySelectorAll('body > :not(#door)').forEach(el => el.setAttribute('inert', ''));
+  setTimeout(() => { try{ $('doorH').focus(); }catch(e){} }, 60);
+  if(HUB.clientId) startGoogle(); else manualMode('구글 로그인이 아직 연결되지 않았습니다.');
+}
+
+function enter(){
+  door.hidden = true;
+  document.body.style.overflow = '';
+  document.querySelectorAll('body > [inert]').forEach(el => el.removeAttribute('inert'));
+  $('whoami').textContent = ME + (OFFLINE ? ' · 오프라인' : '');
+  boot();
+}
+
+/* ---------- 1단계 · 구글 로그인 ---------- */
+function startGoogle(){
+  say1('mute', '구글 로그인 창을 준비하는 중…');
+  const s = document.createElement('script');
+  s.src = 'https://accounts.google.com/gsi/client';
+  s.async = true; s.defer = true;
+  s.onerror = () => manualMode('구글 로그인을 불러오지 못했습니다.');
+  s.onload = () => {
+    try{
+      google.accounts.id.initialize({ client_id: HUB.clientId, callback: onCred, auto_select: false });
+      google.accounts.id.renderButton($('gbtn'),
+        { theme:'outline', size:'large', width:340, text:'signin_with', locale:'ko' });
+      say1('mute', '위 단추를 눌러 선생님 계정으로 로그인해 주세요.');
+    }catch(e){ manualMode('구글 로그인을 시작하지 못했습니다.'); }
+  };
+  document.head.appendChild(s);
+}
+
+function manualMode(why){
+  $('gbtn').hidden = true;
+  $('manual').hidden = false;
+  say1('mute', why + ' 계정 주소를 직접 넣어 확인합니다.');
+}
+
+/* 구글이 보내 준 토큰에서 이메일만 꺼냅니다. */
+function onCred(res){
+  let p;
+  try{
+    p = JSON.parse(decodeURIComponent(escape(atob(
+      res.credential.split('.')[1].replace(/-/g,'+').replace(/_/g,'/')))));
+  }catch(e){ say1('no', '로그인 정보를 읽지 못했습니다. 다시 시도해 주세요.'); return; }
+  if(!p.email_verified){ say1('no', '이메일이 확인되지 않은 계정입니다.'); return; }
+  checkAccount(p.email);
+}
+
+$('mailBtn').addEventListener('click', () => checkAccount($('mail').value));
+$('mail').addEventListener('keydown', e => { if(e.key === 'Enter') $('mailBtn').click(); });
+
+function checkAccount(email){
+  const t = String(email || '').trim().toLowerCase();
+  if(!t || t.indexOf('@') < 1){ say1('no', '계정 주소를 정확히 넣어 주세요.'); return; }
+  say1('mute', '확인하는 중…');
+
+  TG2.chkWho(HUB.api, t).then(ok => {
+    if(ok === null){                       /* 구글에 닿지 못했거나 옛 배포 — 예비 경로 */
+      OFFLINE = true;
+      ok = HUB.fallbackWho.map(x => x.toLowerCase()).includes(t);
+      if(!ok){
+        say1('no', '구글에 닿지 못했고, 이 파일에 적힌 예비 목록에도 없는 계정입니다.');
+        return;
+      }
+      say1('ok', '구글에 닿지 못해 이 파일에 적힌 예비 목록으로 확인했습니다.');
+    }
+    else if(!ok){
+      say1('no', '허용된 계정이 아닙니다. 다른 계정으로 로그인하거나 목록에 추가해 주세요.');
+      return;
+    }
+    else say1('ok', '허용된 계정입니다.');
+
+    ME = t;
+    s1.classList.add('done');
+    $('who1').hidden = false; $('who1').textContent = '✓ ' + t;
+    $('gbtn').hidden = true; $('manual').hidden = true;
+    s2.disabled = false;
+    $('pw').focus();
   });
+}
+
+/* ---------- 2단계 · 비밀번호 ---------- */
+$('pwBtn').addEventListener('click', tryPw);
+$('pw').addEventListener('keydown', e => { if(e.key === 'Enter') tryPw(); });
+
+function tryPw(){
+  const v = $('pw').value.trim();          /* 서버도 trim 해서 저장합니다 */
+  if(!ME){ say2('no', '먼저 계정을 확인해 주세요.'); return; }
+  if(!v){ say2('no', '비밀번호를 넣어 주세요.'); return; }
+  say2('mute', '확인하는 중…');
+
+  /* 맞음(true) · 틀림(false) · 물어보지 못함(null) 을 갈라 씁니다. */
+  const ask = OFFLINE
+    ? Promise.resolve(null)
+    : TG2.checkPin(HUB.api, v);
+
+  ask.then(ok => {
+    if(ok === true)  return { pass:true };
+    if(ok === false) return { pass:false, why:'비밀번호가 맞지 않습니다. (여러 번 틀리면 잠시 막힙니다)' };
+    OFFLINE = true;                        /* 예비 경로 — 지문으로 확인 */
+    return TG2.sha256(v).then(h => h === HUB.fallbackPinHash
+      ? { pass:true, off:true }
+      : { pass:false, why:'구글에 닿지 못했습니다. 이 파일에 적힌 예비 비밀번호도 아닙니다.' });
+  }).then(r => {
+    if(!r.pass){ say2('no', r.why); return; }
+    PIN = v;
+    s2.classList.add('done');
+    say2('ok', r.off ? '구글에 닿지 못해 예비 비밀번호로 들어갑니다. 설정은 바꿀 수 없습니다.' : '들어갑니다.');
+    if($('keep').checked && !r.off){
+      try{ localStorage.setItem(KEY, JSON.stringify(
+        { me: ME, pin: PIN, until: Date.now() + 12 * 3600 * 1000 })); }catch(e){}
+    }
+    setTimeout(enter, r.off ? 900 : 220);
+  });
+}
+
+$('lockBtn').addEventListener('click', () => { forget(); location.reload(); });
+
+/* ══════════════ 본문 ══════════════ */
+function boot(){
+  fetch('manifest.json', { cache:'no-store' })
+    .then(r => { if(!r.ok) throw new Error(r.status); return r.json(); })
+    .catch(() => {
+      document.querySelector('main .wrap').innerHTML =
+        '<div class="panel"><h2>목록을 불러오지 못했습니다</h2>' +
+        '<p class="sub"><code>manifest.json</code> 을 읽지 못했습니다. ' +
+        '파일이 저장소에 있는지, 주소가 맞는지 확인해 주세요.</p></div>';
+      return null;
+    })
+    .then(m => {
+      if(!m) return;
+      MF = m;
+      TODAY = m.today || '';
+      $('ftLeft').textContent =
+        [m.school, m.course, m.part].filter(Boolean).join(' · ') + ' · 교사 전용';
+      runlist(); vlist(); glist(); tlist(); clsrow(); drawQR(); connect();
+    });
+}
 
 /* ---------- 연결 확인 ---------- */
 function connect(){
-  const chip = document.getElementById('conn'), t = document.getElementById('connT');
+  const chip = $('conn'), t = $('connT');
   chip.className = 'chip wait'; t.textContent = '확인하는 중…';
-  document.getElementById('fix').hidden = true;
+  $('fix').hidden = true;
 
   TG2.ping(HUB.api).then(r => {
-    LIVE = r.ok;
-    if(r.ok){
-      chip.className = 'chip ok'; t.textContent = '연결됨';
-      return TG2.gates(HUB.api).then(g => { GATE = g || {}; glist(); })
-        .then(() => TG2.vids(HUB.api)).then(v => { VID = v || {}; paint(); });
+    STALE = r.ok && r.ver < NEED_VER;
+    LIVE  = r.ok && !STALE;
+
+    if(STALE){
+      chip.className = 'chip no';
+      t.textContent = '옛 배포 — 새 버전으로 배포해 주세요 (ver ' + r.ver + ' → ' + NEED_VER + ')';
+      $('fix').hidden = false;
+      GATE = null; glist(); tlist();
+      return;
     }
-    chip.className = 'chip no'; t.textContent = '연결 안 됨 — ' + (r.why || '');
-    document.getElementById('fix').hidden = false;
-    GATE = null; glist();
+    if(!r.ok){
+      chip.className = 'chip no'; t.textContent = '연결 안 됨 — ' + (r.why || '');
+      $('fix').hidden = false;
+      GATE = null; glist(); tlist();
+      return;
+    }
+
+    chip.className = 'chip ok'; t.textContent = '연결됨 · ver ' + r.ver;
+    return TG2.state(HUB.api)
+      /* 서버가 답했으면 서버 값이 정본입니다. 빈 문자열은 '자동'이라는 확정 답이므로
+         manifest 값으로 되돌리지 않습니다. 못 읽었을 때만 manifest 를 씁니다. */
+      .then(s => {
+        if(s){ GATE = s.open; TODAY = s.today; CLS = s.cls || []; }
+        glist(); tlist(); clsrow();
+      })
+      .then(() => TG2.vids(HUB.api)).then(v => { VID = v || {}; paint(); })
+      .then(() => loadWho());
   });
 }
-document.getElementById('retry').addEventListener('click', connect);
+$('retry').addEventListener('click', () => {
+  if(dirtyWho() && !confirm('계정 목록에 저장하지 않은 편집이 있습니다.\n다시 확인하면 서버 값으로 되돌아갑니다. 계속할까요?')) return;
+  connect();
+});
 
-/* ---------- 번호 ---------- */
-const pin = document.getElementById('pin'), pinMsg = document.getElementById('pinMsg');
-document.getElementById('pinBtn').addEventListener('click', () => {
-  const v = pin.value.trim();
-  if(!v){ say('no', '번호를 입력해 주세요.'); return; }
-  if(!LIVE){ say('no', '구글에 연결된 뒤에 쓸 수 있습니다. 위쪽 안내를 먼저 확인해 주세요.'); return; }
-  say('mute', '확인하는 중…');
-  TG2.checkPin(HUB.api, v).then(d => {
-    if(d && d.ok){ PIN = v; say('ok', '확인됐습니다. 스위치를 켜고 끌 수 있습니다.'); glist(); }
-    else { PIN = ''; say('no', '번호가 맞지 않습니다.'); glist(); }
+/* 화면의 계정 칸이 마지막으로 불러온 목록과 다른가 */
+function dirtyWho(){
+  const now = [...document.querySelectorAll('.wrow input')].map(i => i.value.trim().toLowerCase());
+  return now.length !== WHO.length || now.some((v, i) => v !== String(WHO[i]).toLowerCase());
+}
+
+const tell = (id, cls, txt) => { const e = $(id); e.className = 'msg ' + cls; e.textContent = txt; };
+
+/* ---------- 오늘 수업 ---------- */
+function tlist(){
+  const auto = MF.lessons.filter(isOpen).slice().sort((a, b) => (a.no > b.no ? -1 : 1))[0];
+  const rows = [`<label class="tpick auto ${TODAY ? '' : 'on'}">
+      <input type="radio" name="today" value="" ${TODAY ? '' : 'checked'}>
+      <span class="no">자동</span>
+      <b>열린 차시 중 마지막</b>
+      <span class="sm">${auto ? '지금은 ' + auto.no + '차시' : '열린 차시 없음'}</span>
+    </label>`];
+
+  MF.lessons.forEach(l => {
+    const c = codeOf(l), on = TODAY === c, ok = isOpen(l);
+    rows.push(`<label class="tpick ${on ? 'on' : ''} ${ok ? '' : 'shut'}">
+      <input type="radio" name="today" value="${esc(c)}" ${on ? 'checked' : ''}>
+      <span class="no">${esc(l.no)}차시</span>
+      <b>${esc(l.title)}</b>
+      <span class="sm">${ok ? '' : '닫혀 있어 학생에게 보이지 않습니다'}</span>
+    </label>`);
+  });
+  $('tpick').innerHTML = rows.join('');
+
+  /* 닫힌 차시를 오늘 수업으로 두면 학생 화면은 말없이 다른 차시를 띄웁니다.
+     그 어긋남을 화면에 계속 남겨 둡니다.                                  */
+  const cur = MF.lessons.find(x => codeOf(x) === TODAY);
+  if(cur && !isOpen(cur))
+    tell('tMsg', 'no', '⚠ ' + cur.no + '차시가 오늘 수업으로 정해져 있으나 닫혀 있습니다. ' +
+                       '지금 학생 화면에는 ' + (auto ? auto.no + '차시' : '아무것도') + ' 가 대신 올라갑니다.');
+}
+
+$('tpick').addEventListener('change', e => {
+  const r = e.target.closest('input[name=today]'); if(!r) return;
+  const code = r.value;
+  if(!LIVE){ tell('tMsg', 'no', '구글에 연결된 뒤에 바꿀 수 있습니다.'); tlist(); return; }
+  tell('tMsg', 'mute', '저장하는 중…');
+
+  TG2.setToday(HUB.api, code, PIN).then(d => {
+    if(!d){ tell('tMsg', 'no', '연결하지 못했습니다. 바뀌지 않았습니다.'); tlist(); return; }
+    if(!d.ok){ tell('tMsg', 'no', d.error || '바꾸지 못했습니다.'); tlist(); return; }
+    TODAY = typeof d.today === 'string' ? d.today : '';
+    tlist();
+    const l = MF.lessons.find(x => codeOf(x) === TODAY);
+    if(!TODAY) tell('tMsg', 'ok', '자동으로 되돌렸습니다.');
+    else if(l && !isOpen(l))
+      tell('tMsg', 'no', l.no + '차시로 정했지만 이 차시는 닫혀 있습니다. 아래에서 함께 열어 주세요.');
+    else tell('tMsg', 'ok', (l ? l.no + '차시 「' + l.title + '」' : '') + ' 을(를) 오늘 수업으로 정했습니다.');
   });
 });
-pin.addEventListener('keydown', e => { if(e.key === 'Enter') document.getElementById('pinBtn').click(); });
-const say = (cls, txt) => { pinMsg.className = 'msg ' + cls; pinMsg.textContent = txt; };
 
 /* ---------- 차시 목록 ---------- */
 function chapName(id){
   const c = (MF.chapters || []).find(x => x.id === id);
   const u = MF.units.find(x => x.id === (c && c.unit));
-  return c ? `${u ? u.no + '. ' + u.title : ''} › ${c.no}. ${c.title}` : '';
+  return c ? esc(`${u ? u.no + '. ' + u.title : ''} › ${c.no}. ${c.title}`) : '';
 }
 
 function glist(){
-  const host = document.getElementById('glist');
+  const host = $('glist');
   let last = null;
   host.innerHTML = MF.lessons.map(l => {
-    const ok = isOpen(l), can = !!PIN && LIVE;
+    const ok = isOpen(l), now = TODAY === codeOf(l);
     let head = '';
     if(l.chapter !== last){ last = l.chapter; head = `<p class="gchap">${chapName(l.chapter)}</p>`; }
-    return head + `<div class="grow ${ok ? 'open' : 'shut'}" data-code="${codeOf(l)}">
-      <span class="no">${l.no}차시</span>
-      <span class="nm"><b>${l.title}</b><span>${l.topic || ''}</span></span>
+    return head + `<div class="grow ${ok ? 'open' : 'shut'} ${now ? 'now' : ''}" data-code="${codeOf(l)}">
+      <span class="no">${esc(l.no)}차시</span>
+      <span class="nm"><b>${esc(l.title)}</b><span>${now ? '오늘 수업 · ' : ''}${esc(l.topic || '')}</span></span>
       <span class="st">${ok ? '열림' : '닫힘'}</span>
+      <button class="go1" type="button" data-start="${esc(codeOf(l))}"
+              ${LIVE ? '' : 'disabled'}>수업 시작</button>
       <button class="sw" type="button" role="switch" aria-checked="${ok}"
-              aria-label="${l.title} 열고 닫기" ${can ? '' : 'disabled'}></button>
+              aria-label="${esc(l.title)} 열고 닫기" ${LIVE ? '' : 'disabled'}></button>
     </div>`;
   }).join('');
 }
 
-document.getElementById('glist').addEventListener('click', e => {
+/* ── 한 번에 수업 시작 ──
+   ① 이 차시를 열고 ② 오늘 수업으로 정하고 ③ 진행 화면을 엽니다.
+   수업 직전에 세 곳을 오가지 않게 하려는 것이 전부입니다. */
+$('glist').addEventListener('click', e => {
+  const b = e.target.closest('[data-start]');
+  if(!b || b.disabled) return;
+  const code = b.dataset.start;
+  const l = MF.lessons.find(x => codeOf(x) === code);
+  if(!l) return;
+  b.disabled = true; b.textContent = '여는 중…';
+  tell('gMsg', 'mute', l.no + '차시를 열고 오늘 수업으로 정하는 중…');
+
+  /* 두 걸음 중 하나만 되고 끝나면 화면과 서버가 어긋난 채 남습니다.
+     그래서 걸음마다 결과를 확인하고, 어디까지 됐는지 그대로 알립니다. */
+  TG2.setGate(HUB.api, code, true, PIN)
+    .then(d1 => {
+      if(!d1 || !d1.ok){
+        b.disabled = false; b.textContent = '수업 시작';
+        tell('gMsg', 'no', (d1 && d1.error) || '차시를 열지 못했습니다. 아무것도 바뀌지 않았습니다.');
+        glist(); tlist();
+        return null;
+      }
+      GATE = d1.open; glist(); tlist();
+      return TG2.setToday(HUB.api, code, PIN);
+    })
+    .then(d2 => {
+      if(d2 === null) return;                       /* 첫 걸음에서 이미 끝냄 */
+      b.disabled = false; b.textContent = '수업 시작';
+      if(!d2 || !d2.ok){
+        tell('gMsg', 'no', l.no + '차시는 열렸습니다. 다만 오늘 수업으로 정하지는 못했습니다 — ' +
+                           ((d2 && d2.error) || '연결하지 못했습니다') + '. 위에서 직접 골라 주세요.');
+        return;
+      }
+      TODAY = d2.today || '';
+      glist(); tlist();
+      tell('gMsg', 'ok', l.no + '차시를 열고 오늘 수업으로 정했습니다. 진행 화면을 엽니다…');
+      /* t=1 은 진행 화면에게 '교사가 연 것'임을 알려 줍니다. */
+      setTimeout(() => { location.href = l.path + '?t=1#t'; }, 500);
+    });
+});
+
+$('glist').addEventListener('click', e => {
   const b = e.target.closest('.sw');
   if(!b || b.disabled) return;
   const row = b.closest('.grow'), code = row.dataset.code;
@@ -271,30 +750,213 @@ document.getElementById('glist').addEventListener('click', e => {
 
   TG2.setGate(HUB.api, code, next, PIN).then(d => {
     row.classList.remove('busy'); b.disabled = false;
-    if(!d || !d.ok){ say('no', (d && d.error) || '바꾸지 못했습니다.'); return; }
+    if(!d || !d.ok){ tell('gMsg', 'no', (d && d.error) || '바꾸지 못했습니다.'); return; }
     GATE = d.open;
-    b.setAttribute('aria-checked', String(next));
-    row.className = 'grow ' + (next ? 'open' : 'shut');
-    row.querySelector('.st').textContent = next ? '열림' : '닫힘';
-    say('ok', row.querySelector('.nm b').textContent + ' — ' + (next ? '열었습니다' : '닫았습니다'));
+    glist(); tlist();
+    const nm = MF.lessons.find(l => codeOf(l) === code);
+    tell('gMsg', 'ok', (nm ? nm.title : code) + ' — ' + (next ? '열었습니다' : '닫았습니다'));
   }).catch(() => {
     row.classList.remove('busy'); b.disabled = false;
-    say('no', '연결하지 못했습니다. 위쪽 연결 상태를 확인해 주세요.');
+    tell('gMsg', 'no', '연결하지 못했습니다. 위쪽 연결 상태를 확인해 주세요.');
+  });
+});
+
+/* ---------- 일괄 여닫이 ----------
+   스위치를 하나씩 누르면 요청이 여러 번 오가며 중간 상태가 생깁니다.
+   서버에서 한 번에 쓰도록 해 그 어긋남을 없앴습니다. */
+function bulk(codes, what){
+  if(!LIVE){ tell('gMsg', 'no', '구글에 연결된 뒤에 쓸 수 있습니다.'); return; }
+  const all = MF.lessons.map(codeOf);
+  tell('gMsg', 'mute', '바꾸는 중…');
+  TG2.setGates(HUB.api, codes, all, PIN).then(d => {
+    if(!d || !d.ok){ tell('gMsg', 'no', (d && d.error) || '바꾸지 못했습니다.'); return; }
+    GATE = d.open; glist(); tlist();
+    tell('gMsg', 'ok', what);
+  });
+}
+$('bAll').addEventListener('click',  () => bulk(MF.lessons.map(codeOf), '모든 차시를 열었습니다.'));
+$('bNone').addEventListener('click', () => {
+  if(!confirm('모든 차시를 닫습니다. 학생 자료실에서 전부 사라집니다.\n계속할까요?')) return;
+  bulk([], '모든 차시를 닫았습니다.');
+});
+$('bToday').addEventListener('click', () => {
+  const auto = MF.lessons.filter(isOpen).slice().sort((a,b)=>(a.no>b.no?-1:1))[0];
+  const code = TODAY || (auto ? codeOf(auto) : '');
+  if(!code){ tell('gMsg', 'no', '오늘 수업이 정해져 있지 않고 열린 차시도 없습니다. 위에서 먼저 골라 주세요.'); return; }
+  const l = MF.lessons.find(x => codeOf(x) === code);
+  const nm = l ? l.no + '차시 「' + l.title + '」' : code;
+  /* [전체 닫기] 만큼 파괴적입니다. 무엇을 남기는지 이름을 보여 주고 묻습니다. */
+  const why = TODAY ? '' : '\n(오늘 수업이 정해져 있지 않아 열린 차시 중 마지막을 골랐습니다)';
+  if(!confirm(nm + ' 하나만 남기고 나머지를 모두 닫습니다.' + why + '\n\n계속할까요?')) return;
+  bulk([code], nm + ' 하나만 열어 두었습니다.');
+});
+
+/* ---------- 반 목록 ---------- */
+function clsrow(){
+  $('clsrow').innerHTML = CLS.length
+    ? CLS.map((c, i) => `<span class="c">${esc(c)}<button type="button" data-cx="${i}"
+        aria-label="${esc(c)} 지우기" title="지우기">×</button></span>`).join('')
+    : '<span class="msg mute">반이 하나도 없습니다. 아래에서 더해 주세요.</span>';
+}
+$('clsrow').addEventListener('click', e => {
+  const b = e.target.closest('[data-cx]'); if(!b) return;
+  CLS.splice(Number(b.dataset.cx), 1); clsrow();
+  tell('clsMsg', 'mute', '지웠습니다. 아직 저장하지 않았습니다 — [저장]을 눌러 주세요.');
+});
+function addCls(){
+  const v = $('clsNew').value.trim().slice(0, 12);
+  if(!v){ tell('clsMsg', 'no', '반 이름을 넣어 주세요.'); return; }
+  if(CLS.includes(v)){ tell('clsMsg', 'no', '이미 있는 반입니다.'); return; }
+  CLS.push(v); $('clsNew').value = ''; clsrow();
+  tell('clsMsg', 'mute', '더했습니다. [저장]을 눌러야 학생 화면에 반영됩니다.');
+}
+$('clsAdd').addEventListener('click', addCls);
+$('clsNew').addEventListener('keydown', e => { if(e.key === 'Enter') addCls(); });
+$('clsSave').addEventListener('click', () => {
+  if(!CLS.length){ tell('clsMsg', 'no', '반을 하나 이상 남겨야 합니다.'); return; }
+  if(!LIVE){ tell('clsMsg', 'no', '구글에 연결된 뒤에 저장할 수 있습니다.'); return; }
+  tell('clsMsg', 'mute', '저장하는 중…');
+  TG2.setCls(HUB.api, CLS, PIN).then(d => {
+    if(!d || !d.ok){ tell('clsMsg', 'no', (d && d.error) || '저장하지 못했습니다.'); return; }
+    CLS = d.cls; clsrow();
+    tell('clsMsg', 'ok', '저장했습니다 — ' + CLS.length + '개 반. 이미 쌓인 응답의 반은 바뀌지 않습니다.');
+  });
+});
+
+/* ---------- 접속 QR ---------- */
+function drawQR(){
+  const url = location.href.replace(/teacher\.html.*$/, '');
+  $('qrUrl').textContent = url;
+  QR.into('#qrPic', url, { label:'학생 자료실 주소' });
+  $('qrCopy').onclick = () => {
+    navigator.clipboard.writeText(url)
+      .then(() => { $('qrMsg').className = 'msg ok'; $('qrMsg').textContent = '복사했습니다.'; })
+      .catch(() => { $('qrMsg').className = 'msg no'; $('qrMsg').textContent = '복사하지 못했습니다. 주소를 직접 끌어 선택해 주세요.'; });
+  };
+  $('qrBig').onclick = () => {
+    let pic;
+    try{ pic = QR.svg(url, { label:'학생 자료실 주소' }); }
+    catch(e){
+      $('qrMsg').className = 'msg no';
+      $('qrMsg').textContent = 'QR 을 만들지 못했습니다: ' + e.message;
+      return;
+    }
+    const w = document.createElement('div');
+    w.style.cssText = 'position:fixed;inset:0;z-index:150;background:#fff;display:flex;' +
+      'flex-direction:column;align-items:center;justify-content:center;gap:24px;cursor:zoom-out';
+    w.innerHTML = `<div style="width:min(62vh,62vw)">${pic}</div>
+      <p style="font:600 clamp(16px,2.2vw,26px)/1.5 system-ui;color:#111;margin:0;text-align:center">
+        휴대전화 카메라로 비추세요<br>
+        <span style="font-weight:400;font-size:.7em;color:#444">${esc(url)}</span></p>
+      <p style="font:400 14px system-ui;color:#666;margin:0">아무 곳이나 누르면 닫힙니다</p>`;
+    /* 닫는 길이 둘(클릭·Esc)이라 한쪽으로 닫아도 반드시 다른 쪽을 걷어냅니다.
+       그러지 않으면 keydown 이 페이지에 계속 쌓입니다. */
+    const shut = () => { w.remove(); document.removeEventListener('keydown', onKey); };
+    const onKey = e => { if(e.key === 'Escape') shut(); };
+    w.onclick = shut;
+    document.addEventListener('keydown', onKey);
+    document.body.appendChild(w);
+  };
+}
+
+/* ---------- 계정 목록 ---------- */
+let WHO = [];
+
+function loadWho(){
+  return TG2.who(HUB.api, PIN).then(d => {
+    if(d && d.ok && Array.isArray(d.who)){
+      WHO_OK = true; WHO = d.who; wlist();
+      if($('wMsg').textContent.indexOf('불러오지') >= 0) tell('wMsg', 'mute', '');
+      return;
+    }
+    /* 못 읽었습니다. 예비 목록을 서버 목록인 척 보여 주면
+       그대로 저장했을 때 동료 계정이 조용히 사라집니다.        */
+    WHO_OK = false;
+    WHO = HUB.fallbackWho.slice();
+    wlist();
+    tell('wMsg', 'no', '계정 목록을 불러오지 못했습니다. 아래는 이 파일에 적힌 예비 목록이며 ' +
+                       '서버의 실제 목록이 아닙니다. 저장하지 마세요.');
+  });
+}
+
+function wlist(){
+  $('wlist').innerHTML = WHO.map((w, i) => `<div class="wrow" data-i="${i}">
+    <input type="email" value="${esc(w)}" spellcheck="false" aria-label="계정 ${i + 1}">
+    ${String(w).toLowerCase() === ME ? '<span class="me">지금 나</span>' : ''}
+    <button class="x" type="button" title="이 줄 지우기" ${WHO.length < 2 ? 'disabled' : ''}>×</button>
+  </div>`).join('');
+  $('wSave').disabled = !WHO_OK;
+  $('wSave').title = WHO_OK ? '' : '서버 목록을 읽지 못한 상태에서는 저장할 수 없습니다';
+}
+
+$('wAdd').addEventListener('click', () => { collectWho(); WHO.push(''); wlist();
+  const rows = document.querySelectorAll('.wrow input');
+  if(rows.length) rows[rows.length - 1].focus(); });
+
+$('wlist').addEventListener('click', e => {
+  const x = e.target.closest('.x'); if(!x || x.disabled) return;
+  collectWho();
+  WHO.splice(Number(x.closest('.wrow').dataset.i), 1);
+  wlist();
+  tell('wMsg', 'mute', '지웠습니다. 아직 저장하지 않았습니다 — [저장]을 눌러 주세요.');
+});
+
+function collectWho(){
+  WHO = [...document.querySelectorAll('.wrow input')].map(i => i.value.trim().toLowerCase());
+}
+
+$('wSave').addEventListener('click', () => {
+  collectWho();
+  const list = WHO.filter(s => s && s.indexOf('@') > 0);
+  if(!list.length){ tell('wMsg', 'no', '계정을 하나 이상 남겨야 합니다.'); return; }
+  if(!WHO_OK){ tell('wMsg', 'no', '서버 목록을 읽지 못한 상태입니다. [다시 확인] 을 눌러 목록을 먼저 불러오세요.'); return; }
+  if(!list.includes(ME) &&
+     !confirm('지금 쓰고 있는 계정(' + ME + ')이 목록에 없습니다.\n\n' +
+              '저장하면 다음부터 이 계정으로는 들어올 수 없습니다.\n' +
+              '되돌리려면 Apps Script 편집기에서 설정초기화 함수를 실행해야 합니다.\n\n계속할까요?')) return;
+  if(!LIVE){ tell('wMsg', 'no', '구글에 연결된 뒤에 저장할 수 있습니다.'); return; }
+
+  tell('wMsg', 'mute', '저장하는 중…');
+  TG2.setWho(HUB.api, list, PIN).then(d => {
+    if(!d || !d.ok){ tell('wMsg', 'no', (d && d.error) || '저장하지 못했습니다.'); return; }
+    WHO = d.who; WHO_OK = true; wlist();
+    tell('wMsg', 'ok', '저장했습니다 — ' + WHO.length + '개 계정.');
+  });
+});
+
+/* ---------- 비밀번호 바꾸기 ---------- */
+$('npBtn').addEventListener('click', () => {
+  const a = $('np1').value.trim(), b = $('np2').value.trim();
+  const m = (c, t) => { $('npMsg').className = 'msg ' + c; $('npMsg').textContent = t; };
+  if(a.length < 6){ m('no', '여섯 글자 이상으로 정해 주세요.'); return; }
+  if(a !== b){ m('no', '두 칸이 서로 다릅니다.'); return; }
+  if(!LIVE){ m('no', '구글에 연결된 뒤에 바꿀 수 있습니다.'); return; }
+
+  m('mute', '바꾸는 중…');
+  TG2.setPin(HUB.api, a, PIN).then(d => {
+    if(!d || !d.ok){ m('no', (d && d.error) || '바꾸지 못했습니다.'); return; }
+    PIN = a; $('np1').value = ''; $('np2').value = '';
+    try{
+      const v = JSON.parse(localStorage.getItem(KEY) || 'null');
+      if(v){ v.pin = a; localStorage.setItem(KEY, JSON.stringify(v)); }
+    }catch(e){}
+    TG2.sha256(a).then(h => {
+      m('ok', '바꿨습니다. 다음부터 새 비밀번호로 들어오세요.');
+      $('hashBox').hidden = false;
+      $('hashVal').textContent = h;
+    });
   });
 });
 
 /* ---------- 수업 영상 ---------- */
-let VID = {};
-
 function vlist(){
-  const host = document.getElementById('vlist');
   const rows = [];
   MF.lessons.forEach(l => (l.videos || []).forEach((v, n) => {
     const key = codeOf(l) + '|' + n;
     rows.push(`<div class="vrow" data-key="${key}">
       <span class="no">${l.no}차시</span>
-      <span class="cap">${v.cap || '영상 ' + (n + 1)}</span>
-      <span class="hint">유튜브 검색어 · ${v.find || ''}</span>
+      <span class="cap">${esc(v.cap || '영상 ' + (n + 1))}</span>
+      <span class="hint">유튜브 검색어 · ${esc(v.find || '')}</span>
       <span class="in">
         <input type="text" placeholder="유튜브 주소를 붙여 넣으세요" autocomplete="off">
         <button class="btn ghost" type="button" data-a="save">저장</button>
@@ -303,7 +965,7 @@ function vlist(){
       <span class="st mute">아직 없음</span>
     </div>`);
   }));
-  host.innerHTML = rows.join('') ||
+  $('vlist').innerHTML = rows.join('') ||
     '<p class="msg mute">아직 영상 자리가 없습니다. 차시 파일에 영상 자리를 만들면 여기에 나타납니다.</p>';
   paint();
 }
@@ -319,7 +981,7 @@ function paint(){
   });
 }
 
-document.getElementById('vlist').addEventListener('click', e => {
+$('vlist').addEventListener('click', e => {
   const b = e.target.closest('[data-a]'); if(!b) return;
   const row = b.closest('.vrow'), key = row.dataset.key;
   const inp = row.querySelector('input'), st = row.querySelector('.st');
@@ -331,7 +993,6 @@ document.getElementById('vlist').addEventListener('click', e => {
     return;
   }
 
-  if(!PIN){ st.className = 'st no'; st.textContent = '위에서 번호를 먼저 확인해 주세요.'; return; }
   const raw = inp.value.trim();
   const id  = raw ? TG2.ytId(raw) : '';
   if(raw && !id){
@@ -350,16 +1011,15 @@ document.getElementById('vlist').addEventListener('click', e => {
 
 /* ---------- 진행 화면 바로가기 ---------- */
 function runlist(){
-  const host = document.getElementById('runlist');
   let last = null;
-  host.innerHTML = MF.lessons.map(l => {
+  $('runlist').innerHTML = MF.lessons.map(l => {
     let head = '';
     if(l.chapter !== last){ last = l.chapter; head = `<p class="gchap">${chapName(l.chapter)}</p>`; }
     return head + `<div class="grow">
-      <span class="no">${l.no}차시</span>
-      <span class="nm"><b>${l.title}</b><span>${l.topic || ''}</span></span>
-      <a class="lk btn ghost" href="${l.path}#t">진행 화면 열기</a>
-      <a class="lk" href="${l.path}" style="color:var(--ink-faint)">학생 화면</a>
+      <span class="no">${esc(l.no)}차시</span>
+      <span class="nm"><b>${esc(l.title)}</b><span>${esc(l.topic || '')}</span></span>
+      <a class="lk btn ghost" href="${esc(l.path)}?t=1#t">진행 화면 열기</a>
+      <a class="lk" href="${esc(l.path)}" style="color:var(--ink-soft)">학생 화면</a>
     </div>`;
   }).join('');
 }

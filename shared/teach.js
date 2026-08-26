@@ -53,6 +53,11 @@ const CSS = `
   white-space:nowrap}
 .tbar-t button:hover{border-color:var(--accent);color:var(--ink)}
 .tbar-t button.key{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.tbar-t .hublink{font-size:14px;line-height:1;border:1px solid var(--rule);border-radius:9px;
+  padding:9px 12px;white-space:nowrap;text-decoration:none;color:var(--ink-soft);background:var(--surface)}
+.tbar-t .hublink:hover{border-color:var(--accent);color:var(--ink);text-decoration:none}
+@media (max-width:900px){.tbar-t .hublink{padding:9px 10px;font-size:0}
+  .tbar-t .hublink::before{content:"←";font-size:14px}}
 .tbar-t .pos{font-family:var(--mono);font-size:13px;color:var(--ink-faint);
   font-variant-numeric:tabular-nums;white-space:nowrap}
 .tbar-t .ttl{font-weight:600;font-size:15px;color:var(--ink);overflow:hidden;text-overflow:ellipsis;
@@ -97,6 +102,22 @@ const CSS = `
   align-items:baseline;gap:10px}
 .tresp header h3{margin:0;font-size:16px;font-weight:600;font-family:var(--sans)}
 .tresp header .n{font-family:var(--mono);font-size:12.5px;color:var(--ink-faint)}
+.tclsbar{display:flex;flex-wrap:wrap;gap:6px;padding:11px 20px;border-bottom:1px solid var(--rule-soft)}
+.tclsbar button{font:inherit;font-size:13px;line-height:1;border:1px solid var(--rule);
+  background:var(--surface);color:var(--ink-soft);border-radius:999px;padding:6px 13px;cursor:pointer}
+.tclsbar button.on{background:var(--accent);border-color:var(--accent);color:var(--on-accent);font-weight:600}
+.tclsbar .cnt{font-size:11px;opacity:.75;margin-left:4px}
+
+/* 진행 화면 QR */
+.tqr{display:flex;flex-wrap:wrap;align-items:center;gap:clamp(20px,3vw,44px);
+  background:var(--surface);border:1px solid var(--rule);border-radius:18px;
+  padding:clamp(20px,2.4vw,32px);margin:22px 0}
+.tqr .pic{width:clamp(160px,20vw,260px);flex-shrink:0}
+.tqr .pic svg{width:100%;height:auto;display:block;border-radius:10px}
+.tqr .tx{flex:1;min-width:260px}
+.tqr .tx b{display:block;font-size:clamp(20px,2.2vw,30px);margin-bottom:10px}
+.tqr .tx span{display:block;font-size:clamp(14px,1.2vw,18px);color:var(--ink-soft);
+  line-height:1.7;word-break:break-all}
 .tresp .body{overflow:auto;padding:16px 20px 28px;flex:1}
 .tresp .item{margin-bottom:22px}
 .tresp .item h4{margin:0 0 10px;font-family:var(--mono);font-size:12px;letter-spacing:.06em;
@@ -122,12 +143,28 @@ const CSS = `
 /* ---------- 상태 ---------- */
 let on = false, idx = 0, secs = [], respOpen = false, poll = null;
 let bar, prog, resp, toast;
+/* 교사 화면의 [진행 화면 열기] 로 왔는지. 통행증이 없는 기기에서도
+   교사가 바로 열 수 있도록 남겨 둔 길입니다(허들이지 잠금이 아닙니다). */
+const CAME_FROM_TEACHER = /[?&]t=1/.test(location.search) ||
+  (document.referrer || '').includes('teacher.html');
+
+let CLS_PICK = '';                             // '' = 전체 반
+let CLS_LIST = [];                             // 서버에서 받은 반 목록
 let t0 = null, running = false, elapsed = 0;   // 전체 시계
 let secStart = null, warned = false;           // 절 시계
 const TOTAL = 40 * 60;   /* 실제 수업 40분 · 출석·환기·접속·마무리 10분은 따로 */
 
 const root = document.documentElement;
 const cfg  = () => (typeof LESSON === 'object' && LESSON) || {};
+
+/* 교사 화면에서 받아 둔 통행증. 있으면 학생이 쓴 문장까지 볼 수 있고,
+   없으면 선택지 분포만 봅니다. 학생 기기에는 이 값이 없습니다.        */
+function teacherPin(){
+  try{
+    const v = JSON.parse(localStorage.getItem('tg2.teacher.pass') || 'null');
+    return (v && v.until > Date.now() && v.pin) ? v.pin : '';
+  }catch(e){ return ''; }
+}
 const code = () => cfg().code ||
   (location.pathname.match(/\/(u\d)\/(\d\d)-/) || []).slice(1, 3).join('-') || '';
 const now  = () => Date.now() / 1000;
@@ -143,7 +180,11 @@ function build(){
 
   bar = document.createElement('div');
   bar.className = 'tbar-t';
+  const hub = (typeof LESSON === 'object' && LESSON && LESSON.hub) || '../../';
   bar.innerHTML = `
+    <div class="grp">
+      <a class="hublink" href="${hub}" title="자료실 첫 화면으로">← 자료실</a>
+    </div>
     <div class="grp">
       <button type="button" data-a="prev" title="이전 (←)">◀</button>
       <button type="button" data-a="next" class="key" title="다음 (→)">다음 ▶</button>
@@ -181,6 +222,7 @@ function build(){
   resp.className = 'tresp';
   resp.innerHTML = `
     <header><h3>학생 응답</h3><span class="n" id="tn">—</span></header>
+    <div class="tclsbar" id="tcls"></div>
     <div class="body" id="tbody"></div>
     <div class="ft"><span id="tfoot">—</span><span style="flex:1"></span>
       <button type="button" data-a="reload">새로고침</button></div>`;
@@ -192,6 +234,31 @@ function build(){
     ({ prev:()=>go(idx-1), next:()=>go(idx+1), exit:off, resp:toggleResp,
        full:fullscreen, clock:toggleClock, clockr:resetClock, reload:load }[b.dataset.a] || (()=>{}))();
   });
+
+  /* 반 고르개 — 어느 반 응답만 볼지 */
+  document.addEventListener('click', e => {
+    const b = e.target.closest('[data-cls-pick]');
+    if(!b) return;
+    CLS_PICK = b.dataset.clsPick;
+    load();
+  });
+}
+
+/* 반 단추 — 서버가 알려 준 반 목록과, 지금 실제로 응답이 들어온 반을 함께 보여 줍니다.
+   숫자는 그 반에서 들어온 응답 수입니다(전체 반을 보고 있을 때만 채워집니다).   */
+function clsBar(byCls){
+  const host = document.getElementById('tcls');
+  if(!host) return;
+  const names = [...new Set(CLS_LIST.concat(Object.keys(byCls)))];
+  if(!names.length){ host.innerHTML = ''; return; }
+  const n = c => (byCls && byCls[c]) ? `<span class="cnt">${byCls[c]}</span>` : '';
+  /* '(반 없음)' 도 숨기지 않고 그대로 둡니다.
+     숨기면 전체 수와 반별 수의 합이 맞지 않아, 그 차이가 어디서 왔는지
+     화면 어디에서도 알 수 없게 됩니다.                                  */
+  host.innerHTML =
+    `<button type="button" data-cls-pick="" class="${CLS_PICK ? '' : 'on'}">전체</button>` +
+    names.map(c => `<button type="button" data-cls-pick="${esc(c)}"
+      class="${CLS_PICK === c ? 'on' : ''}">${esc(c)}${CLS_PICK ? '' : n(c)}</button>`).join('');
 }
 
 /* ---------- 단계 이동 ---------- */
@@ -285,8 +352,22 @@ function load(){
     body.innerHTML = `<p class="empty"><code>shared/gate.js</code> 가 함께 올라가지 않았습니다.</p>`;
     return;
   }
-  TG2.jsonp(api, { mode:'stats', lesson: code(), since: 180 })
-    .then(render)
+  TG2.jsonp(api, { mode:'stats', lesson: code(), since: 180, cls: CLS_PICK, pin: teacherPin() })
+    .then(d => {
+      /* 옛 배포는 모르는 요청도 응답 집계로 흘려보내며 ok:true 를 돌려줍니다.
+         그대로 그리면 '전체 통계'를 '3반 통계'라고 적어 보여 주게 됩니다. */
+      if(!d || d.mode !== 'stats' || Number(d.ver) < TG2.NEED_VER){
+        document.getElementById('tbody').innerHTML =
+          `<p class="empty"><b>옛 배포입니다.</b><br>
+            Apps Script 에서 <b>배포 관리 → 편집 → 새 버전</b>으로 다시 배포해 주세요.<br>
+            그 전까지는 반별로 나누어 볼 수 없습니다.</p>`;
+        document.getElementById('tn').textContent = '—';
+        document.getElementById('tfoot').textContent = '옛 배포 · 반별 보기 잠김';
+        const cb = document.getElementById('tcls'); if(cb) cb.innerHTML = '';
+        return;
+      }
+      render(d);
+    })
     .catch(() => {
       body.innerHTML = `<p class="empty">불러오지 못했습니다.<br><br>
         ① Apps Script 에서 <b>배포 관리 → 편집 → 새 버전</b>으로 다시 배포했는지<br>
@@ -297,8 +378,11 @@ function load(){
 
 function render(d){
   const body = document.getElementById('tbody');
-  document.getElementById('tn').textContent = (d.total || 0) + '명 응답';
-  document.getElementById('tfoot').textContent = '최근 3시간 · 12초마다 갱신';
+  document.getElementById('tn').textContent = (d.total || 0) + '개 응답';
+  document.getElementById('tfoot').textContent =
+    '최근 3시간 · 12초마다 갱신' + (CLS_PICK ? ' · ' + CLS_PICK : ' · 전체 반') +
+    (d.locked && d.textN ? ' · 문장 ' + d.textN + '개 잠김' : '');
+  clsBar(d.byCls || {});
 
   if(!d.total){
     body.innerHTML = `<p class="empty">아직 응답이 없습니다.<br>학생들이 보내면 여기에 바로 쌓입니다.</p>`;
@@ -336,12 +420,47 @@ const esc = s => String(s).replace(/[<>&"]/g, c => ({ '<':'&lt;','>':'&gt;','&':
 /* ---------- 켜기 / 끄기 ---------- */
 function onMode(){
   if(on) return;
+  /* 절이 하나도 없으면(닫힌 차시라 안내문만 남은 경우) 들어가지 않습니다.
+     그냥 들어가면 secs[0] 이 없어 예외가 나고 화면이 빈 채로 멈춥니다. */
+  if(!document.querySelector('section.step')) return;
+  /* 진행 화면은 교사용입니다. 학생 기기에서 열리면 다른 학생이 쓴 문장이
+     보이고, 그 상태에서는 자기 답이 전송되지 않는 것도 모릅니다.        */
+  if(!teacherPin() && !CAME_FROM_TEACHER) return;
   if(!bar) build();
   on = true;
   root.setAttribute('data-teach', '');
   secs = [...document.querySelectorAll('section.step')];
   mountVideos();
+  mountQR();
+  loadCls();
   go(0); tick();
+}
+
+/* ---------- 첫 절의 접속 QR ----------
+   수업 시작할 때 학생이 주소를 받아 적지 않고 카메라로 들어오게 합니다.
+   자료실(허브) 주소를 가리킵니다 — 차시 주소가 아니라 첫 화면입니다.
+   차시가 아직 닫혀 있어도 학생이 길을 잃지 않기 때문입니다.            */
+function mountQR(){
+  if(typeof QR === 'undefined' || !secs.length) return;
+  if(document.querySelector('.tqr')) return;
+  const hub = cfg().hub || '../../';
+  const url = new URL(hub, location.href).href;
+  const box = document.createElement('div');
+  box.className = 'teach-only tqr';
+  box.innerHTML = `<div class="pic" id="tqrPic"></div>
+    <div class="tx"><b>휴대전화 카메라로 비추세요</b>
+      <span>${esc(url)}</span></div>`;
+  secs[0].appendChild(box);
+  QR.into('#tqrPic', url, { label:'학생 자료실 주소' });
+}
+
+/* 반 목록 — 응답판의 반 단추를 채웁니다. */
+function loadCls(){
+  if(typeof TG2 === 'undefined' || !cfg().api) return;
+  TG2.state(cfg().api).then(st => {
+    CLS_LIST = (st && st.cls) || [];
+    if(respOpen) load();
+  });
 }
 /* ---------- 영상 (진행 화면에서만) ---------- */
 let VID = null;

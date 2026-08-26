@@ -52,8 +52,30 @@ a.lcard .t{margin:0;font-family:var(--serif);font-size:18px;font-weight:700;line
 a.lcard .sm{margin:0;font-size:13.5px;color:var(--ink-soft);line-height:1.62}
 a.lcard .foot{margin-top:4px;padding-top:11px;border-top:1px solid var(--rule-soft);
   display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--ink-faint)}
+/* 진도 */
+.pg{margin-top:4px;padding-top:11px;border-top:1px solid var(--rule-soft)}
+.pgb{height:6px;border-radius:4px;background:var(--surface-2);overflow:hidden;margin-bottom:7px}
+.pgb i{display:block;height:100%;background:var(--accent);border-radius:4px;transition:width .4s ease}
+@media (prefers-reduced-motion:reduce){.pgb i{transition:none}}
+.pgt{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--ink-soft)}
+.pgt .done{color:var(--good);font-weight:600}
+.pgt .go{margin-left:auto;color:var(--accent);font-weight:600}
+
+/* 접속 QR */
+.qrbox{display:flex;flex-wrap:wrap;align-items:center;gap:22px;background:var(--surface);
+  border:1px solid var(--rule);border-radius:16px;padding:22px 24px;margin:0 0 40px}
+.qrbox .pic{width:150px;flex-shrink:0}
+.qrbox .pic svg{width:100%;height:auto;display:block;border-radius:8px}
+.qrbox .tx{flex:1;min-width:220px}
+.qrbox .tx h3{margin:0 0 7px;font-size:16px;font-weight:600}
+.qrbox .tx p{margin:0;font-size:14px;color:var(--ink-soft);line-height:1.7}
+.qrbox .tx code{font-size:12.5px;word-break:break-all}
+
 .dot{width:7px;height:7px;border-radius:50%;background:var(--rule);flex-shrink:0}
 .dot.used{background:var(--good)}
+.dot.now{background:var(--accent)}
+a.lcard.now{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-wash)}
+a.lcard.now .foot span:last-child{color:var(--accent);font-weight:600}
 a.lcard.locked{opacity:.55;pointer-events:none;filter:grayscale(.4)}
 a.lcard.locked .t::after{content:" 🔒";font-size:.8em}
 @media (prefers-reduced-motion:reduce){a.lcard{transition:none}a.lcard:hover{transform:none}}
@@ -97,6 +119,7 @@ a.lcard.locked .t::after{content:" 🔒";font-size:.8em}
 </div></header>
 
 <main><div class="wrap">
+  <div id="meBar"></div>
   <div id="todayBox"></div>
 
   <div class="howto">
@@ -109,6 +132,7 @@ a.lcard.locked .t::after{content:" 🔒";font-size:.8em}
   </div>
 
   <div class="units" id="units"><div class="empty">불러오는 중…</div></div>
+  <div id="qrBox"></div>
 </div></main>
 
 <footer class="ftr"><div class="wrap">
@@ -119,6 +143,8 @@ a.lcard.locked .t::after{content:" 🔒";font-size:.8em}
 
 <script src="shared/lib.js"></script>
 <script src="shared/gate.js"></script>
+<script src="shared/me.js"></script>
+<script src="shared/qr.js"></script>
 <script>
 /* ============ 자료실 설정 — 여기만 고치면 됩니다 ============ */
 const HUB = {
@@ -127,15 +153,36 @@ const HUB = {
 /* ========================================================== */
 
 TG.theme('themeBtn');
+ME.bar('meBar');
 
-let MF = null, GATE = null;
+/* manifest 는 교사가 쓰는 파일이지만, 제목에 < 하나만 들어가도 목록이 깨집니다.
+   교사 화면과 같은 방식으로 화면에 넣기 전에 반드시 통과시킵니다. */
+const esc = v => String(v == null ? '' : v)
+  .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+  .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+document.addEventListener('tg:me', () => { if(MF) render(); });
 
-Promise.all([
-  fetch('manifest.json', { cache:'no-store' }).then(r => {
-    if(!r.ok) throw new Error(r.status); return r.json();
-  }),
-  TG2.gates(HUB.api)
-]).then(([m, g]) => { MF = m; GATE = g; render(); })
+let MF = null, GATE = null, TODAY = '';
+
+/* 두 걸음으로 그립니다.
+   ① manifest 만으로 곧바로 그려서 화면이 비어 있는 시간을 없앱니다.
+   ② 구글에서 여닫이·오늘 수업이 도착하면 다시 그립니다.
+   한 번에 기다리면 학교 망에서 구글이 막혔을 때 첫 화면이 몇 초씩 멈춥니다. */
+fetch('manifest.json', { cache:'no-store' })
+  .then(r => { if(!r.ok) throw new Error(r.status); return r.json(); })
+  .then(m => {
+    MF = m;
+    TODAY = m.today || '';
+    render();
+    return TG2.state(HUB.api);
+  })
+  .then(s => {
+    if(!s) return;                       /* 못 읽었으면 manifest 값 그대로 둡니다 */
+    GATE = s.open; TODAY = s.today;      /* 서버가 답했으면 서버가 정본입니다 */
+    if(s.cls && s.cls.length) ME.bar('meBar', s.cls);
+    ME.askOnce(s.cls && s.cls.length ? { cls: s.cls } : undefined);
+    render();
+  })
   .catch(() => {
     document.getElementById('units').innerHTML =
       `<div class="empty"><b>목록을 불러오지 못했습니다.</b><br>
@@ -155,20 +202,21 @@ function render(){
   document.title = `${m.course} 수업 자료실 · ${m.school || ''}`;
 
   document.getElementById('school').innerHTML =
-    `<span class="nm">${m.school || ''}</span><span class="tm">${m.term || ''}</span>`;
+    `<span class="nm">${esc(m.school)}</span><span class="tm">${esc(m.term)}</span>`;
 
   const opened = m.lessons.filter(isOpen);
   document.getElementById('hdTags').innerHTML =
-    `<span class="tag std">${m.part || ''}</span>` +
+    `<span class="tag std">${esc(m.part)}</span>` +
     `<span class="tag">열린 차시 ${opened.length}개</span>`;
 
-  /* 오늘 수업 */
-  const today = opened.slice().sort((a, b) => (a.no > b.no ? -1 : 1))[0];
+  /* 오늘 수업 — 선생님이 정해 둔 차시가 우선, 없으면 열린 차시 중 마지막 */
+  const today = opened.find(l => codeOf(l) === TODAY)
+             || opened.slice().sort((a, b) => (a.no > b.no ? -1 : 1))[0];
   document.getElementById('todayBox').innerHTML = today ? `
     <a class="today" href="${today.path}">
       <p class="k">오늘 수업</p>
-      <p class="t">${today.title}</p>
-      <p class="s">${today.no}차시 · ${today.topic || ''}<br>${today.sum || ''}</p>
+      <p class="t">${esc(today.title)}</p>
+      <p class="s">${esc(today.no)}차시 · ${esc(today.topic)}<br>${esc(today.sum)}</p>
       <span class="go">열기 →</span>
     </a>` : '';
 
@@ -181,18 +229,18 @@ function render(){
       if(!ls.length) return '';
       return `<div class="chap">
         <div class="chead">
-          <span class="cn">${u.no}-${c.no}</span>
-          <h3>${c.title}</h3>
-          <span class="std">${c.std || ''}</span>
+          <span class="cn">${esc(u.no)}-${esc(c.no)}</span>
+          <h3>${esc(c.title)}</h3>
+          <span class="std">${esc(c.std)}</span>
         </div>
-        <p class="csub">${c.sub || ''}</p>
-        <div class="cards">${ls.map(card).join('')}</div>
+        <p class="csub">${esc(c.sub)}</p>
+        <div class="cards">${ls.map(l => card(l, today)).join('')}</div>
       </div>`;
     }).join('');
     if(!inner) return '';
     return `<section class="unit">
-      <div class="uhead"><span class="rn">${u.no}</span><h2>${u.title}</h2></div>
-      <p class="usub">${u.sub || ''}</p>
+      <div class="uhead"><span class="rn">${esc(u.no)}</span><h2>${esc(u.title)}</h2></div>
+      <p class="usub">${esc(u.sub)}</p>
       ${inner}
     </section>`;
   }).join('') || '<div class="empty">아직 열린 차시가 없습니다. 수업 시간에 다시 들어와 주세요.</div>';
@@ -205,17 +253,54 @@ function render(){
   document.getElementById('ft3').textContent =
     [m.course + ' ' + (m.part || ''), '2022 개정 교육과정', '담당 ' + (m.teacher || '')]
       .filter(Boolean).join('  ·  ');
+
+  drawQR();
 }
 
-function card(l){
-  return `<a class="lcard" href="${l.path}">
-    <p class="no">${l.no}차시 · ${l.topic || ''}</p>
-    <p class="t">${l.title}</p>
-    <p class="sm">${l.sum || ''}</p>
-    <div class="foot">
-      <span class="dot ${l.used ? 'used' : ''}"></span>
-      <span>${l.used ? '수업 사용 ' + l.used : '수업 예정'}</span>
+/* 옆 사람에게 주소를 알려 줄 때 쓰는 QR — 이 페이지 자신을 가리킵니다. */
+function drawQR(){
+  const box = document.getElementById('qrBox');
+  if(!box || box.dataset.done) return;
+  const url = location.href.split('#')[0].split('?')[0];
+  box.innerHTML = `<div class="qrbox">
+    <div class="pic" id="qrPic"></div>
+    <div class="tx">
+      <h3>친구에게 알려 줄 때</h3>
+      <p>이 그림을 휴대전화 카메라로 비추면 이 자료실이 열립니다. 주소를 받아 적지 않아도 됩니다.<br>
+      <code>${esc(url)}</code></p>
     </div>
+  </div>`;
+  QR.into('#qrPic', url, { label:'통합과학2 자료실 주소' });
+  box.dataset.done = '1';
+}
+
+function card(l, today){
+  const now = today && l.path === today.path;
+  const p = ME.prog(codeOf(l));
+  /* 한 번이라도 손댄 차시에는 진도 막대를, 아직인 차시에는 기존 줄을 둡니다. */
+  const foot = (p && p.done.length)
+    ? (() => {
+        const tot = Math.max(p.total || 0, p.done.length);
+        const pct = Math.round(p.done.length / tot * 100);
+        const fin = p.done.length >= tot;
+        return `<div class="pg">
+          <div class="pgb"><i style="width:${pct}%"></i></div>
+          <div class="pgt">
+            <span class="${fin ? 'done' : ''}">${fin ? '다 풀었습니다' : p.done.length + ' / ' + tot + ' 문항'}</span>
+            <span class="go">${fin ? '다시 보기 →' : '이어서 →'}</span>
+          </div>
+        </div>`;
+      })()
+    : `<div class="foot">
+        <span class="dot ${now ? 'now' : (l.used ? 'used' : '')}"></span>
+        <span>${now ? '오늘 수업' : (l.used ? '수업 사용 ' + esc(l.used) : '아직 안 열어 봄')}</span>
+      </div>`;
+
+  return `<a class="lcard ${now ? 'now' : ''}" href="${esc(l.path)}">
+    <p class="no">${esc(l.no)}차시 · ${esc(l.topic)}</p>
+    <p class="t">${esc(l.title)}</p>
+    <p class="sm">${esc(l.sum)}</p>
+    ${foot}
   </a>`;
 }
 </script>

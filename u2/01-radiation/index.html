@@ -38,6 +38,7 @@
 </div></header>
 
 <main><div class="wrap">
+  <div id="meBar"></div>
 
 <!-- 1 -->
 <section class="step" id="s1" data-min="3" data-nav="오늘의 질문">
@@ -250,6 +251,8 @@
 
 <script src="../../shared/lib.js"></script>
 <script src="../../shared/gate.js"></script>
+<script src="../../shared/me.js"></script>
+<script src="../../shared/qr.js"></script>
 <script src="../../shared/act.js"></script>
 <script>
 const LESSON = {
@@ -259,6 +262,17 @@ const LESSON = {
 
 TG.theme('themeBtn');
 TG.nav('.topbar nav');
+
+/* 반·이름 줄 (글자 크기 조절 포함) — 진행 화면에서는 띄우지 않습니다 */
+if(location.hash !== '#t'){
+  ME.bar('meBar');
+  /* 반 목록이 도착한 뒤에 묻습니다. 먼저 물으면 반 단추가 기본값으로 채워집니다. */
+  TG2.state(LESSON.api).then(st => {
+    const cls = (st && st.cls && st.cls.length) ? st.cls : null;
+    if(cls) ME.bar('meBar', cls);
+    ME.askOnce(cls ? { cls } : undefined);
+  });
+}
 
 ACT.cloze('#clozeA', [
   { t:'태양 복사 에너지는 파장이 짧은 감마선에서 파장이 긴 전파까지 넓은 범위에 걸쳐 방출되며, {{0}} 영역에서 가장 많은 에너지를 방출한다.',
