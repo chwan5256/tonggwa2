@@ -273,10 +273,12 @@
       <button type="button" class="pill" data-b="1960">1960년 기준 편차</button>
       <button type="button" class="pill" data-b="1990">1990년 기준 편차</button>
     </div>
-    <div class="chartbox"><canvas id="co2c" aria-label="1960년부터 2023년까지 마우나로아 연평균 이산화 탄소 농도 그래프"></canvas></div>
+    <div class="chartbox"><canvas id="co2c" aria-label="마우나로아 연평균 이산화 탄소 농도 그래프"></canvas></div>
     <figcaption><b>출처.</b> NOAA Global Monitoring Laboratory, Mauna Loa 연평균 CO₂
       (1958~1974년 자료는 Scripps 해양연구소 C. D. Keeling 측정분 포함).
-      <a href="https://gml.noaa.gov/ccgg/trends/" target="_blank" rel="noopener">gml.noaa.gov/ccgg/trends</a></figcaption>
+      취득일과 검산 내역은 <code>data/co2-annual.csv</code> 머리글에 적혀 있습니다.
+      <a href="https://gml.noaa.gov/ccgg/trends/" target="_blank" rel="noopener">gml.noaa.gov/ccgg/trends</a><br>
+      <b>연평균이라 계절 변동(봄 최대·가을 최소)은 이미 지워져 있습니다.</b> 톱니 모양을 보려면 월별 자료가 따로 필요합니다.</figcaption>
   </figure>
 
   <p><b>기준을 바꿔 보세요.</b> 세 버튼을 차례로 누른 뒤 아래 문제를 푸세요. 다음 시간부터 이 개념을 계속 씁니다.</p>
@@ -326,7 +328,8 @@
 <script>
 const LESSON = {
   code: "u2-02", form: "",
-  api : "https://script.google.com/macros/s/AKfycbxGwVShBta72VSwPeJxaVDRWyEgv6Nl2tNsGNjdf_0AIKeI86oDrx806MAwoNJgezStNw/exec"
+  api : "https://script.google.com/macros/s/AKfycbxGwVShBta72VSwPeJxaVDRWyEgv6Nl2tNsGNjdf_0AIKeI86oDrx806MAwoNJgezStNw/exec",
+  co2 : "../../data/co2-annual.csv"   // 실관측 연평균 CO₂. 없으면 아래 붙박이 값으로 그립니다.
 };
 TG.theme('themeBtn');
 TG.nav('.topbar nav');
@@ -516,23 +519,58 @@ ACT.cloze('#clozeA', [
       { opts:['삼림 벌채','해양 개발','도로 포장'], ans:0, fb:'숲은 이산화 탄소를 흡수합니다. 숲이 줄면 흡수하는 몫도 줄어듭니다.' }] }
 ]);
 
-/* NOAA GML 마우나로아 연평균 CO₂ (ppm) */
-const CO2 = [[1960,316.91],[1965,320.04],[1970,325.68],[1975,331.13],[1980,338.76],
-             [1985,346.35],[1990,354.45],[1995,360.97],[2000,369.71],[2005,379.98],
-             [2010,390.10],[2015,401.01],[2020,414.21],[2023,421.08]];
-const baseOf = y => (CO2.find(p => p[0] === y) || CO2[0])[1];
+/* ── 연평균 CO₂ ──
+   `data/co2-annual.csv` (NOAA GML 실관측)를 읽습니다.
+   파일이 없거나 읽지 못하면 아래 붙박이 값으로 그려 수업이 멈추지 않게 합니다.
+   붙박이 값도 같은 출처에서 5년 간격으로 뽑은 실제 값입니다.        */
+let CO2 = [[1960,316.91],[1965,320.04],[1970,325.68],[1975,331.13],[1980,338.76],
+           [1985,346.35],[1990,354.45],[1995,360.97],[2000,369.71],[2005,379.98],
+           [2010,390.10],[2015,401.01],[2020,414.21],[2023,421.08]];
+let CO2_SRC = '붙박이 값 (5년 간격)';
+
+/* 기준 연도의 값 — 그 해가 없으면 가장 가까운 해를 씁니다. */
+const baseOf = y => {
+  if(!CO2.length) return 0;
+  const hit = CO2.find(p => p[0] === y);
+  if(hit) return hit[1];
+  return CO2.reduce((a, b) => Math.abs(b[0] - y) < Math.abs(a[0] - y) ? b : a)[1];
+};
+
 const co2Chart = TG.chart(document.getElementById('co2c'), {
   series:[{ name:'연평균 CO₂', color:'--s1', pts: CO2 }],
   xLabel:'연도', yLabel:'CO₂ 농도 (ppm)',
   xFmt: v => String(Math.round(v)), yFmt: v => v.toFixed(0), tipFmt: v => v.toFixed(2) + ' ppm'
 });
+
+function co2Range(){ return CO2.length ? `${CO2[0][0]} ~ ${CO2[CO2.length-1][0]}년` : ''; }
+
+fetch(LESSON.co2, { cache:'no-store' })
+  .then(r => { if(!r.ok) throw new Error('없음'); return r.text(); })
+  .then(txt => {
+    const rows = txt.trim().split(/\r?\n/).filter(l => l.trim() && !l.trim().startsWith('#'));
+    const head = rows.shift().toLowerCase().split(',').map(t => t.trim());
+    const iy = head.indexOf('year'), ic = head.indexOf('co2');
+    if(iy < 0 || ic < 0) throw new Error('머리글에 year, co2 가 있어야 합니다');
+    const pts = rows.map(l => l.split(','))
+      .map(c => [ +c[iy], +c[ic] ])
+      .filter(p => isFinite(p[0]) && isFinite(p[1]));
+    if(pts.length < 20) throw new Error('자료가 너무 짧습니다');
+    CO2 = pts;
+    CO2_SRC = '실관측 연평균 · ' + pts.length + '개 연도';
+    co2Chart.update([{ name:'연평균 CO₂', color:'--s1', pts: CO2 }]);
+    document.getElementById('csub').textContent =
+      `하와이 마우나로아 · ${co2Range()} · 농도 그대로`;
+    document.getElementById('co2c').setAttribute('aria-label',
+      `${co2Range()} 마우나로아 연평균 이산화 탄소 농도 그래프`);
+  })
+  .catch(() => { /* 붙박이 값 그대로 씁니다 */ });
 document.querySelector('.anomctl').addEventListener('click', e => {
   const b = e.target.closest('.pill'); if(!b) return;
   document.querySelectorAll('.anomctl .pill').forEach(x => x.classList.toggle('on', x === b));
   const m = b.dataset.b;
   if(m === 'raw'){
     co2Chart.update([{ name:'연평균 CO₂', color:'--s1', pts: CO2 }]);
-    document.getElementById('csub').textContent = '하와이 마우나로아 · 1960 ~ 2023년 · 농도 그대로';
+    document.getElementById('csub').textContent = `하와이 마우나로아 · ${co2Range()} · 농도 그대로`;
   } else {
     const base = baseOf(+m);
     co2Chart.update([{ name:`${m}년 기준 편차`, color:'--s2', pts: CO2.map(([y, v]) => [y, +(v - base).toFixed(2)]) }]);

@@ -339,7 +339,9 @@
       <span>기준값 <b id="roBase">—</b></span>
       <span>가장 큰 양(+)의 편차 <b id="roMax">—</b></span>
       <span>+0.5 ℃ 이상이 5개월 이상 이어진 구간 <b id="roCount">—</b></span>
-      <span style="font-size:13px;color:var(--ink-faint)">※ 간이 기준입니다. 실제 기상청·NOAA 판정은 <b>3개월 이동평균한 편차</b>를 씁니다.</span>
+      <span style="font-size:13px;color:var(--ink-soft)">※ 이 자료는 이미 <b>3개월 이동평균</b>이라 실제 판정과 결이 같습니다.
+        다만 실제 판정은 <b>기상 기관이 정한 30년 평년값</b>을 기준으로 삼습니다.
+        여기서는 <b>기준을 여러분이 정하므로</b> 구간이 달라질 수 있습니다 — 그 차이를 보는 것이 이 활동의 핵심입니다.</span>
     </div>
 
     <p class="datacard" id="dataCard"></p>
@@ -798,9 +800,11 @@ TG.quiz('#quizA', [
       DATA = parseCSV(txt);
       if(DATA.length < 24) throw new Error('자료가 너무 짧습니다');
       const first = DATA[0].label, last = DATA[DATA.length - 1].label;
-      META = `<b>자료</b> Niño 3.4 해역 월평균 해수면 온도 · ${first} ~ ${last} (${DATA.length}개월) &nbsp;·&nbsp; `
-           + `<b>단위</b> ℃ &nbsp;·&nbsp; <b>결측</b> 값이 비어 있는 달은 제외했습니다 &nbsp;·&nbsp; `
-           + `<b>출처와 취득일</b>은 <code>data/nino34.csv</code> 머리글에 적혀 있습니다.`;
+      META = `<b>자료</b> Niño 3.4 해역 해수면 온도 — <b>3개월 이동평균</b> `
+           + `(석 달씩 겹쳐 평균한 값이며, 표시된 달은 그 석 달의 <b>가운데 달</b>입니다) &nbsp;·&nbsp; `
+           + `${first} ~ ${last} (${DATA.length}개) &nbsp;·&nbsp; <b>단위</b> ℃ &nbsp;·&nbsp; `
+           + `<b>출처</b> NOAA 기후예측센터(CPC) 공식 ONI 표 &nbsp;·&nbsp; <b>결측</b> 없음 &nbsp;·&nbsp; `
+           + `취득일과 검산 내역은 <code>data/nino34.csv</code> 머리글에 적혀 있습니다.`;
       base = 27; start();
     })
     .catch(() => {
