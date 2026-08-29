@@ -20,6 +20,12 @@ const TG2 = (() => {
 /* 페이지가 요구하는 최소 배포 버전 — Code.gs 의 VER 과 같아야 합니다. */
 const NEED_VER = 5;
 
+/* 구글에 닿지 못할 때만 쓰는 예비 값 — 교사 페이지와 수업 진행 화면이 **함께** 씁니다.
+   이 파일은 누구나 소스를 볼 수 있으므로 비밀번호는 적지 않고 지문(SHA-256)만 둡니다.
+   계정을 늘리거나 비밀번호를 바꿀 때 두 곳을 따로 고치지 않도록 여기 한 곳에 둡니다.  */
+const FALLBACK_WHO = ['cadrical@gmail.com', 'chwan5256@namkang.sen.hs.kr'];
+const FALLBACK_PIN_HASH = '743392a6cfca212568fbd1ca6b693f91f583f67672f2698b000dc20e062ddf6e';
+
 /* 이 응답이 정말 '그 요청'에 대한, 충분히 새로운 배포의 답인가.
    옛 배포는 모르는 요청을 응답 집계(ok:true)로 흘려보냅니다.
    그래서 '틀렸다는 표시'가 아니라 '맞다는 표시'를 요구합니다.      */
@@ -191,6 +197,6 @@ if(document.readyState === 'loading')
   document.addEventListener('DOMContentLoaded', guard);
 else guard();
 
-return { jsonp, NEED_VER, gates, state, setGate, setGates, setToday, setCls, vids, setVid, ytId, ping, checkPin,
+return { jsonp, NEED_VER, FALLBACK_WHO, FALLBACK_PIN_HASH, gates, state, setGate, setGates, setToday, setCls, vids, setVid, ytId, ping, checkPin,
          chkWho, who, setWho, setPin, sha256, lockPage };
 })();

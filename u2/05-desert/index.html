@@ -139,7 +139,6 @@
 <script src="../../shared/lib.js"></script>
 <script src="../../shared/gate.js"></script>
 <script src="../../shared/me.js"></script>
-<script src="../../shared/qr.js"></script>
 <script src="../../shared/act.js"></script>
 <script>
 const LESSON = {
@@ -152,10 +151,12 @@ TG.nav('.topbar nav');
 /* 반·이름 줄 (글자 크기 조절 포함) — 진행 화면에서는 띄우지 않습니다 */
 if(location.hash !== '#t'){
   ME.bar('meBar');
+  /* 먼저 묻고, 반 목록이 오면 단추만 갈아 끼웁니다.
+     구글에 닿지 못하는 날에도 반·이름을 반드시 받기 위해서입니다. */
+  ME.askOnce();
   TG2.state(LESSON.api).then(st => {
     const cls = (st && st.cls && st.cls.length) ? st.cls : null;
-    if(cls) ME.bar('meBar', cls);
-    ME.askOnce(cls ? { cls } : undefined);
+    if(cls){ ME.bar('meBar', cls); ME.clsList(cls); }
   });
 }
 

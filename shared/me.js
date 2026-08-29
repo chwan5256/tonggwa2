@@ -33,6 +33,7 @@ function set(c, n){
   me = { cls: String(c || '').trim().slice(0, 12),
          name: String(n || '').trim().slice(0, 20) };
   write(K_ME, me);
+  bucket();                 /* 새 사람의 칸을 만들어 둡니다 */
   paint();
   document.dispatchEvent(new CustomEvent('tg:me', { detail: get() }));
   return me;
@@ -40,33 +41,51 @@ function set(c, n){
 function clear(){ try{ localStorage.removeItem(K_ME); }catch(e){} me = null; paint(); }
 
 /* ---------- 진도 ----------
-   { "u2-01": { done:["q1","q2"], total:8, at:"sec-3", ts:1724… } }
-   done 은 '푼 문항 코드'입니다. 같은 문항을 두 번 풀어도 하나로 셉니다.   */
-let prog = read(K_PROG, {});
+   { "3반|김남강": { "u2-01": { done:["q1","q2"], total:8, at:"sec-3", ts:1724… } } }
+
+   ★ 사람마다 칸을 따로 둡니다. ★
+   한 대의 기기를 여러 학생이 돌아가며 쓰는 교실에서, 진도를 기기 단위로 세면
+   앞사람이 푼 것이 뒷사람의 진도로 보입니다. 그래서 **반+이름**을 열쇠로 씁니다.
+   (반·이름은 여전히 이 기기 밖으로 나가지 않습니다. 열쇠로만 씁니다.)      */
+let progAll = read(K_PROG, {});
+
+const who = () => me ? ((me.cls || '') + '|' + (me.name || '')) : '(이름 없음)';
+
+/* 옛 형식(차시가 최상위)으로 저장된 값을 한 번만 새 형식으로 옮깁니다.
+   옮기지 않으면 지금까지 푼 것이 통째로 사라진 것처럼 보입니다. */
+(function migrate(){
+  const ks = Object.keys(progAll);
+  const old = ks.some(k => progAll[k] && Array.isArray(progAll[k].done));
+  if(old){ progAll = { [who()]: progAll }; write(K_PROG, progAll); }
+})();
+
+const bucket = () => (progAll[who()] = progAll[who()] || {});
 
 function mark(code, item, total, at){
   if(!code || !item) return;
+  const prog = bucket();
   const p = prog[code] || (prog[code] = { done: [], total: 0, at: '', ts: 0 });
   if(!p.done.includes(item)) p.done.push(item);
   if(total) p.total = Math.max(p.total || 0, total);
   if(at) p.at = at;
   p.ts = Date.now();
-  write(K_PROG, prog);
+  write(K_PROG, progAll);
 }
 /* 문항을 풀지 않고 그냥 읽고 지나간 위치도 기억합니다. */
 function seen(code, at, total){
   if(!code) return;
+  const prog = bucket();
   const p = prog[code] || (prog[code] = { done: [], total: 0, at: '', ts: 0 });
   if(at) p.at = at;
   if(total) p.total = Math.max(p.total || 0, total);
   p.ts = Date.now();
-  write(K_PROG, prog);
+  write(K_PROG, progAll);
 }
-const progOf = code => prog[code] || null;
-const allProg = () => prog;
+const progOf = code => bucket()[code] || null;
+const allProg = () => bucket();
 function resetProg(code){
-  if(code) delete prog[code]; else prog = {};
-  write(K_PROG, prog);
+  if(code) delete bucket()[code]; else progAll[who()] = {};
+  write(K_PROG, progAll);
 }
 
 /* ---------- 글자 크기 ----------
@@ -128,9 +147,7 @@ const CSS = `
 .me-card .st{font-size:13.5px;color:var(--danger);min-height:1.2em;margin:0 0 12px}
 .me-card .foot{margin-top:18px;padding-top:15px;border-top:1px solid var(--rule-soft);
   font-size:12.5px;color:var(--ink-soft);line-height:1.7}
-.me-card .later{display:block;width:100%;margin-top:10px;font:inherit;font-size:13.5px;
-  border:0;background:none;color:var(--ink-soft);text-decoration:underline;cursor:pointer;padding:8px}
-.me-card .later:hover{color:var(--ink)}
+.me-card .hint{margin:8px 0 0;font-size:13px;line-height:1.65;color:var(--s2-ink)}
 
 @media print{.me-bar .me-sz,.me-who button,.me-ask{display:none !important}}
 `;
@@ -149,7 +166,7 @@ function paint(){
     if(!w) return;
     w.innerHTML = me
       ? `<span><b>${esc(me.cls)}</b> ${esc(me.name)}</span><button type="button" data-me-edit>바꾸기</button>`
-      : `<span>반과 이름을 넣어 두면 편합니다</span><button type="button" data-me-edit>넣기</button>`;
+      : `<span>반과 이름을 아직 넣지 않았습니다</span><button type="button" data-me-edit>넣기</button>`;
   });
   applyScale();
 }
@@ -179,6 +196,22 @@ function bar(host, clsList){
 let CLS = ['1반','2반','3반','4반','5반','6반','7반','8반'];
 let dlg = null, pick = '';
 
+/* 반 목록이 서버에서 늦게 도착해도 창은 이미 떠 있어야 합니다.
+   구글에 닿지 못하는 날 학생을 아예 못 묻는 일이 생기면 안 되기 때문입니다.
+   그래서 창은 붙박이 목록으로 먼저 띄우고, 목록이 오면 단추만 갈아 끼웁니다. */
+function clsList(list){
+  if(!list || !list.length) return;
+  CLS = list;
+  if(dlg && !dlg.hidden){
+    const box = dlg.querySelector('.me-cls');
+    if(box) box.innerHTML = clsBtns();
+  }
+}
+function clsBtns(){
+  return CLS.map(c => `<button type="button" data-cls="${esc(c)}"
+    class="${c === pick ? 'on' : ''}" aria-pressed="${c === pick}">${esc(c)}</button>`).join('');
+}
+
 function ask(opts){
   style();
   opts = opts || {};
@@ -197,23 +230,24 @@ function ask(opts){
   document.querySelectorAll('body > :not(.me-ask)').forEach(el => el.setAttribute('inert', ''));
   dlg.innerHTML = `<div class="me-card">
     <h2 id="meH" tabindex="-1">반과 이름</h2>
-    <p class="lead">한 번만 넣어 두면 <b>모든 차시</b>에 그대로 쓰입니다.
-      받아 가는 PDF 파일 이름과 학습 기록표에 자동으로 들어갑니다.</p>
+    <p class="lead"><b>수업에 들어가려면 반과 이름을 넣어야 합니다.</b>
+      한 번만 넣어 두면 <b>모든 차시</b>에 그대로 쓰이고, 받아 가는 PDF 파일 이름과 학습 기록표에 자동으로 들어갑니다.
+      이 기기에서 <b>내 진도</b>를 따로 세는 데에도 이 이름을 씁니다.</p>
     <div class="fld">
       <label id="clsLb">반</label>
       <div class="me-cls" role="group" aria-labelledby="clsLb">
-        ${CLS.map(c => `<button type="button" data-cls="${esc(c)}"
-           class="${c === pick ? 'on' : ''}" aria-pressed="${c === pick}">${esc(c)}</button>`).join('')}
+        ${clsBtns()}
       </div>
     </div>
     <div class="fld">
       <label for="meName">이름</label>
       <input type="text" id="meName" value="${esc(name())}" maxlength="20"
-             autocomplete="name" placeholder="예) 최찬환">
+             autocomplete="name" placeholder="예) 김남강" aria-describedby="meNameHint">
+      <p class="hint" id="meNameHint"><b>반드시 실명을 적으세요.</b>
+        별명·이니셜로 적으면 학습 기록과 진도가 다른 사람 것과 섞입니다.</p>
     </div>
     <p class="st" id="meSt"></p>
-    <button class="btn" type="button" data-me-save style="width:100%">저장</button>
-    <button class="later" type="button" data-me-later>나중에 넣을게요</button>
+    <button class="btn" type="button" data-me-save style="width:100%">저장하고 시작하기</button>
     <p class="foot"><b>이름은 이 기기 밖으로 나가지 않습니다.</b>
       선생님 화면에는 반별 응답 수만 보이고 누가 무엇을 골랐는지는 보이지 않습니다.<br>
       반을 나중에 바꾸면, <b>이미 보낸 답은 앞서 고른 반으로 남습니다.</b></p>
@@ -226,15 +260,13 @@ function close(){
   document.querySelectorAll('body > [inert]').forEach(el => el.removeAttribute('inert'));
 }
 
-/* 처음 온 학생에게만 묻습니다.
-   이미 넣었거나, 이번 방문에서 '나중에'를 누른 뒤면 조용히 지나갑니다.
-   묻는 창이 길을 막아 복습하러 온 학생을 붙잡아 두면 안 됩니다.      */
-function skipped(){
-  try{ return sessionStorage.getItem('tg2.me.later') === '1'; }catch(e){ return false; }
-}
+/* 반·이름은 **건너뛸 수 없습니다.**
+   진도와 학습 기록이 이 값으로 갈라지기 때문에, 비워 두면 한 기기를 함께 쓰는
+   학생들의 기록이 뒤섞입니다. 그래서 넣기 전에는 창을 닫을 수 없습니다.
+   (이미 넣은 학생에게는 다시 묻지 않습니다.)                          */
 function askOnce(opts){
   if(opts && opts.cls && opts.cls.length) CLS = opts.cls;
-  if(!me && !skipped()) ask(opts);
+  if(!me) ask(opts);
 }
 
 document.addEventListener('click', e => {
@@ -255,10 +287,6 @@ document.addEventListener('click', e => {
     set(pick, n); close();
     return;
   }
-  if(e.target.closest('[data-me-later]')){
-    try{ sessionStorage.setItem('tg2.me.later', '1'); }catch(e2){}
-    close(); return;
-  }
   if(e.target.closest('[data-me-edit]')){ ask(); return; }
   const s = e.target.closest('[data-scale-btn]');
   if(s){ setScale(s.dataset.scaleBtn); return; }
@@ -270,7 +298,7 @@ document.addEventListener('keydown', e => {
 
 applyScale();
 
-return { get, set, clear, cls, name, ask, askOnce, close, bar, paint,
+return { get, set, clear, cls, name, ask, askOnce, close, bar, paint, clsList,
          mark, seen, prog: progOf, allProg, resetProg,
          scale: () => scale, setScale };
 })();

@@ -395,8 +395,9 @@ const HUB = {
 
   /* 구글에 닿지 못할 때만 쓰는 예비 값 — 이 파일은 누구나 소스를 볼 수 있으므로
      비밀번호는 그대로 적지 않고 지문(SHA-256)만 둡니다. */
-  fallbackWho: ["cadrical@gmail.com", "chwan5256@namkang.sen.hs.kr"],
-  fallbackPinHash: "743392a6cfca212568fbd1ca6b693f91f583f67672f2698b000dc20e062ddf6e"
+  /* 목록과 지문은 shared/gate.js 한 곳에만 둡니다 — 수업 진행 화면도 같은 값을 씁니다. */
+  fallbackWho: TG2.FALLBACK_WHO,
+  fallbackPinHash: TG2.FALLBACK_PIN_HASH
 };
 /* ═════════════════════════════════════════════════════════ */
 

@@ -485,7 +485,6 @@
 <script src="../../shared/lib.js"></script>
 <script src="../../shared/gate.js"></script>
 <script src="../../shared/me.js"></script>
-<script src="../../shared/qr.js"></script>
 <script src="../../shared/act.js"></script>
 <script>
 /* ============ 이 차시의 설정 — 여기만 고치면 됩니다 ============ */
@@ -504,10 +503,12 @@ TG.nav('.topbar nav');
 if(location.hash !== '#t'){
   ME.bar('meBar');
   /* 반 목록이 도착한 뒤에 묻습니다. 먼저 물으면 반 단추가 기본값으로 채워집니다. */
+  /* 먼저 묻고, 반 목록이 오면 단추만 갈아 끼웁니다.
+     구글에 닿지 못하는 날에도 반·이름을 반드시 받기 위해서입니다. */
+  ME.askOnce();
   TG2.state(LESSON.api).then(st => {
     const cls = (st && st.cls && st.cls.length) ? st.cls : null;
-    if(cls) ME.bar('meBar', cls);
-    ME.askOnce(cls ? { cls } : undefined);
+    if(cls){ ME.bar('meBar', cls); ME.clsList(cls); }
   });
 }
 
@@ -1134,7 +1135,7 @@ ACT.sort('#sortB', {
 })();
 
 ACT.note('#noteB', {
-  prompt: '<b>[문항]</b> 위 여덟 가지 대처 방안 중 <u>우리 학교가 올해 안에 실천할 것</u> 하나를 고르고, <b>왜 그것을 1순위로 골랐는지</b>를 서술하시오.<br>' +
+  prompt: '<b>[문항]</b> 위 여덟 가지 대처 방안 중 <u>우리 남강고등학교가 올해 안에 실천할 것</u> 하나를 고르고, <b>왜 그것을 1순위로 골랐는지</b>를 서술하시오.<br>' +
           '<b>&lt;조건&gt;</b> ① 고른 방안이 <b>완화인지 적응인지</b> 밝힐 것 ② <b>어떤 기준</b>으로 순위를 매겼는지 한 가지 이상 밝힐 것(예: 줄일 수 있는 배출량, 드는 비용, 걸리는 시간, 학생이 직접 할 수 있는 정도) ③ 그 기준으로 볼 때 <b>다른 방안보다 나은 점</b>을 비교하여 쓸 것',
   ph: '나는 (        )을 1순위로 골랐다. 이것은 (완화 / 적응)이다.\n내가 쓴 기준은 (        )이다.\n이 기준으로 보면 (        )보다 …',
   model: `<p>나는 <b>건물 단열 강화와 냉난방 에너지 줄이기</b>를 1순위로 골랐다. 이것은 배출량 자체를 줄이므로 <b>완화</b>에 해당한다.</p>

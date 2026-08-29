@@ -61,15 +61,6 @@ a.lcard .foot{margin-top:4px;padding-top:11px;border-top:1px solid var(--rule-so
 .pgt .done{color:var(--good);font-weight:600}
 .pgt .go{margin-left:auto;color:var(--accent);font-weight:600}
 
-/* 접속 QR */
-.qrbox{display:flex;flex-wrap:wrap;align-items:center;gap:22px;background:var(--surface);
-  border:1px solid var(--rule);border-radius:16px;padding:22px 24px;margin:0 0 40px}
-.qrbox .pic{width:150px;flex-shrink:0}
-.qrbox .pic svg{width:100%;height:auto;display:block;border-radius:8px}
-.qrbox .tx{flex:1;min-width:220px}
-.qrbox .tx h3{margin:0 0 7px;font-size:16px;font-weight:600}
-.qrbox .tx p{margin:0;font-size:14px;color:var(--ink-soft);line-height:1.7}
-.qrbox .tx code{font-size:12.5px;word-break:break-all}
 
 .dot{width:7px;height:7px;border-radius:50%;background:var(--rule);flex-shrink:0}
 .dot.used{background:var(--good)}
@@ -132,7 +123,6 @@ a.lcard.locked .t::after{content:" 🔒";font-size:.8em}
   </div>
 
   <div class="units" id="units"><div class="empty">불러오는 중…</div></div>
-  <div id="qrBox"></div>
 </div></main>
 
 <footer class="ftr"><div class="wrap">
@@ -144,7 +134,6 @@ a.lcard.locked .t::after{content:" 🔒";font-size:.8em}
 <script src="shared/lib.js"></script>
 <script src="shared/gate.js"></script>
 <script src="shared/me.js"></script>
-<script src="shared/qr.js"></script>
 <script>
 /* ============ 자료실 설정 — 여기만 고치면 됩니다 ============ */
 const HUB = {
@@ -174,13 +163,15 @@ fetch('manifest.json', { cache:'no-store' })
     MF = m;
     TODAY = m.today || '';
     render();
+    /* 반·이름을 **먼저** 묻습니다. 구글이 늦거나 닿지 않는 날에도 반드시 받아야 하므로
+       서버 응답을 기다리지 않고, 반 목록이 오면 단추만 갈아 끼웁니다. */
+    ME.askOnce();
     return TG2.state(HUB.api);
   })
   .then(s => {
     if(!s) return;                       /* 못 읽었으면 manifest 값 그대로 둡니다 */
     GATE = s.open; TODAY = s.today;      /* 서버가 답했으면 서버가 정본입니다 */
-    if(s.cls && s.cls.length) ME.bar('meBar', s.cls);
-    ME.askOnce(s.cls && s.cls.length ? { cls: s.cls } : undefined);
+    if(s.cls && s.cls.length){ ME.bar('meBar', s.cls); ME.clsList(s.cls); }
     render();
   })
   .catch(() => {
@@ -209,9 +200,11 @@ function render(){
     `<span class="tag std">${esc(m.part)}</span>` +
     `<span class="tag">열린 차시 ${opened.length}개</span>`;
 
-  /* 오늘 수업 — 선생님이 정해 둔 차시가 우선, 없으면 열린 차시 중 마지막 */
-  const today = opened.find(l => codeOf(l) === TODAY)
-             || opened.slice().sort((a, b) => (a.no > b.no ? -1 : 1))[0];
+  /* 오늘 수업 — **선생님이 정해 준 차시만** 올립니다.
+     예전에는 정해지지 않았을 때 '열린 차시 중 마지막'을 대신 올렸는데,
+     그러면 선생님이 정하지 않은 차시가 '오늘 수업'인 것처럼 보였습니다.
+     정해지지 않았거나 그 차시가 닫혀 있으면 카드를 아예 띄우지 않습니다. */
+  const today = TODAY ? opened.find(l => codeOf(l) === TODAY) : null;
   document.getElementById('todayBox').innerHTML = today ? `
     <a class="today" href="${today.path}">
       <p class="k">오늘 수업</p>
@@ -254,24 +247,6 @@ function render(){
     [m.course + ' ' + (m.part || ''), '2022 개정 교육과정', '담당 ' + (m.teacher || '')]
       .filter(Boolean).join('  ·  ');
 
-  drawQR();
-}
-
-/* 옆 사람에게 주소를 알려 줄 때 쓰는 QR — 이 페이지 자신을 가리킵니다. */
-function drawQR(){
-  const box = document.getElementById('qrBox');
-  if(!box || box.dataset.done) return;
-  const url = location.href.split('#')[0].split('?')[0];
-  box.innerHTML = `<div class="qrbox">
-    <div class="pic" id="qrPic"></div>
-    <div class="tx">
-      <h3>친구에게 알려 줄 때</h3>
-      <p>이 그림을 휴대전화 카메라로 비추면 이 자료실이 열립니다. 주소를 받아 적지 않아도 됩니다.<br>
-      <code>${esc(url)}</code></p>
-    </div>
-  </div>`;
-  QR.into('#qrPic', url, { label:'통합과학2 자료실 주소' });
-  box.dataset.done = '1';
 }
 
 function card(l, today){

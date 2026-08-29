@@ -108,16 +108,6 @@ const CSS = `
 .tclsbar button.on{background:var(--accent);border-color:var(--accent);color:var(--on-accent);font-weight:600}
 .tclsbar .cnt{font-size:11px;opacity:.75;margin-left:4px}
 
-/* 진행 화면 QR */
-.tqr{display:flex;flex-wrap:wrap;align-items:center;gap:clamp(20px,3vw,44px);
-  background:var(--surface);border:1px solid var(--rule);border-radius:18px;
-  padding:clamp(20px,2.4vw,32px);margin:22px 0}
-.tqr .pic{width:clamp(160px,20vw,260px);flex-shrink:0}
-.tqr .pic svg{width:100%;height:auto;display:block;border-radius:10px}
-.tqr .tx{flex:1;min-width:260px}
-.tqr .tx b{display:block;font-size:clamp(20px,2.2vw,30px);margin-bottom:10px}
-.tqr .tx span{display:block;font-size:clamp(14px,1.2vw,18px);color:var(--ink-soft);
-  line-height:1.7;word-break:break-all}
 .tresp .body{overflow:auto;padding:16px 20px 28px;flex:1}
 .tresp .item{margin-bottom:22px}
 .tresp .item h4{margin:0 0 10px;font-family:var(--mono);font-size:12px;letter-spacing:.06em;
@@ -140,11 +130,40 @@ const CSS = `
   color:var(--ink-soft);border-radius:8px;padding:7px 12px;cursor:pointer}
 `;
 
+/* 진행 화면 입장 문 — 교사 페이지와 같은 두 단계(허용 계정 → 비밀번호) */
+const DOOR_CSS = `
+.tdoor{position:fixed;inset:0;z-index:200;background:var(--ground);display:flex;
+  align-items:center;justify-content:center;padding:24px;overflow:auto}
+.tdoor[hidden]{display:none}
+.tdoor .card{width:100%;max-width:430px;background:var(--surface);border:1px solid var(--rule);
+  border-radius:18px;padding:30px 28px 24px;box-shadow:var(--shadow)}
+.tdoor h2{font-family:var(--serif);font-size:21px;margin:0 0 8px;border:0;padding:0}
+.tdoor .lead{margin:0 0 20px;font-size:14.5px;line-height:1.75;color:var(--ink-soft)}
+.tdoor label{display:block;font-size:13px;color:var(--ink-soft);margin:0 0 7px}
+.tdoor input{width:100%;font:inherit;font-size:16px;padding:11px 13px;border:1px solid var(--rule);
+  border-radius:11px;background:var(--surface);color:var(--ink)}
+.tdoor input:focus{border-color:var(--accent);outline:none;box-shadow:0 0 0 3px var(--accent-wash)}
+.tdoor .fld{margin-bottom:16px}
+.tdoor fieldset{border:0;padding:0;margin:0}
+.tdoor fieldset[disabled]{opacity:.45}
+.tdoor .st{font-size:13.5px;min-height:1.2em;margin:0 0 12px;color:var(--ink-soft)}
+.tdoor .st.no{color:var(--danger)}
+.tdoor .st.ok{color:var(--accent)}
+.tdoor .btn{width:100%;font:inherit;font-size:15px;border:1px solid var(--accent);
+  background:var(--accent);color:var(--on-accent);border-radius:11px;padding:11px;cursor:pointer}
+.tdoor .btn[disabled]{opacity:.5;cursor:default}
+.tdoor .out{display:block;width:100%;margin-top:10px;font:inherit;font-size:13.5px;border:0;
+  background:none;color:var(--ink-soft);text-decoration:underline;cursor:pointer;padding:8px}
+.tdoor .foot{margin-top:16px;padding-top:14px;border-top:1px solid var(--rule-soft);
+  font-size:12.5px;line-height:1.7;color:var(--ink-soft)}
+`;
+
 /* ---------- 상태 ---------- */
 let on = false, idx = 0, secs = [], respOpen = false, poll = null;
 let bar, prog, resp, toast;
-/* 교사 화면의 [진행 화면 열기] 로 왔는지. 통행증이 없는 기기에서도
-   교사가 바로 열 수 있도록 남겨 둔 길입니다(허들이지 잠금이 아닙니다). */
+/* 교사 화면의 [진행 화면 열기] 로 왔는지.
+   ★ 이 값은 **통행 근거가 아닙니다.** 학생도 주소창에 ?t=1 을 칠 수 있습니다.
+   문을 자동으로 띄울지 결정하는 데에만 씁니다. 통행은 아래 door() 가 정합니다. */
 const CAME_FROM_TEACHER = /[?&]t=1/.test(location.search) ||
   (document.referrer || '').includes('teacher.html');
 
@@ -417,41 +436,120 @@ function render(d){
 
 const esc = s => String(s).replace(/[<>&"]/g, c => ({ '<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;' }[c]));
 
+/* ---------- 입장 문 ----------
+   진행 화면에는 [응답 보기]가 있어 **학생이 쓴 문장이 그대로 보입니다.**
+   그래서 교사 페이지와 똑같이 ① 허용된 계정 ② 비밀번호 두 단계를 거칩니다.
+   통과하면 교사 페이지와 같은 통행증(tg2.teacher.pass · 12시간)을 저장하므로,
+   교사 페이지에서 이미 들어온 기기에서는 문이 뜨지 않습니다.            */
+let doorEl = null, doorBusy = false;
+
+function doorOpen(){
+  if(!doorEl){
+    const st = document.createElement('style'); st.textContent = DOOR_CSS;
+    document.head.appendChild(st);
+    doorEl = document.createElement('div');
+    doorEl.className = 'tdoor';
+    doorEl.setAttribute('role', 'dialog');
+    doorEl.setAttribute('aria-modal', 'true');
+    doorEl.setAttribute('aria-labelledby', 'tdH');
+    document.body.appendChild(doorEl);
+  }
+  doorEl.hidden = false;
+  document.body.style.overflow = 'hidden';
+  document.querySelectorAll('body > :not(.tdoor)').forEach(el => el.setAttribute('inert', ''));
+  doorEl.innerHTML = `<div class="card">
+    <h2 id="tdH" tabindex="-1">수업 진행 화면</h2>
+    <p class="lead">이 화면에는 <b>학생이 쓴 답안</b>이 그대로 보입니다.
+      그래서 <b>선생님만</b> 들어올 수 있습니다. 학생은 <a href="../../">자료실</a>로 돌아가 주세요.</p>
+    <div class="fld">
+      <label for="tdMail">허용된 계정 주소</label>
+      <input type="email" id="tdMail" autocomplete="username" placeholder="이름@namkang.sen.hs.kr">
+    </div>
+    <p class="st" id="tdS1"></p>
+    <button class="btn" type="button" id="tdB1">확인</button>
+    <fieldset id="tdF2" disabled style="margin-top:18px">
+      <div class="fld">
+        <label for="tdPw">비밀번호</label>
+        <input type="password" id="tdPw" autocomplete="current-password">
+      </div>
+      <p class="st" id="tdS2"></p>
+      <button class="btn" type="button" id="tdB2">들어가기</button>
+    </fieldset>
+    <button class="out" type="button" id="tdOut">← 자료실로 돌아가기</button>
+    <p class="foot">비밀번호는 교사 페이지의 것과 같습니다. 한 번 들어오면 이 브라우저에서 <b>12시간</b> 기억합니다.</p>
+  </div>`;
+  setTimeout(() => { try{ doorEl.querySelector('#tdH').focus(); }catch(e){} }, 60);
+
+  const $$ = id => doorEl.querySelector('#' + id);
+  const say = (el, c, t) => { el.className = 'st ' + c; el.textContent = t; };
+  let mail = '';
+
+  $$('tdOut').addEventListener('click', () => { location.href = cfg().hub || '../../'; });
+
+  $$('tdB1').addEventListener('click', () => {
+    if(doorBusy) return;
+    const v = ($$('tdMail').value || '').trim().toLowerCase();
+    if(!v){ say($$('tdS1'), 'no', '계정 주소를 넣어 주세요.'); return; }
+    doorBusy = true; say($$('tdS1'), '', '확인하는 중…');
+    TG2.chkWho(cfg().api, v).then(w => {
+      doorBusy = false;
+      /* null = 구글에 닿지 못함. 그때만 파일에 적힌 예비 목록으로 봅니다. */
+      const ok = w === true ||
+        (w === null && TG2.FALLBACK_WHO.map(x => x.toLowerCase()).includes(v));
+      if(!ok){ say($$('tdS1'), 'no', '허용된 계정이 아닙니다.'); return; }
+      mail = v;
+      say($$('tdS1'), 'ok', w === null ? '구글에 닿지 못해 예비 목록으로 확인했습니다.' : '확인했습니다.');
+      $$('tdF2').disabled = false;
+      $$('tdPw').focus();
+    });
+  });
+
+  $$('tdB2').addEventListener('click', () => {
+    if(doorBusy) return;
+    const v = $$('tdPw').value || '';
+    if(!v){ say($$('tdS2'), 'no', '비밀번호를 넣어 주세요.'); return; }
+    doorBusy = true; say($$('tdS2'), '', '확인하는 중…');
+    TG2.checkPin(cfg().api, v).then(k => {
+      if(k === true) return true;
+      if(k === false) return false;
+      /* 구글에 닿지 못했을 때만 지문으로 확인합니다. */
+      return TG2.sha256(v).then(h => h === TG2.FALLBACK_PIN_HASH);
+    }).then(pass => {
+      doorBusy = false;
+      if(!pass){ say($$('tdS2'), 'no', '비밀번호가 맞지 않습니다.'); return; }
+      try{ localStorage.setItem('tg2.teacher.pass', JSON.stringify(
+        { me: mail, pin: v, until: Date.now() + 12 * 3600 * 1000 })); }catch(e){}
+      say($$('tdS2'), 'ok', '들어갑니다.');
+      doorClose();
+      setTimeout(() => onMode(), 120);
+    });
+  });
+
+  [$$('tdMail'), $$('tdPw')].forEach((el, i) =>
+    el.addEventListener('keydown', ev => { if(ev.key === 'Enter'){ ev.preventDefault(); $$(i ? 'tdB2' : 'tdB1').click(); } }));
+}
+
+function doorClose(){
+  if(doorEl) doorEl.hidden = true;
+  document.body.style.overflow = '';
+  document.querySelectorAll('body > [inert]').forEach(el => el.removeAttribute('inert'));
+}
+
 /* ---------- 켜기 / 끄기 ---------- */
 function onMode(){
   if(on) return;
   /* 절이 하나도 없으면(닫힌 차시라 안내문만 남은 경우) 들어가지 않습니다.
      그냥 들어가면 secs[0] 이 없어 예외가 나고 화면이 빈 채로 멈춥니다. */
   if(!document.querySelector('section.step')) return;
-  /* 진행 화면은 교사용입니다. 학생 기기에서 열리면 다른 학생이 쓴 문장이
-     보이고, 그 상태에서는 자기 답이 전송되지 않는 것도 모릅니다.        */
-  if(!teacherPin() && !CAME_FROM_TEACHER) return;
+  /* 통행증이 없으면 문을 엽니다. ?t=1 이나 referrer 는 통행 근거가 아닙니다. */
+  if(!teacherPin()){ doorOpen(); return; }
   if(!bar) build();
   on = true;
   root.setAttribute('data-teach', '');
   secs = [...document.querySelectorAll('section.step')];
   mountVideos();
-  mountQR();
   loadCls();
   go(0); tick();
-}
-
-/* ---------- 첫 절의 접속 QR ----------
-   수업 시작할 때 학생이 주소를 받아 적지 않고 카메라로 들어오게 합니다.
-   자료실(허브) 주소를 가리킵니다 — 차시 주소가 아니라 첫 화면입니다.
-   차시가 아직 닫혀 있어도 학생이 길을 잃지 않기 때문입니다.            */
-function mountQR(){
-  if(typeof QR === 'undefined' || !secs.length) return;
-  if(document.querySelector('.tqr')) return;
-  const hub = cfg().hub || '../../';
-  const url = new URL(hub, location.href).href;
-  const box = document.createElement('div');
-  box.className = 'teach-only tqr';
-  box.innerHTML = `<div class="pic" id="tqrPic"></div>
-    <div class="tx"><b>휴대전화 카메라로 비추세요</b>
-      <span>${esc(url)}</span></div>`;
-  secs[0].appendChild(box);
-  QR.into('#tqrPic', url, { label:'학생 자료실 주소' });
 }
 
 /* 반 목록 — 응답판의 반 단추를 채웁니다. */
