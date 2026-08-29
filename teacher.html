@@ -113,7 +113,9 @@ fieldset.step{border:0;border-top:1px solid var(--rule-soft);margin-inline:0;pad
 .tpick b{font-size:15.5px;font-weight:600}
 .tpick span.sm{font-size:12.5px;color:var(--ink-soft);margin-left:auto;white-space:nowrap}
 .tpick.on{border-color:var(--accent);background:var(--accent-wash)}
-.tpick.auto{border-style:dashed}
+.tpick.none{border-style:dashed}
+.tsave{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:14px}
+.tsave .dirty{font-size:13.5px;color:var(--ochre);font-weight:600}
 .tpick.shut b{color:var(--ink-faint);text-decoration:line-through}
 
 /* 계정 */
@@ -249,9 +251,14 @@ fieldset.step{border:0;border-top:1px solid var(--rule-soft);margin-inline:0;pad
   <!-- 오늘 수업 -->
   <div class="panel">
     <h2>오늘 수업</h2>
-    <p class="sub">학생 자료실 맨 위 <b>‘오늘 수업’</b> 카드에 어떤 차시를 띄울지 정합니다.
-      <b>자동</b>으로 두면 열려 있는 차시 중 가장 뒤엣것이 올라갑니다. 바꾸면 학생 화면에 곧바로 반영됩니다.</p>
+    <p class="sub">학생 자료실 맨 위 <b>‘오늘 수업’</b> 카드에 어떤 차시를 띄울지 <b>선생님이 직접 정합니다.</b>
+      고른 뒤 <b>[저장]</b>을 눌러야 학생 화면에 반영됩니다. 저장 전에는 아무것도 바뀌지 않습니다.</p>
     <div class="todaypick" id="tpick"></div>
+    <div class="tsave">
+      <button class="btn" id="tSave" type="button" disabled>저장</button>
+      <button class="btn ghost" id="tUndo" type="button" hidden>되돌리기</button>
+      <span class="dirty" id="tDirty"></span>
+    </div>
     <p class="msg mute" id="tMsg" style="margin-top:12px"></p>
   </div>
 
@@ -606,7 +613,7 @@ function connect(){
       /* 서버가 답했으면 서버 값이 정본입니다. 빈 문자열은 '자동'이라는 확정 답이므로
          manifest 값으로 되돌리지 않습니다. 못 읽었을 때만 manifest 를 씁니다. */
       .then(s => {
-        if(s){ GATE = s.open; TODAY = s.today; CLS = s.cls || []; }
+        if(s){ GATE = s.open; TODAY = s.today; CLS = s.cls || []; PICK = TODAY; }
         glist(); tlist(); clsrow();
       })
       .then(() => TG2.vids(HUB.api)).then(v => { VID = v || {}; paint(); })
@@ -627,17 +634,21 @@ function dirtyWho(){
 const tell = (id, cls, txt) => { const e = $(id); e.className = 'msg ' + cls; e.textContent = txt; };
 
 /* ---------- 오늘 수업 ---------- */
+/* PICK = 화면에서 고른 값, TODAY = 서버에 저장된 값.
+   둘이 다르면 '아직 저장 안 됨'입니다. 고르는 즉시 저장하지 않습니다. */
+let PICK = null;
+
 function tlist(){
-  const auto = MF.lessons.filter(isOpen).slice().sort((a, b) => (a.no > b.no ? -1 : 1))[0];
-  const rows = [`<label class="tpick auto ${TODAY ? '' : 'on'}">
-      <input type="radio" name="today" value="" ${TODAY ? '' : 'checked'}>
-      <span class="no">자동</span>
-      <b>열린 차시 중 마지막</b>
-      <span class="sm">${auto ? '지금은 ' + auto.no + '차시' : '열린 차시 없음'}</span>
+  if(PICK === null) PICK = TODAY;
+  const rows = [`<label class="tpick none ${PICK ? '' : 'on'}">
+      <input type="radio" name="today" value="" ${PICK ? '' : 'checked'}>
+      <span class="no">없음</span>
+      <b>오늘 수업 정하지 않음</b>
+      <span class="sm">학생 화면 맨 위 카드가 사라집니다</span>
     </label>`];
 
   MF.lessons.forEach(l => {
-    const c = codeOf(l), on = TODAY === c, ok = isOpen(l);
+    const c = codeOf(l), on = PICK === c, ok = isOpen(l);
     rows.push(`<label class="tpick ${on ? 'on' : ''} ${ok ? '' : 'shut'}">
       <input type="radio" name="today" value="${esc(c)}" ${on ? 'checked' : ''}>
       <span class="no">${esc(l.no)}차시</span>
@@ -646,32 +657,60 @@ function tlist(){
     </label>`);
   });
   $('tpick').innerHTML = rows.join('');
+  paintSave();
+}
 
-  /* 닫힌 차시를 오늘 수업으로 두면 학생 화면은 말없이 다른 차시를 띄웁니다.
-     그 어긋남을 화면에 계속 남겨 둡니다.                                  */
-  const cur = MF.lessons.find(x => codeOf(x) === TODAY);
-  if(cur && !isOpen(cur))
-    tell('tMsg', 'no', '⚠ ' + cur.no + '차시가 오늘 수업으로 정해져 있으나 닫혀 있습니다. ' +
-                       '지금 학생 화면에는 ' + (auto ? auto.no + '차시' : '아무것도') + ' 가 대신 올라갑니다.');
+/* 저장 단추와 '저장 안 됨' 표시 */
+function paintSave(){
+  const dirty = PICK !== TODAY;
+  $('tSave').disabled = !dirty || !LIVE;
+  $('tUndo').hidden = !dirty;
+  $('tDirty').textContent = dirty ? '● 아직 저장하지 않았습니다' : '';
+
+  /* 닫힌 차시를 오늘 수업으로 저장해 두면 학생 화면에는 카드가 뜨지 않습니다.
+     그 어긋남을 계속 남겨 둡니다.                                          */
+  if(!dirty){
+    const cur = MF.lessons.find(x => codeOf(x) === TODAY);
+    if(cur && !isOpen(cur))
+      tell('tMsg', 'no', '⚠ ' + cur.no + '차시가 오늘 수업이지만 닫혀 있습니다. ' +
+                         '학생 화면에는 오늘 수업 카드가 뜨지 않습니다. 아래에서 함께 열어 주세요.');
+  }
 }
 
 $('tpick').addEventListener('change', e => {
   const r = e.target.closest('input[name=today]'); if(!r) return;
-  const code = r.value;
-  if(!LIVE){ tell('tMsg', 'no', '구글에 연결된 뒤에 바꿀 수 있습니다.'); tlist(); return; }
+  PICK = r.value;
+  $('tpick').querySelectorAll('.tpick').forEach(el => {
+    el.classList.toggle('on', el.querySelector('input').checked);
+  });
+  tell('tMsg', 'mute', '[저장]을 눌러야 학생 화면에 반영됩니다.');
+  paintSave();
+});
+
+$('tSave').addEventListener('click', () => {
+  if(!LIVE){ tell('tMsg', 'no', '구글에 연결된 뒤에 저장할 수 있습니다.'); return; }
+  const code = PICK || '';
   tell('tMsg', 'mute', '저장하는 중…');
+  $('tSave').disabled = true;
 
   TG2.setToday(HUB.api, code, PIN).then(d => {
-    if(!d){ tell('tMsg', 'no', '연결하지 못했습니다. 바뀌지 않았습니다.'); tlist(); return; }
-    if(!d.ok){ tell('tMsg', 'no', d.error || '바꾸지 못했습니다.'); tlist(); return; }
+    if(!d){ tell('tMsg', 'no', '연결하지 못했습니다. 바뀌지 않았습니다.'); paintSave(); return; }
+    if(!d.ok){ tell('tMsg', 'no', d.error || '저장하지 못했습니다.'); paintSave(); return; }
     TODAY = typeof d.today === 'string' ? d.today : '';
-    tlist();
+    PICK = TODAY;
+    tlist(); glist();
     const l = MF.lessons.find(x => codeOf(x) === TODAY);
-    if(!TODAY) tell('tMsg', 'ok', '자동으로 되돌렸습니다.');
+    if(!TODAY) tell('tMsg', 'ok', '오늘 수업을 비웠습니다. 학생 화면의 카드가 사라집니다.');
     else if(l && !isOpen(l))
-      tell('tMsg', 'no', l.no + '차시로 정했지만 이 차시는 닫혀 있습니다. 아래에서 함께 열어 주세요.');
-    else tell('tMsg', 'ok', (l ? l.no + '차시 「' + l.title + '」' : '') + ' 을(를) 오늘 수업으로 정했습니다.');
+      tell('tMsg', 'no', l.no + '차시로 저장했지만 이 차시는 닫혀 있습니다. 아래에서 함께 열어 주세요.');
+    else tell('tMsg', 'ok', '저장했습니다 — ' + (l ? l.no + '차시 「' + l.title + '」' : '') +
+                            '. 학생 화면에 바로 반영됩니다.');
   });
+});
+
+$('tUndo').addEventListener('click', () => {
+  PICK = TODAY; tlist();
+  tell('tMsg', 'mute', '저장된 값으로 되돌렸습니다.');
 });
 
 /* ---------- 차시 목록 ---------- */
@@ -733,7 +772,7 @@ $('glist').addEventListener('click', e => {
                            ((d2 && d2.error) || '연결하지 못했습니다') + '. 위에서 직접 골라 주세요.');
         return;
       }
-      TODAY = d2.today || '';
+      TODAY = d2.today || ''; PICK = TODAY;
       glist(); tlist();
       tell('gMsg', 'ok', l.no + '차시를 열고 오늘 수업으로 정했습니다. 진행 화면을 엽니다…');
       /* t=1 은 진행 화면에게 '교사가 연 것'임을 알려 줍니다. */
@@ -780,15 +819,15 @@ $('bNone').addEventListener('click', () => {
   bulk([], '모든 차시를 닫았습니다.');
 });
 $('bToday').addEventListener('click', () => {
-  const auto = MF.lessons.filter(isOpen).slice().sort((a,b)=>(a.no>b.no?-1:1))[0];
-  const code = TODAY || (auto ? codeOf(auto) : '');
-  if(!code){ tell('gMsg', 'no', '오늘 수업이 정해져 있지 않고 열린 차시도 없습니다. 위에서 먼저 골라 주세요.'); return; }
-  const l = MF.lessons.find(x => codeOf(x) === code);
-  const nm = l ? l.no + '차시 「' + l.title + '」' : code;
+  if(!TODAY){
+    tell('gMsg', 'no', '오늘 수업이 정해져 있지 않습니다. 위에서 차시를 고르고 [저장]을 먼저 눌러 주세요.');
+    return;
+  }
+  const l = MF.lessons.find(x => codeOf(x) === TODAY);
+  const nm = l ? l.no + '차시 「' + l.title + '」' : TODAY;
   /* [전체 닫기] 만큼 파괴적입니다. 무엇을 남기는지 이름을 보여 주고 묻습니다. */
-  const why = TODAY ? '' : '\n(오늘 수업이 정해져 있지 않아 열린 차시 중 마지막을 골랐습니다)';
-  if(!confirm(nm + ' 하나만 남기고 나머지를 모두 닫습니다.' + why + '\n\n계속할까요?')) return;
-  bulk([code], nm + ' 하나만 열어 두었습니다.');
+  if(!confirm(nm + ' 하나만 남기고 나머지를 모두 닫습니다.\n\n계속할까요?')) return;
+  bulk([TODAY], nm + ' 하나만 열어 두었습니다.');
 });
 
 /* ---------- 반 목록 ---------- */
@@ -949,14 +988,18 @@ $('npBtn').addEventListener('click', () => {
 });
 
 /* ---------- 수업 영상 ---------- */
+/* DEF[key] = 차시 파일(manifest)에 넣어 둔 기본 영상 주소.
+   서버에 저장된 값이 없으면 학생 화면은 이 기본값으로 재생합니다. */
+const DEF = {};
 function vlist(){
   const rows = [];
   MF.lessons.forEach(l => (l.videos || []).forEach((v, n) => {
     const key = codeOf(l) + '|' + n;
+    if(v.yt) DEF[key] = v.yt;
     rows.push(`<div class="vrow" data-key="${key}">
       <span class="no">${l.no}차시</span>
       <span class="cap">${esc(v.cap || '영상 ' + (n + 1))}</span>
-      <span class="hint">유튜브 검색어 · ${esc(v.find || '')}</span>
+      <span class="hint">${v.yt ? '차시 파일에 넣어 둔 기본 영상이 있습니다 · ' + esc(v.yt) : '유튜브 검색어 · ' + esc(v.find || '')}</span>
       <span class="in">
         <input type="text" placeholder="유튜브 주소를 붙여 넣으세요" autocomplete="off">
         <button class="btn ghost" type="button" data-a="save">저장</button>
@@ -972,11 +1015,14 @@ function vlist(){
 
 function paint(){
   document.querySelectorAll('.vrow').forEach(row => {
-    const id = VID[row.dataset.key] || '';
+    const key = row.dataset.key;
+    const id = VID[key] || '';
+    const def = DEF[key] || '';
     const st = row.querySelector('.st');
-    row.classList.toggle('set', !!id);
-    st.className = 'st ' + (id ? 'ok' : 'mute');
-    st.textContent = id ? '저장됨 · ' + id : '아직 없음';
+    row.classList.toggle('set', !!(id || def));
+    st.className = 'st ' + (id ? 'ok' : (def ? 'mute' : 'mute'));
+    st.textContent = id ? '저장됨 · ' + id
+                        : (def ? '기본 영상 사용 중 (바꾸려면 주소를 넣고 저장)' : '아직 없음');
     if(id && !row.querySelector('input').value) row.querySelector('input').value = 'https://youtu.be/' + id;
   });
 }

@@ -3,21 +3,43 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>사막화와 단원 정리 · 통합과학2</title>
+<title>대단원 정리 · 통합과학2</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=IBM+Plex+Sans+KR:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <link rel="stylesheet" href="../../shared/base.css">
 <style>
-.mapg{display:grid;gap:12px;margin-top:16px}
-.chain{display:grid;gap:10px;counter-reset:ch}
+/* 한 줄기 흐름 */
+.chain{display:grid;gap:0;counter-reset:ch;margin-top:6px}
 .chain .cs{position:relative;background:var(--surface);border:1px solid var(--rule);border-radius:13px;
-  padding:15px 18px 15px 56px;font-size:15.5px;line-height:1.7;color:var(--ink)}
+  padding:15px 18px 15px 56px;font-size:15.5px;line-height:1.7;color:var(--ink);width:100%;
+  text-align:left;cursor:pointer;font-family:inherit}
+.chain .cs:hover{border-color:var(--accent)}
+.chain .cs[aria-expanded="true"]{border-color:var(--accent);background:var(--accent-wash)}
 .chain .cs::before{counter-increment:ch;content:counter(ch);position:absolute;left:18px;top:15px;
   width:24px;height:24px;border-radius:50%;background:var(--accent);color:var(--on-accent);
   font-family:var(--mono);font-size:12.5px;display:grid;place-items:center}
 .chain .cs b{color:var(--ink)}
-.chain .ar{justify-self:center;color:var(--ink-faint);font-size:15px;line-height:1}
+.chain .cs .lv{display:block;margin-top:5px;font-family:var(--mono);font-size:11.5px;
+  letter-spacing:.05em;color:var(--ink-faint)}
+.chain .ar{justify-self:center;color:var(--ink-faint);font-size:15px;line-height:1;margin:7px 0}
+.chain .dt{margin:9px 0 0;padding:14px 17px;border-radius:11px;background:var(--surface-2);
+  border-left:3px solid var(--accent);font-size:14.5px;line-height:1.8;color:var(--ink-soft)}
+.chain .dt b{color:var(--ink)}
+.chain .dt .tp{display:block;margin-top:9px;padding-top:9px;border-top:1px solid var(--rule);
+  color:var(--s2-ink)}
+.chainbar{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 4px;align-items:center}
+.chainbar .lb{font-size:14px;color:var(--ink-faint);margin-right:2px}
+/* 10년 평균 표 */
+.dec{width:100%;border-collapse:collapse;font-size:14.5px}
+.dec th,.dec td{border-bottom:1px solid var(--rule);padding:9px 10px;text-align:left}
+.dec th{color:var(--ink-faint);font-weight:500;font-size:12.5px;letter-spacing:.04em}
+.dec td.num{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.dec .bar{display:inline-block;height:9px;border-radius:5px;background:var(--s2);vertical-align:middle;margin-left:8px}
+.dec .zero{margin-left:8px;font-size:12px;color:var(--ink-faint)}
+.tblwrap{overflow-x:auto}
+.datacard{margin-top:14px;font-family:var(--mono);font-size:12px;line-height:1.85;color:var(--ink-faint)}
+.datacard b{color:var(--ink-soft);font-weight:500}
 </style>
 </head>
 <body>
@@ -30,17 +52,17 @@
 
 <header class="mast"><div class="wrap">
   <p class="eyebrow">Ⅱ-2. 지구 환경의 변화 · 05차시</p>
-  <h1>사막화와 단원 정리</h1>
-  <p class="dek">사막이 왜 하필 그 위도에 몰려 있는지부터 확인하고, 이 단원 전체를 하나의 사슬로 이어 마무리합니다.</p>
+  <h1>대단원 정리</h1>
+  <p class="dek">새로 배우는 것은 없습니다. 1~4차시가 <b>따로 배운 다섯 덩어리가 아니라 하나의 줄기</b>였다는 것을 확인하고 시험 준비를 마칩니다.</p>
   <div class="tags">
     <span class="tag std">[10통과2-02-03]</span>
-    <span class="tag">4. 사막화 · 단원 정리</span>
+    <span class="tag">단원 정리 · 종합</span>
     <span class="tag">지식·이해 · 과정·기능 · 가치·태도</span>
   </div>
   <div class="stdbar">
     <p class="k">성취기준 <span class="code">[10통과2-02-03]</span></p>
     <p>온실효과 강화로 인한 지구온난화의 메커니즘을 이해하고, 엘니뇨, 사막화 등과 같은 현상이 지구 환경과 인간 생활에 미치는 영향과 대처 방안을 분석할 수 있다.</p>
-    <p class="sub"><b>이 차시가 맡는 부분</b> — ‘<b>사막화</b>가 지구 환경과 인간 생활에 미치는 영향’과 <b>단원 종합</b>을 다룹니다.</p>
+    <p class="sub"><b>이 차시가 맡는 부분</b> — 성취기준 <b>전체</b>를 하나로 잇습니다. 메커니즘 · 영향 · 대처 방안 세 부분이 모두 한 줄기 안에 들어옵니다.</p>
   </div>
 </div></header>
 
@@ -48,97 +70,55 @@
   <div id="meBar"></div>
 
 <!-- 1 -->
-<section class="step" id="s1" data-min="3" data-nav="오늘의 질문">
-  <h2><span class="n">01</span>오늘의 질문</h2>
-  <p class="q">세계의 큰 사막들은 왜 하필 위도 30° 부근에 몰려 있을까?</p>
-  <p>우연이 아닙니다. 답은 <b>3차시에 배운 대기 대순환</b> 안에 이미 들어 있습니다.</p>
-  <div class="teach-only" data-yt="" data-cap="도입 — 사막은 어디에 생기는가" data-find="사막화 원인 위도 30도 하강기류"></div>
+<section class="step" id="s1" data-min="2" data-nav="오늘 할 일">
+  <h2><span class="n">01</span>오늘 할 일</h2>
+  <p class="q">1차시의 ‘파장’과 4차시의 ‘파리 협정’은 어떻게 한 줄로 이어지는가?</p>
+  <p>오늘은 <b>새 개념이 없습니다.</b> 세 가지만 합니다 — ① 전체를 한 줄기로 잇고, ② 자주 틀리는 여섯 지점을 걸러내고, ③ 자료 해석과 서술형을 한 문제씩 연습합니다.</p>
+  <div class="teach-only" data-yt="CNYMQnHZq1s" data-cap="마무리 — 기후 안정 상태를 벗어났다 (KBS)" data-find="기후변화 뉴스 지구 평균 기온"></div>
 </section>
 
 <!-- 2 -->
-<section class="step" id="s2" data-min="10" data-nav="사막의 분포">
-  <h2><span class="n">02</span>사막의 분포</h2>
-  <p class="lead">대기 대순환의 순환 세포에서, 위도 30° 부근은 공기가 <b>내려오는</b> 자리입니다.</p>
+<section class="step" id="s2" data-min="9" data-nav="한 줄기 흐름">
+  <h2><span class="n">02</span>한 줄기 흐름</h2>
+  <p class="lead">아래 일곱 칸이 이 단원 전부입니다. 칸을 누르면 <b>왜 그 다음으로 이어지는지</b>와 <b>그 자리에서 자주 틀리는 것</b>이 열립니다.</p>
 
-  <figure class="fig">
-    <p class="figtitle">위도 30° — 공기가 내려오는 자리</p>
-    <p class="figsub">올라간 공기는 비를 뿌리고, 내려오는 공기는 건조합니다</p>
-    <svg viewBox="0 0 760 300" role="img" aria-label="적도에서 상승한 공기가 수증기를 잃고 위도 30도 부근에서 하강하여 맑고 건조한 날씨를 만든다." style="width:100%;height:auto;display:block">
-      <rect x="0" y="0" width="760" height="240" fill="var(--surface-2)"/>
-      <rect x="0" y="240" width="760" height="36" fill="var(--rule)"/>
-      <defs><marker id="a1" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto">
-        <path d="M0 0 L10 5 L0 10 z" fill="var(--accent)"/></marker></defs>
-      <path d="M110 238 C110 60, 400 46, 520 90 C610 124, 630 190, 632 236"
-            fill="none" stroke="var(--accent)" stroke-width="3" marker-end="url(#a1)"/>
-      <ellipse cx="130" cy="86" rx="70" ry="26" fill="var(--ink-faint)" opacity=".35"/>
-      <ellipse cx="96" cy="102" rx="42" ry="19" fill="var(--ink-faint)" opacity=".35"/>
-      <g stroke="var(--s1)" stroke-width="2.6" stroke-linecap="round" opacity=".85">
-        <line x1="94" y1="122" x2="86" y2="152"/><line x1="126" y1="124" x2="118" y2="156"/>
-        <line x1="158" y1="122" x2="150" y2="152"/>
-      </g>
-      <text x="60" y="56" font-family="IBM Plex Sans KR, sans-serif" font-size="14" font-weight="600" fill="var(--ink)">상승 · 비</text>
-      <text x="560" y="140" font-family="IBM Plex Sans KR, sans-serif" font-size="14" font-weight="600" fill="var(--ochre)">하강 · 건조</text>
-      <rect x="560" y="238" width="150" height="26" rx="8" fill="var(--ochre)" opacity=".3"/>
-      <text x="635" y="256" font-family="IBM Plex Sans KR, sans-serif" font-size="13.5" font-weight="600" fill="var(--ink)" text-anchor="middle">사막</text>
-      <g font-family="IBM Plex Mono, monospace" font-size="12" fill="var(--ink-faint)" text-anchor="middle">
-        <text x="110" y="292">적도 0°</text><text x="635" y="292">위도 30° 부근</text>
-      </g>
-    </svg>
-    <figcaption><b>이어 붙이기.</b> 적도에서 데워진 공기가 상승하면서 수증기를 비로 내려놓고, 건조해진 공기가 위도 30° 부근에서 하강합니다. 내려오는 공기는 구름을 만들지 못하므로 <b>맑고 건조한 날씨</b>가 이어지고, 그 자리에 사막이 발달합니다.
-      <br>※ 사막은 이 밖에도 <b>대륙 내부</b>(고비), <b>한류가 흐르는 대륙 서안</b>(아타카마·나미브), <b>큰 산맥의 바람그늘</b>에도 발달합니다.
-      위도 30° 부근에 큰 사막이 <b>몰려 있는</b> 까닭이 하강 기류인 것이지, 모든 사막이 그 때문인 것은 아닙니다.</figcaption>
-  </figure>
-
-  <div id="clozeA"></div>
-</section>
-
-<!-- 3 -->
-<section class="step" id="s3" data-min="9" data-nav="사막화">
-  <h2><span class="n">03</span>사막화 — 원인은 하나가 아니다</h2>
-  <p class="lead">사막이 <b>있는 것</b>과 사막이 <b>넓어지는 것</b>은 다른 이야기입니다. 후자를 사막화라고 합니다.</p>
-
-  <div class="mapg">
-    <div id="sortA"></div>
+  <div class="chainbar">
+    <span class="lb">보기</span>
+    <button type="button" class="pill" id="chAll">전부 펼치기</button>
+    <button type="button" class="pill" id="chNone">전부 접기</button>
   </div>
-
-  <div class="note warn">
-    <span class="lbl">가장 자주 틀리는 지점</span>
-    사막화의 원인을 <b>하나로</b> 지목하려는 습관을 여기서 교정합니다.
-    기후 요인(강수 감소)과 인간 활동(과도한 방목·경작, 삼림 벌채)이 <b>함께</b> 작용합니다.
-    어느 한쪽만 쓰면 서술형에서 점수를 잃습니다.
-  </div>
-
-  <div id="quizA"></div>
-</section>
-
-<!-- 4 -->
-<section class="step" id="s4" data-min="10" data-nav="단원 사슬 잇기">
-  <h2><span class="n">04</span>단원 전체를 하나의 사슬로</h2>
-  <p class="lead">1차시부터 오늘까지 배운 것이 사실은 하나의 이야기였습니다. 빈칸을 채워 사슬을 완성하세요.</p>
-
-  <div class="chain">
-    <p class="cs">태양 복사는 <b>가시광선</b>에서, 지구 복사는 <b>적외선</b>에서 최대다. 온실 기체는 이 중 <b>지구 복사</b>를 흡수한다.</p>
-    <p class="ar">↓</p>
-    <p class="cs">흡수한 만큼 방출할 때 <b>복사 평형</b>이다. 온실 기체가 늘면 나가는 양이 줄어 <b>더 높은 온도</b>에서 새 평형에 도달한다 — <b>지구 온난화</b>.</p>
-    <p class="ar">↓</p>
-    <p class="cs">한편 지구는 구형이라 <b>저위도는 남고 고위도는 모자란다</b>. 이 불균형을 <b>대기 대순환</b>과 <b>해수의 표층 순환</b>이 해소한다.</p>
-    <p class="ar">↓</p>
-    <p class="cs">그 순환의 아랫부분이 <b>무역풍</b>이다. 무역풍이 약해지면 태평양 적도의 바닷물이 달라진다 — <b>엘니뇨</b>.</p>
-    <p class="ar">↓</p>
-    <p class="cs">같은 순환의 <b>위도 30° 하강 기류</b>가 사막을 만들고, 기후 요인과 인간 활동이 겹치면 <b>사막화</b>가 진행된다.</p>
-  </div>
+  <div class="chain" id="chain"></div>
 
   <h3>사슬을 확인합니다</h3>
   <div id="clozeB"></div>
 </section>
 
-<!-- 5 -->
-<section class="step" id="s5" data-min="8" data-nav="마무리 점검">
-  <h2><span class="n">05</span>마무리 점검</h2>
-  <p class="lead">중간고사 직전입니다. 새 내용은 없습니다. 헷갈리는 것만 골라 확인하세요.</p>
-  <div id="quizB"></div>
+<!-- 3 -->
+<section class="step" id="s3" data-min="6" data-nav="여섯 지점 거르기">
+  <h2><span class="n">03</span>자주 틀리는 여섯 지점</h2>
+  <p class="lead">모두 <b>시험에서 실제로 갈리는</b> 문장들입니다. 옳은지 아닌지 고르고 해설을 읽으세요.</p>
+  <div id="quizOX"></div>
+</section>
 
-  <h3>서술형 마무리</h3>
+<!-- 4 -->
+<section class="step" id="s4" data-min="6" data-nav="자료 해석 연습">
+  <h2><span class="n">04</span>자료 해석 연습</h2>
+  <p class="lead">2028 수능 통합과학은 <b>‘자료 변환 및 해석’</b>을 하나의 행동 영역으로 따로 둡니다. 표를 읽는 연습을 한 번 합니다.</p>
+
+  <figure class="fig">
+    <p class="figtitle">10년씩 묶어 본 지구 평균 기온 편차</p>
+    <p class="figsub" id="decSub">불러오는 중…</p>
+    <div class="tblwrap"><table class="dec" id="decT"></table></div>
+    <p class="datacard" id="decNote"></p>
+  </figure>
+
+  <div id="quizD"></div>
+</section>
+
+<!-- 5 -->
+<section class="step" id="s5" data-min="5" data-nav="서술형 마무리">
+  <h2><span class="n">05</span>서술형 마무리</h2>
+  <p class="lead">이 단원에서 가장 많은 배점이 걸리는 형태입니다. <b>메커니즘 + 대처 방안</b>을 한 답안에 담습니다.</p>
   <div id="noteA"></div>
 </section>
 
@@ -172,7 +152,6 @@ TG.nav('.topbar nav');
 /* 반·이름 줄 (글자 크기 조절 포함) — 진행 화면에서는 띄우지 않습니다 */
 if(location.hash !== '#t'){
   ME.bar('meBar');
-  /* 반 목록이 도착한 뒤에 묻습니다. 먼저 물으면 반 단추가 기본값으로 채워집니다. */
   TG2.state(LESSON.api).then(st => {
     const cls = (st && st.cls && st.cls.length) ? st.cls : null;
     if(cls) ME.bar('meBar', cls);
@@ -180,88 +159,211 @@ if(location.hash !== '#t'){
   });
 }
 
-ACT.cloze('#clozeA', [
-  { t:'대기 대순환의 영향으로 위도 {{0}}° 부근은 {{1}} 기류가 발달하여 맑고 건조한 날씨가 지속되기 때문에, 사막은 주로 그 위도 부근에서 발달한다.',
-    blanks:[
-      { opts:['0','30','60','90'], ans:1, fb:'순환 세포가 만나는 자리입니다.' },
-      { opts:['상승','하강'], ans:1, fb:'내려오는 공기는 구름을 만들지 못합니다.' }] }
-]);
+/* ============================================================
+   한 줄기 흐름 — 칸·화살표·상세가 모두 CHAIN 하나에서 나옵니다 (§6-3 ①)
+   ============================================================ */
+(() => {
+  const CHAIN = [
+    { lv:'01차시',
+      t:'태양 복사는 <b>가시광선</b> 영역에서, 지구 복사는 <b>적외선</b> 영역에서 가장 세다. 온실 기체는 이 가운데 <b>지구 복사</b>를 흡수한다.',
+      why:'모든 이야기가 여기서 시작합니다. 온실 기체가 <b>들어오는 햇빛</b>을 막는 것이 아니라 <b>나가는 적외선</b>을 붙잡기 때문에, 뒤에 나오는 “나가는 양이 줄어든다”가 성립합니다.',
+      tp:'두 복사 곡선은 <b>축척이 달라 높이를 비교할 수 없습니다.</b> 최대가 되는 파장의 위치만 읽습니다.' },
+    { lv:'01·02차시',
+      t:'흡수한 만큼 방출하면 <b>복사 평형</b>이다. 태양 복사 100 중 30은 되돌아가고 70을 흡수해 70을 내보낸다. 지표·대기 사이에서는 <b>144 · 132 · 94</b>로 주고받는다.',
+      why:'평형은 “변화가 없는 상태”가 아니라 <b>들어온 양 = 나간 양</b>인 상태입니다. 이 정의가 있어야 다음 칸에서 “평형이 깨졌다”를 말할 수 있습니다.',
+      tp:'반사된 30은 <b>애초에 흡수되지 않은 몫</b>입니다. 흡수한 뒤 다시 내보낸 것이 아닙니다.' },
+    { lv:'02차시',
+      t:'온실 기체가 늘면 대기가 붙잡는 몫이 커져 <b>나가는 에너지가 줄고</b>, 남은 에너지가 쌓여 기온이 오른다. 기온이 오르면 방출도 늘어 <b>더 높은 온도에서 다시 평형</b>에 이른다 — 지구 온난화.',
+      why:'“온난화 = 평형이 사라진 것”이 아니라 <b>평형점이 올라간 것</b>입니다. 이 문장이 이 단원의 중심입니다.',
+      tp:'<b>온실 효과</b>와 <b>온실 효과의 강화</b>는 다릅니다. 온실 효과가 없으면 지구 평균 기온은 −18 ℃입니다. 효과 자체가 나쁜 것이 아니라 <b>세진 것</b>이 문제입니다.' },
+    { lv:'02차시',
+      t:'한 번 오르기 시작한 기온은 <b>되먹임</b>을 만든다. 눈·얼음이 줄어 반사율이 낮아지면 변화가 <b>더 커지고</b>(양), 기온이 올라 지구 복사가 늘어나면 변화가 <b>줄어든다</b>(음).',
+      why:'되먹임이 있어야 “왜 조금 밀었는데 많이 움직이는가”를 설명할 수 있습니다. 음의 되먹임이 있기에 새 평형에 <b>도달</b>합니다.',
+      tp:'반대 방향 화살표가 <b>짝수 개면 양의 되먹임</b>입니다. 화살표 하나하나의 방향이 아니라 <b>한 바퀴의 결과</b>로 판단합니다.' },
+    { lv:'03차시',
+      t:'지구는 둥글어 <b>저위도는 에너지가 남고 고위도는 모자란다.</b> 여기에 <b>자전</b>이 더해져 반구마다 <b>3개의 순환 세포</b>가 생기고, 그 아래에 무역풍·편서풍·극동풍이 분다. 바람은 다시 <b>표층 해류</b>를 만든다.',
+      why:'남는 곳에서 모자란 곳으로 에너지를 <b>실어 나르는 장치</b>가 대기 대순환과 해수 순환입니다. 자전이 없다면 세포는 하나뿐이었을 것입니다.',
+      tp:'세포의 <b>이름</b>은 묻지 않습니다. <b>상승·하강하는 위도</b>와 <b>지상 바람의 방향</b>을 묻습니다.' },
+    { lv:'03·04차시',
+      t:'이 순환에서 두 갈래가 나온다. 저위도의 <b>무역풍이 약해지면</b> 태평양 적도의 바다가 달라져 <b>엘니뇨</b>가 되고, 위도 30° 부근의 <b>하강 기류</b>가 만든 건조대에서 기후 요인과 인간 활동이 겹치면 <b>사막화</b>가 진행된다.',
+      why:'엘니뇨와 사막화는 따로 외울 두 개의 현상이 아니라 <b>같은 순환에서 갈라져 나온 두 가지</b>입니다.',
+      tp:'하강 기류는 사막이 <b>거기 있는</b> 까닭이고, 사막화가 <b>진행되는</b> 까닭은 아닙니다. 그리고 엘니뇨는 지구 온난화 <b>때문에 생기는</b> 것이 아닙니다.' },
+    { lv:'04차시',
+      t:'영향을 확인했으면 <b>대처</b>가 남는다. 원인을 줄이는 <b>완화</b>와 피해를 줄이는 <b>적응</b>을 함께 해야 하며, 국제 사회는 <b>기후변화 협약(1992) → 교토 의정서(1997) → 파리 협정(2015)</b>으로 그 방법을 바꾸어 왔다.',
+      why:'성취기준이 요구하는 마지막 조각입니다 — “영향<b>과 대처 방안</b>을 분석”. 여기까지 와야 답안이 완성됩니다.',
+      tp:'교토는 <b>선진국만</b>·정해 주는 방식, 파리는 <b>모든 당사국</b>·스스로 정해 제출하는 방식(NDC)입니다.' }
+  ];
 
-ACT.sort('#sortA', {
-  bins: [{ id:'nat', name:'기후 요인' }, { id:'hum', name:'인간 활동' }],
-  cards: [
-    { t:'오랜 기간 강수량이 줄어든다', bin:'nat', why:'가뭄이 이어지면 식생이 버티지 못합니다.' },
-    { t:'강수대가 이동해 비가 내리던 지역이 건조해진다', bin:'nat', why:'대기 대순환이 달라지면 비가 오는 자리도 옮겨 갑니다.' },
-    { t:'기온이 올라 증발량이 늘어난다', bin:'nat', why:'같은 강수량이어도 땅이 더 마릅니다. 기온 상승 자체는 인간 활동이 부추기지만, 사막화에 작용하는 경로는 <b>기후</b>입니다.' },
-    { t:'가축을 지나치게 많이 방목한다', bin:'hum', why:'풀뿌리까지 뜯기면 토양이 드러납니다.' },
-    { t:'숲을 베어 경작지로 바꾼다', bin:'hum', why:'식생이 사라지면 토양이 바람과 물에 쓸려 나갑니다.' },
-    { t:'물을 과도하게 끌어다 쓴다', bin:'hum', why:'지하수가 마르고 토양에 염분이 쌓이기도 합니다.' }
-  ]
-});
+  const box = document.getElementById('chain');
+  box.innerHTML = CHAIN.map((c, i) =>
+    `${i ? '<p class="ar">↓</p>' : ''}
+     <div><button type="button" class="cs" aria-expanded="false" data-i="${i}">
+       ${c.t}<span class="lv">${c.lv} · 눌러서 자세히</span></button>
+     <div class="dt" id="dt${i}" hidden><b>왜 다음으로 이어지는가</b> — ${c.why}
+       <span class="tp"><b>여기서 자주 틀립니다</b> — ${c.tp}</span></div></div>`).join('');
 
-TG.quiz('#quizA', [
-  { stem:'사막화의 원인을 가장 정확하게 설명한 것은?',
-    opts:['기후 변화만으로 일어난다','인간 활동만으로 일어난다',
-          '기후 요인과 인간 활동이 함께 작용해 일어난다','원인을 알 수 없다'], ans:2,
-    fb:{ right:'강수 감소 같은 기후 요인과 과도한 방목·삼림 벌채 같은 인간 활동이 <b>겹칠 때</b> 빠르게 진행됩니다. 서술형에서는 두 축을 모두 써야 합니다.',
-         wrong:['인간 활동이 빠지면 설명이 절반뿐입니다.','기후 조건이 빠지면 왜 그 지역인지 설명되지 않습니다.','',
-                '원인은 잘 알려져 있습니다.'] } }
-]);
+  const set = (btn, on) => {
+    btn.setAttribute('aria-expanded', on ? 'true' : 'false');
+    document.getElementById('dt' + btn.dataset.i).hidden = !on;
+  };
+  box.addEventListener('click', e => {
+    const b = e.target.closest('.cs'); if(!b) return;
+    set(b, b.getAttribute('aria-expanded') !== 'true');
+  });
+  document.getElementById('chAll').addEventListener('click',
+    () => box.querySelectorAll('.cs').forEach(b => set(b, true)));
+  document.getElementById('chNone').addEventListener('click',
+    () => box.querySelectorAll('.cs').forEach(b => set(b, false)));
+})();
 
 ACT.cloze('#clozeB', [
-  { t:'온실 기체가 늘면 지구가 내보내는 에너지가 줄어들어, 결국 이전보다 {{0}} 온도에서 다시 복사 평형에 도달한다.',
-    blanks:[{ opts:['낮은','같은','높은'], ans:2, fb:'평형이 사라진 것이 아니라 평형점이 올라간 것입니다.' }] },
-  { t:'대기와 해수의 순환은 {{0}}의 남는 에너지를 {{1}}로 옮겨 위도에 따른 에너지 불균형을 해소한다.',
+  { t:'온실 기체가 늘면 지구가 내보내는 에너지가 줄어들어, 결국 이전보다 {{0}} 온도에서 다시 복사 평형에 도달한다. 이때 눈·얼음이 줄어 반사율이 낮아지는 것은 {{1}} 되먹임으로 작용한다.',
+    blanks:[
+      { opts:['낮은','같은','높은'], ans:2, fb:'평형이 사라진 것이 아니라 평형점이 올라간 것입니다.' },
+      { opts:['양의','음의'], ans:0, fb:'흡수가 늘어 기온이 더 오릅니다 — 처음의 변화를 키웁니다.' }] },
+  { t:'지구가 둥글어 생긴 위도별 에너지 불균형은 {{0}}의 남는 에너지를 {{1}}로 옮기는 대기 대순환과 해수 순환으로 해소된다. 자전의 영향으로 순환 세포는 반구마다 {{2}}개가 된다.',
     blanks:[
       { opts:['저위도','고위도'], ans:0, fb:'적도 쪽이 남습니다.' },
-      { opts:['저위도','고위도'], ans:1, fb:'극지방 쪽이 모자랍니다.' }] },
-  { t:'엘니뇨는 {{0}}의 약화로 적도 부근 동태평양의 표층 수온이 평년보다 {{1}} 상태가 지속되는 현상이다.',
+      { opts:['저위도','고위도'], ans:1, fb:'극지방 쪽이 모자랍니다.' },
+      { opts:['1','2','3'], ans:2, fb:'자전이 없었다면 하나의 큰 세포였을 것입니다.' }] },
+  { t:'엘니뇨는 {{0}}의 약화로 적도 부근 동태평양의 표층 수온이 평년보다 {{1}} 상태가 지속되는 현상이고, 사막이 위도 30° 부근에 몰려 있는 것은 그 위도가 공기가 {{2}} 자리이기 때문이다.',
     blanks:[
       { opts:['무역풍','편서풍'], ans:0, fb:'3차시에 배운 저위도의 지상 바람입니다.' },
-      { opts:['높은','낮은'], ans:0, fb:'용승이 약해져 찬물이 덜 올라옵니다.' }] },
-  { t:'사막이 위도 30° 부근에 몰려 있는 것은 그 위도가 대기 대순환의 {{0}} 자리이기 때문이다.',
-    blanks:[{ opts:['공기가 상승하는','공기가 하강하는'], ans:1, fb:'내려오는 공기는 건조합니다.' }] }
+      { opts:['높은','낮은'], ans:0, fb:'용승이 약해져 찬물이 덜 올라옵니다.' },
+      { opts:['상승하는','하강하는'], ans:1, fb:'내려오는 공기는 구름을 만들지 못합니다.' }] },
+  { t:'대처 방안 가운데 배출량 자체를 줄이는 것을 {{0}}, 이미 일어난 변화에 맞추어 피해를 줄이는 것을 {{1}}이라 한다. 파리 협정은 {{2}} 당사국이 스스로 정한 목표를 제출하도록 하였다.',
+    blanks:[
+      { opts:['완화','적응'], ans:0, fb:'원인을 줄이는 쪽입니다.' },
+      { opts:['완화','적응'], ans:1, fb:'변화 자체를 막지는 못합니다.' },
+      { opts:['선진국만','모든'], ans:1, fb:'교토 의정서와 갈리는 지점입니다.' }] }
 ]);
 
-TG.quiz('#quizB', [
-  { stem:'“엘니뇨는 지구온난화 때문에 생긴다”는 주장에 대한 평가로 가장 적절한 것은?',
-    opts:['옳다. 최근 자주 발생하므로 인과가 성립한다','옳지 않다. 엘니뇨는 예전부터 나타난 자연적인 변동이다',
-          '옳지 않다. 엘니뇨와 온난화는 아무 관련이 없다','판단할 수 없다'], ans:1,
-    fb:{ right:'엘니뇨는 열대 태평양의 자연적 변동입니다. 다만 온난화가 그 <b>빈도나 강도에 영향을 줄 수 있다</b>는 논의는 별개입니다. ‘원인이다’와 ‘영향을 줄 수 있다’를 구분하세요.',
-         wrong:['자주 일어난다는 관찰만으로 원인을 단정할 수 없습니다.','','너무 강한 진술입니다.','오래 관측되어 온 현상입니다.'] } },
-  { stem:'북극해에 떠 있는 해빙이 모두 녹으면 해수면은?',
-    opts:['크게 오른다','거의 변하지 않는다','내려간다','알 수 없다'], ans:1,
-    fb:{ right:'떠 있는 얼음은 이미 자기 무게만큼의 물을 밀어냅니다. 해수면을 올리는 것은 <b>육상 빙하</b>와 <b>해수의 열팽창</b>입니다.',
-         wrong:['컵에 띄운 얼음과 같습니다.','','내려갈 이유가 없습니다.','부력으로 설명됩니다.'] } },
-  { stem:'평상시 적도 부근 동태평양에서 용승이 일어나는 까닭은?',
-    opts:['편서풍이 표층수를 동쪽으로 밀기 때문','무역풍이 표층수를 서쪽으로 밀어 그 자리를 심층수가 채우기 때문',
-          '해수의 밀도가 낮기 때문','대륙이 막고 있기 때문'], ans:1,
-    fb:{ right:'바람 → 표층수 이동 → 빈자리를 심층의 찬물이 채움. 이 순서가 엘니뇨를 이해하는 열쇠입니다.',
-         wrong:['편서풍은 중위도의 바람입니다.','','밀도 차이는 심층 순환의 원인입니다.','대륙은 남북 방향으로 갈라지게 하는 요인입니다.'] } },
-  { stem:'다음 중 온실 기체가 <b>아닌</b> 것은?',
-    opts:['수증기','이산화 탄소','질소','메테인'], ans:2,
-    fb:{ right:'질소는 대기의 약 78%를 차지하지만 적외선을 거의 흡수하지 않습니다. 양이 많다고 온실 기체인 것은 아닙니다.',
-         wrong:['대기 중 가장 많은 온실 기체입니다.','대표적인 온실 기체입니다.','','양은 적지만 흡수 능력이 큽니다.'] } }
+/* ============================================================
+   자주 틀리는 여섯 지점 — 전부 O/X 형태
+   §6-3 ⑥ 선택지가 둘뿐이므로 각 문장을 참·거짓 양쪽으로 검토했습니다.
+   ============================================================ */
+TG.quiz('#quizOX', [
+  { stem:'① “온실 효과는 없어져야 할 나쁜 현상이다.”',
+    opts:['옳다','옳지 않다'], ans:1,
+    fb:{ right:'온실 효과가 없으면 지구 평균 기온은 <b>−18 ℃</b>가 됩니다. 문제는 온실 효과 자체가 아니라 <b>그것이 세진 것</b>입니다.',
+         wrong:['온실 효과가 있어 지금의 15 ℃가 유지됩니다.',''] } },
+  { stem:'② “오존층이 파괴되어 자외선이 많이 들어오는 것이 지구 온난화의 원인이다.”',
+    opts:['옳다','옳지 않다'], ans:1,
+    fb:{ right:'서로 다른 문제입니다. 오존층 파괴는 <b>들어오는 자외선</b>의 문제이고, 지구 온난화는 <b>나가는 적외선</b>이 덜 나가는 문제입니다.',
+         wrong:['원인 물질도, 막히는 복사도 다릅니다.',''] } },
+  { stem:'③ “북극해에 떠 있는 얼음이 녹으면 해수면이 크게 오른다.”',
+    opts:['옳다','옳지 않다'], ans:1,
+    fb:{ right:'떠 있는 얼음은 이미 자기 무게만큼의 물을 밀어내고 있습니다. 해수면을 올리는 것은 <b>육상 빙하</b>가 녹아 흘러드는 것과 <b>해수의 열팽창</b>입니다.',
+         wrong:['컵에 띄운 얼음이 녹아도 물이 넘치지 않는 것과 같습니다.',''] } },
+  { stem:'④ “올겨울에 기록적인 한파가 왔으니 지구 온난화는 사실이 아니다.”',
+    opts:['옳다','옳지 않다'], ans:1,
+    fb:{ right:'지구 온난화는 <b>전 지구·여러 해 평균</b>의 이야기이고 한파는 <b>한 지역·한 시기</b>의 날씨입니다. 온난화는 평균만 올리는 것이 아니라 <b>극단적인 기상 현상을 늘리는</b> 쪽으로도 작용합니다.',
+         wrong:['한 지역 한 해의 날씨로 전 지구의 추세를 반박할 수 없습니다.',''] } },
+  { stem:'⑤ “엘니뇨는 지구 온난화 때문에 생긴다.”',
+    opts:['옳다','옳지 않다'], ans:1,
+    fb:{ right:'엘니뇨는 열대 태평양에서 <b>수년 주기로 되풀이되어 온 자연적 변동</b>으로 산업화 이전 기록에도 남아 있습니다. “온난화가 <b>원인</b>이다”와 “온난화가 <b>빈도·강도에 영향을 줄 수 있다</b>”는 전혀 다른 문장입니다.',
+         wrong:['최근에 자주 보인다는 관찰만으로 원인을 단정할 수 없습니다.',''] } },
+  { stem:'⑥ “위도 30° 부근의 하강 기류가 사막화의 원인이다.”',
+    opts:['옳다','옳지 않다'], ans:1,
+    fb:{ right:'하강 기류는 그 자리가 <b>원래 건조한 까닭</b>입니다. 사막이 <b>넓어지는</b> 것은 강수 감소 같은 기후 요인과 과도한 방목·삼림 벌채 같은 <b>인간 활동</b>이 겹칠 때 일어납니다. <b>있는 것</b>과 <b>넓어지는 것</b>을 구분하세요.',
+         wrong:['사막의 위치를 설명하는 조건과 사막화의 원인은 다릅니다.',''] } }
+]);
+
+/* ============================================================
+   10년 평균 표 — 자료에서 계산합니다. 손으로 적은 값이 없습니다.
+   ============================================================ */
+(() => {
+  const T = document.getElementById('decT'), N = document.getElementById('decNote'),
+        S = document.getElementById('decSub');
+  fetch('../../data/gistemp-annual.csv', { cache:'no-store' })
+    .then(r => { if(!r.ok) throw new Error('없음'); return r.text(); })
+    .then(txt => {
+      const rows = txt.trim().split(/\r?\n/).filter(l => l.trim() && !l.trim().startsWith('#'));
+      const head = rows.shift().toLowerCase().split(',').map(t => t.trim());
+      const iy = head.indexOf('year'), ia = head.indexOf('anomaly');
+      if(iy < 0 || ia < 0) throw new Error('머리글');
+      const D = rows.map(l => l.split(',')).map(c => [ +c[iy], +c[ia] ])
+                    .filter(p => isFinite(p[0]) && isFinite(p[1]));
+      const y1 = D[D.length - 1][0];
+
+      /* 마지막 해에서 10년씩 거꾸로 잘라 여섯 구간 */
+      const segs = [];
+      for(let k = 5; k >= 0; k--){
+        const b = y1 - 10 * k, a = b - 9;
+        const v = D.filter(p => p[0] >= a && p[0] <= b);
+        if(v.length === 10) segs.push({ a, b, m: v.reduce((s, p) => s + p[1], 0) / 10 });
+      }
+      /* 막대는 반드시 0 ℃ 를 기준으로 그립니다.
+         가장 낮은 구간을 0으로 놓고 그리면 음수 편차가 양의 길이로 보이고,
+         길이의 비도 값의 비와 달라집니다. */
+      const hi = Math.max(...segs.map(s => s.m));
+      T.innerHTML = '<thead><tr><th>기간(10년)</th><th>평균 기온 편차</th><th>앞 구간보다</th></tr></thead><tbody>' +
+        segs.map((s, i) => {
+          const d = i ? s.m - segs[i-1].m : null;
+          const w = s.m > 0 ? s.m / (hi || 1) * 150 : 0;
+          return `<tr><td class="num">${s.a}~${s.b}</td>` +
+                 `<td class="num">${s.m >= 0 ? '+' : ''}${s.m.toFixed(2)} ℃` +
+                 (w > 0 ? `<span class="bar" style="width:${w.toFixed(1)}px"></span>`
+                        : `<span class="zero">0 ℃보다 낮음</span>`) + `</td>` +
+                 `<td class="num">${d == null ? '—' : (d >= 0 ? '+' : '') + d.toFixed(2) + ' ℃'}</td></tr>`;
+        }).join('') + '</tbody>';
+      S.textContent = `${segs[0].a} ~ ${y1}년 · 10년씩 묶은 평균`;
+      N.innerHTML = '<b>만드는 법</b> 연평균 자료를 마지막 해부터 10년씩 잘라 산술 평균 &nbsp;·&nbsp; ' +
+        '<b>출처</b> NASA GISS GISTEMP v4 (육지+해양) &nbsp;·&nbsp; ' +
+        '<b>기준(평년)</b> 1951~1980년 평균을 0으로 놓은 편차 &nbsp;·&nbsp; ' +
+        '<b>막대</b> 길이는 <b>0 ℃ 를 기준으로 한 편차의 크기</b>에 비례합니다. 0 ℃ 보다 낮은 구간은 막대를 그리지 않았습니다.';
+    })
+    .catch(() => {
+      T.innerHTML = '<tbody><tr><td>자료 파일을 읽지 못했습니다. 없는 값을 지어내어 채우지 않습니다.</td></tr></tbody>';
+      S.textContent = ''; N.textContent = '';
+    });
+})();
+
+TG.quiz('#quizD', [
+  { stem:'위 표에서 <b>10년 평균 기온 편차</b>가 구간마다 어떻게 달라지는지 읽었다. 표에서 <b>직접 읽을 수 있는</b> 것은?',
+    opts:['각 구간에서 가장 더웠던 해가 몇 년인지',
+          '구간이 뒤로 갈수록 평균 편차가 커지는지 작아지는지',
+          '그 기간에 이산화 탄소 농도가 얼마였는지',
+          '앞으로 10년 뒤의 편차가 얼마일지'], ans:1,
+    fb:{ right:'표에는 <b>구간별 평균</b>과 <b>앞 구간과의 차이</b>만 있습니다. 자료에 없는 것을 읽어 내면 그것이 곧 오답입니다.',
+         wrong:['10년 평균으로 묶는 순간 개별 연도는 표에서 사라집니다.','',
+                '이 표에는 이산화 탄소 자료가 들어 있지 않습니다.',
+                '지난 자료의 추세일 뿐 미래 값은 이 표에서 나오지 않습니다.'] } },
+  { stem:'같은 자료를 <b>연평균 꺾은선</b>이 아니라 <b>10년 평균 표</b>로 바꾸어 보았다. 이렇게 바꾸었을 때 <b>얻는 것</b>과 <b>잃는 것</b>을 바르게 짝지은 것은?',
+    opts:['얻는 것: 해마다의 오르내림 / 잃는 것: 긴 기간의 추세',
+          '얻는 것: 긴 기간의 추세 / 잃는 것: 해마다의 오르내림',
+          '얻는 것: 관측의 정확도 / 잃는 것: 자료의 출처',
+          '얻는 것도 잃는 것도 없다. 같은 자료이므로 똑같다'], ans:1,
+    fb:{ right:'여러 해를 평균하면 해마다의 흔들림이 지워지고 <b>추세가 드러납니다.</b> 대신 특정 해에 무슨 일이 있었는지는 알 수 없게 됩니다. 자료를 바꾸어 보는 일에는 <b>언제나 이 맞바꿈</b>이 있습니다.',
+         wrong:['거꾸로입니다. 평균을 내면 오르내림이 지워집니다.','',
+                '자료를 묶는 방식은 관측의 정확도와 무관합니다.',
+                '같은 자료라도 어떻게 묶느냐에 따라 보이는 것이 달라집니다.'] } }
 ]);
 
 ACT.note('#noteA', {
-  prompt: '<b>[문항]</b> 무역풍의 세기 변화가 적도 부근 동태평양의 <u>표층 수온</u>과 <u>강수량</u>에 미치는 영향을, <b>용승</b>이라는 말을 사용하여 서술하시오.',
-  ph: '무역풍이 약해지면 …',
-  model: `<p>① 무역풍이 약해지면 표층 해수를 서쪽으로 미는 힘이 줄어, 동태평양의 <b>용승이 약해진다.</b></p>
-          <p>② 심층의 찬물이 덜 올라오므로 <b>표층 수온이 평년보다 높아진다.</b></p>
-          <p>③ 따뜻해진 해수 위에서 <b>상승 기류</b>가 발달하여 <b>강수량이 증가</b>하고, 폭우·홍수 피해가 나타난다.</p>`,
+  prompt: '<b>[문항]</b> 대기 중 온실 기체가 늘어났을 때 지구의 평균 기온이 높아지는 과정을 <u>들어오는 에너지와 나가는 에너지</u>를 사용하여 서술하고, ' +
+          '이에 대한 <b>대처 방안</b>을 하나 골라 <b>왜 그것을 골랐는지</b> 다른 방안과 비교하여 쓰시오.<br>' +
+          '<b>&lt;조건&gt;</b> ① 기온이 오른 뒤 <b>다시 평형에 이른다</b>는 점을 포함할 것 ② 고른 대처 방안이 <b>완화인지 적응인지</b> 밝힐 것 ③ <b>비교의 기준</b>을 한 가지 이상 밝힐 것',
+  ph: '① 온실 기체가 늘면 …\n② 그 결과 …\n③ 내가 고른 대처 방안은 … 이다. 왜냐하면 …',
+  model: `<p>① 온실 기체가 늘면 대기가 <b>지구 복사(적외선)</b>를 더 많이 흡수해 우주로 <b>나가는 에너지가 줄어든다.</b></p>
+          <p>② 들어오는 에너지가 나가는 에너지보다 많아져 남는 에너지가 쌓이고 지표 기온이 오른다. 기온이 오르면 지구 복사도 늘어 <b>다시 같아지지만, 그 평형은 이전보다 높은 온도</b>에서 이루어진다.</p>
+          <p>③ 나는 <b>화석 연료 발전을 재생 에너지로 바꾸는 것</b>을 골랐다. 이것은 배출량 자체를 줄이므로 <b>완화</b>에 해당한다.
+             비교의 기준은 <b>“원인을 줄이는가”</b>이다. 방조제를 높이는 것은 해수면 상승에 따른 피해를 줄이는 <b>적응</b>이어서 필요하지만,
+             온실 기체가 계속 늘어나는 한 피해도 계속 커진다. 따라서 <b>적응만으로는 문제가 끝나지 않으므로</b> 완화를 우선한다.
+             다만 기준을 <b>“지금 당장 피해를 줄일 수 있는가”</b>로 바꾸면 적응이 앞설 수 있다.</p>`,
   checks: [
-    '무역풍이 <b>약해진다</b>는 조건에서 출발했다',
-    '<b>용승</b>이라는 말을 썼고, 약해진다고 썼다',
-    '표층 수온이 <b>높아진다</b>고 썼다',
-    '<b>상승 기류</b>와 강수량 <b>증가</b>를 연결했다'
+    '‘들어오는 에너지’와 ‘나가는 에너지’를 <b>둘 다</b> 썼다',
+    '온실 기체가 흡수하는 것이 <b>지구 복사(적외선)</b>임을 밝혔다',
+    '<b>더 높은 온도에서 다시 평형</b>에 이른다고 썼다',
+    '고른 대처 방안이 <b>완화인지 적응인지</b> 밝혔다',
+    '<b>비교의 기준</b>을 밝히고 다른 방안과 견주어 썼다'
   ]
 });
 
 ACT.report('#repA', {
   school:'남강고등학교', term:'2026학년도 1학년 2학기',
-  title:'통합과학2 · 05차시 사막화와 단원 정리',
-  std:'[10통과2-02-03]', topic:'Ⅱ-2. 지구 환경의 변화 · 4. 사막화 / 단원 정리'
+  title:'통합과학2 · 05차시 대단원 정리',
+  std:'[10통과2-02-03]', topic:'Ⅱ-2. 지구 환경의 변화 · 단원 종합'
 });
 </script>
 <script src="../../shared/teach.js"></script>

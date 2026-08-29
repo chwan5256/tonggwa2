@@ -86,8 +86,15 @@ function quiz(sel, items){
 }
 
 /* ---------- 선 그래프 ----------
-   cfg = { series:[{name,color,pts:[[x,y],…],label?}],
-           xLabel, yLabel, xFmt, yFmt, yMin, yMax, xMin, xMax, hline?:{y,text} }
+   cfg = { series:[{name,color,pts:[[x,y],…],axis?:'r'}],
+           xLabel, yLabel, xFmt, yFmt, yMin, yMax, xMin, xMax, hline?:{y,text},
+           y2Label, y2Fmt, y2Min, y2Max, y2Color, y2TipFmt }
+
+   축이 둘인 그래프 (axis:'r')
+   ─ 오른쪽 축을 쓰면 두 곡선의 **높이를 서로 비교할 수 없습니다.** 눈금이 다르기 때문입니다.
+     이 사실은 그림을 쓰는 쪽에서 반드시 글로 적어 주어야 합니다 (지침 §6-3 ⑤).
+   ─ 좌표를 만드는 함수는 축마다 하나씩(ys, ys2)만 두고, 선·점·툴팁·눈금이
+     모두 그 함수를 거칩니다. 손으로 배치하는 좌표는 없습니다 (§6-3 ①).
    반환: { update(series), destroy() }
 */
 function chart(canvas, cfg){
@@ -101,22 +108,26 @@ function chart(canvas, cfg){
   const fmtY = cfg.yFmt || (v => String(Math.round(v * 10) / 10));
   const fmtT = cfg.tipFmt || fmtY;   /* 툴팁은 축보다 자세히 표시할 수 있습니다 */
 
-  let W = 0, H = 0, P = { l:56, r:22, t:14, b:42 }, xs, ys;
+  const fmtY2 = cfg.y2Fmt || fmtY;
+  const fmtT2 = cfg.y2TipFmt || fmtY2;
+  const hasR = () => S.some(s => s.axis === 'r');
+  let W = 0, H = 0, P = { l:56, r:22, t:14, b:42 }, xs, ys, ys2;
 
-  function bounds(){
+  /* x 범위는 모든 계열에서, y 범위는 그 축에 속한 계열에서만 구합니다. */
+  function bounds(list, mn, mx){
     let xmin = Infinity, xmax = -Infinity, ymin = Infinity, ymax = -Infinity;
-    S.forEach(s => s.pts.forEach(([x, y]) => {
-      if(x < xmin) xmin = x; if(x > xmax) xmax = x;
-      if(y < ymin) ymin = y; if(y > ymax) ymax = y;
-    }));
+    S.forEach(s => s.pts.forEach(([x]) => { if(x < xmin) xmin = x; if(x > xmax) xmax = x; }));
+    list.forEach(s => s.pts.forEach(([, y]) => { if(y < ymin) ymin = y; if(y > ymax) ymax = y; }));
+    if(!isFinite(ymin)){ ymin = 0; ymax = 1; }
     if(cfg.xMin != null) xmin = cfg.xMin; if(cfg.xMax != null) xmax = cfg.xMax;
-    if(cfg.yMin != null) ymin = cfg.yMin; if(cfg.yMax != null) ymax = cfg.yMax;
+    if(mn != null) ymin = mn; if(mx != null) ymax = mx;
     else { const pad = (ymax - ymin) * 0.12 || 1; ymin -= pad; ymax += pad; }
-    if(cfg.yMin != null && cfg.yMax == null){ const pad = (ymax - ymin) * 0.10 || 1; ymax += pad; }
+    if(mn != null && mx == null){ const pad = (ymax - ymin) * 0.10 || 1; ymax += pad; }
     return { xmin, xmax, ymin, ymax };
   }
 
   function resize(){
+    P.r = hasR() ? 60 : 22;
     const w = box.clientWidth || 600;
     W = w; H = Math.max(240, Math.min(430, Math.round(w * 0.52)));
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -134,9 +145,13 @@ function chart(canvas, cfg){
   }
 
   function draw(){
-    const b = bounds();
+    P.r = hasR() ? 60 : 22;
+    const b  = bounds(S.filter(s => s.axis !== 'r'), cfg.yMin, cfg.yMax);
+    const b2 = hasR() ? bounds(S.filter(s => s.axis === 'r'), cfg.y2Min, cfg.y2Max) : null;
     xs = x => P.l + (x - b.xmin) / (b.xmax - b.xmin || 1) * (W - P.l - P.r);
     ys = y => H - P.b - (y - b.ymin) / (b.ymax - b.ymin || 1) * (H - P.t - P.b);
+    ys2 = b2 ? (y => H - P.b - (y - b2.ymin) / (b2.ymax - b2.ymin || 1) * (H - P.t - P.b)) : ys;
+    const yOf = s => (s.axis === 'r' ? ys2 : ys);
     const grid = cssv('--chart-grid'), axis = cssv('--chart-axis'),
           faint = cssv('--ink-faint'), soft = cssv('--ink-soft'), surf = cssv('--chart-surface');
     ctx.clearRect(0, 0, W, H);
@@ -149,6 +164,15 @@ function chart(canvas, cfg){
       ctx.strokeStyle = grid; ctx.beginPath(); ctx.moveTo(P.l, y); ctx.lineTo(W - P.r, y); ctx.stroke();
       ctx.fillStyle = faint; ctx.textAlign = 'right'; ctx.fillText(fmtY(v), P.l - 10, y);
     });
+    /* 오른쪽 축 — 격자는 왼쪽 축의 것만 그립니다. 격자를 두 벌 그리면 어느 쪽 눈금인지 알 수 없습니다. */
+    if(b2){
+      const c2 = (cfg.y2Color || '--s2').startsWith('--') ? cssv(cfg.y2Color || '--s2') : cfg.y2Color;
+      ctx.fillStyle = c2; ctx.textAlign = 'left';
+      ticks(b2.ymin, b2.ymax, 5).forEach(v => ctx.fillText(fmtY2(v), W - P.r + 10, Math.round(ys2(v)) + .5));
+      ctx.strokeStyle = c2; ctx.globalAlpha = .5;
+      ctx.beginPath(); ctx.moveTo(W - P.r + .5, P.t); ctx.lineTo(W - P.r + .5, H - P.b + .5); ctx.stroke();
+      ctx.globalAlpha = 1;
+    }
     ctx.textBaseline = 'top';
     ticks(b.xmin, b.xmax, 6).forEach(v => {
       const x = Math.round(xs(v)) + .5;
@@ -163,6 +187,11 @@ function chart(canvas, cfg){
     if(cfg.xLabel){ ctx.textAlign = 'right'; ctx.textBaseline = 'bottom'; ctx.fillText(cfg.xLabel, W - P.r, H - 4); }
     if(cfg.yLabel){ ctx.save(); ctx.translate(13, P.t); ctx.rotate(-Math.PI/2);
       ctx.textAlign = 'right'; ctx.textBaseline = 'top'; ctx.fillText(cfg.yLabel, 0, 0); ctx.restore(); }
+    if(b2 && cfg.y2Label){
+      ctx.save(); ctx.fillStyle = (cfg.y2Color || '--s2').startsWith('--') ? cssv(cfg.y2Color || '--s2') : cfg.y2Color;
+      ctx.translate(W - 5, P.t); ctx.rotate(-Math.PI/2);
+      ctx.textAlign = 'right'; ctx.textBaseline = 'bottom'; ctx.fillText(cfg.y2Label, 0, 0); ctx.restore();
+    }
 
     /* 참조선 */
     if(cfg.hline){
@@ -177,15 +206,16 @@ function chart(canvas, cfg){
     /* 선 */
     S.forEach(s => {
       const c = s.color.startsWith('--') ? cssv(s.color) : s.color;
+      const Y = yOf(s);
       ctx.strokeStyle = c; ctx.lineWidth = 2; ctx.lineJoin = 'round'; ctx.lineCap = 'round';
       ctx.beginPath();
-      s.pts.forEach(([x, y], i) => i ? ctx.lineTo(xs(x), ys(y)) : ctx.moveTo(xs(x), ys(y)));
+      s.pts.forEach(([x, y], i) => i ? ctx.lineTo(xs(x), Y(y)) : ctx.moveTo(xs(x), Y(y)));
       ctx.stroke();
       /* 끝점 강조 */
       const last = s.pts[s.pts.length - 1];
       if(last){
-        ctx.fillStyle = surf; ctx.beginPath(); ctx.arc(xs(last[0]), ys(last[1]), 6, 0, 7); ctx.fill();
-        ctx.fillStyle = c; ctx.beginPath(); ctx.arc(xs(last[0]), ys(last[1]), 4.5, 0, 7); ctx.fill();
+        ctx.fillStyle = surf; ctx.beginPath(); ctx.arc(xs(last[0]), Y(last[1]), 6, 0, 7); ctx.fill();
+        ctx.fillStyle = c; ctx.beginPath(); ctx.arc(xs(last[0]), Y(last[1]), 4.5, 0, 7); ctx.fill();
       }
     });
 
@@ -203,12 +233,14 @@ function chart(canvas, cfg){
         ctx.beginPath(); ctx.moveTo(px + .5, P.t); ctx.lineTo(px + .5, H - P.b); ctx.stroke(); ctx.restore();
         rows.forEach(r => {
           const c = r.s.color.startsWith('--') ? cssv(r.s.color) : r.s.color;
-          ctx.fillStyle = surf; ctx.beginPath(); ctx.arc(xs(r.p[0]), ys(r.p[1]), 7, 0, 7); ctx.fill();
-          ctx.fillStyle = c; ctx.beginPath(); ctx.arc(xs(r.p[0]), ys(r.p[1]), 5, 0, 7); ctx.fill();
+          const Y = yOf(r.s);
+          ctx.fillStyle = surf; ctx.beginPath(); ctx.arc(xs(r.p[0]), Y(r.p[1]), 7, 0, 7); ctx.fill();
+          ctx.fillStyle = c; ctx.beginPath(); ctx.arc(xs(r.p[0]), Y(r.p[1]), 5, 0, 7); ctx.fill();
         });
         tip.innerHTML = `<span class="tk">${fmtX(rows[0].p[0])}</span>` + rows.map(r => {
           const c = r.s.color.startsWith('--') ? cssv(r.s.color) : r.s.color;
-          return `<span class="tr"><i style="background:${c}"></i>${r.s.name} <b>${fmtT(r.p[1])}</b></span>`;
+          const f = r.s.axis === 'r' ? fmtT2 : fmtT;
+          return `<span class="tr"><i style="background:${c}"></i>${r.s.name} <b>${f(r.p[1])}</b></span>`;
         }).join('');
         tip.style.opacity = 1;
         const tw = tip.offsetWidth, left = Math.min(Math.max(px + 14, 4), W - tw - 4);

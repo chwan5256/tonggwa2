@@ -78,6 +78,28 @@
 .anon .ox button.on{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
 .anon .sent{margin:10px 0 0;font-size:14px;color:var(--good)}
 .anon .note{margin:10px 0 0;font-size:13px;color:var(--ink-faint)}
+
+/* 세 상태 비교표 */
+.cmp{width:100%;border-collapse:collapse;font-size:14.5px;margin-top:6px}
+.cmp th,.cmp td{border:1px solid var(--rule);padding:10px 12px;text-align:left;vertical-align:top}
+.cmp thead th{background:var(--surface-2);font-weight:600;color:var(--ink)}
+.cmp tbody th{font-weight:500;color:var(--ink-soft);background:var(--surface-2);width:26%}
+.cmp td.la{color:var(--s1-ink)} .cmp td.el{color:var(--s2-ink)}
+.tblwrap{overflow-x:auto}
+/* 엘니뇨 사건 표 */
+.evt{width:100%;border-collapse:collapse;font-size:14.5px}
+.evt th,.evt td{border-bottom:1px solid var(--rule);padding:9px 10px;text-align:left}
+.evt th{color:var(--ink-faint);font-weight:500;font-size:12.5px;letter-spacing:.04em}
+.evt td.num{font-family:var(--mono);font-variant-numeric:tabular-nums}
+/* 협약 연표 */
+.tl{list-style:none;margin:0;padding:0;border-left:2px solid var(--rule)}
+.tl li{position:relative;padding:0 0 18px 20px}
+.tl li::before{content:'';position:absolute;left:-7px;top:6px;width:12px;height:12px;border-radius:50%;
+  background:var(--surface);border:2px solid var(--accent)}
+.tl .yr{font-family:var(--mono);font-size:12.5px;color:var(--ink-faint);letter-spacing:.05em}
+.tl .ti{font-weight:600;color:var(--ink);margin:1px 0 3px}
+.tl .tx{font-size:14.5px;line-height:1.75;color:var(--ink-soft);margin:0}
+.tl li.kr::before{border-color:var(--ochre)}
 </style>
 </head>
 <body>
@@ -112,17 +134,18 @@
   <h2><span class="n">01</span>오늘의 질문</h2>
   <p class="q">엘니뇨가 오면 페루에는 홍수가, 인도네시아에는 가뭄이 든다. 하나의 원인이 어떻게 정반대의 결과를 낳는가?</p>
   <p>오늘 수업이 끝날 때, 이 질문에 <b>“바람 → 바다 → 구름”</b>의 순서로 답할 수 있어야 합니다.</p>
+  <div class="teach-only" data-yt="YmFCRuRpIr0" data-cap="개념 — 엘니뇨와 라니냐 (기상청 날씨공부 45강)" data-find="엘니뇨 라니냐 기상청 날씨공부"></div>
 </section>
 
 <!-- ================= 2 ================= -->
-<section class="step" id="s2" data-min="4" data-nav="되짚기">
+<section class="step" id="s2" data-min="3" data-nav="되짚기">
   <h2><span class="n">02</span>되짚기</h2>
   <p class="lead">중학교에서 배운 것부터 확인합니다. 답을 고르면 바로 해설이 나옵니다.</p>
   <div id="quizA"></div>
 </section>
 
 <!-- ================= 3 ================= -->
-<section class="step" id="s3" data-min="9" data-nav="평상시의 태평양">
+<section class="step" id="s3" data-min="8" data-nav="평상시의 태평양">
   <h2><span class="n">03</span>평상시의 태평양</h2>
   <p class="lead">엘니뇨를 이해하려면 <b>평상시</b>를 먼저 알아야 합니다. 지난 시간에 배운 <b>무역풍</b>이 여기서 다시 나옵니다.</p>
 
@@ -143,7 +166,7 @@
 </section>
 
 <!-- ================= 4 ================= -->
-<section class="step" id="s4" data-min="12" data-nav="엘니뇨가 오면">
+<section class="step" id="s4" data-min="10" data-nav="엘니뇨가 오면">
   <h2><span class="n">04</span>엘니뇨가 오면 — 무역풍을 약하게 해 보자</h2>
   <p class="lead">아래는 태평양 적도를 <b>서쪽에서 동쪽으로 자른 단면</b>입니다. 손잡이를 움직여 무역풍의 세기만 바꿔 보세요. <b>바꾸는 것은 바람 하나뿐</b>입니다.</p>
 
@@ -305,7 +328,7 @@
 </section>
 
 <!-- ================= 5 ================= -->
-<section class="step" id="s5" data-min="7" data-nav="편차 실험실">
+<section class="step" id="s5" data-min="5" data-nav="편차 실험실">
   <h2><span class="n">05</span>편차 실험실</h2>
   <p class="lead">뉴스는 “엘니뇨가 왔다”고 단정해 말합니다. 그런데 <b>무엇을 보고 왔다고 판정</b>하는 걸까요? 바닷물 온도를 직접 놓고, 판정하는 과정을 그대로 따라가 봅니다.</p>
 
@@ -367,8 +390,67 @@
 </section>
 
 <!-- ================= 6 ================= -->
-<section class="step" id="s6" data-min="5" data-nav="정리 확인">
-  <h2><span class="n">06</span>정리 확인</h2>
+<section class="step" id="s6" data-min="5" data-nav="세 상태 비교">
+  <h2><span class="n">06</span>라니냐까지 — 세 상태를 나란히</h2>
+  <p class="lead">무역풍이 <b>약해지면</b> 엘니뇨, <b>더 강해지면</b> 라니냐입니다. 평상시를 가운데 두고 좌우로 갈라진다고 보면 됩니다.</p>
+
+  <div class="tblwrap"><table class="cmp" id="cmpT">
+    <caption class="figsub" style="text-align:left;padding-bottom:8px">적도 태평양의 세 상태</caption>
+  </table></div>
+
+  <div class="note">
+    <span class="lbl">표를 읽는 법</span>
+    가운데 칸의 ‘평년 수준’은 <b>평년값과 견주었을 때</b>라는 뜻입니다. 평상시에도 <b>서태평양이 동태평양보다 따뜻하다</b>는 사실 자체는 세 상태 모두에서 변하지 않고,
+    엘니뇨는 그 <b>차이가 줄어드는</b> 쪽, 라니냐는 <b>더 벌어지는</b> 쪽입니다.
+    라니냐 칸과 엘니뇨 칸은 <b>모든 줄에서 서로 반대</b>입니다. 가운데 평상시를 기준으로 <b>같은 축을 양쪽으로 밀어 놓은 것</b>이기 때문입니다.
+    한 줄만 외우려 하지 말고 <b>“무역풍이 약해지면 어떻게 되는가”</b> 하나에서 나머지를 끌어내 보세요.
+  </div>
+
+  <h3>실제로 언제 있었는가 — 관측 자료로 세어 봅니다</h3>
+  <p class="lead">아래 표는 앞의 <b>Niño3.4 관측 자료</b>에서 <b>편차가 +0.5 ℃ 이상인 달이 5개월 이상 이어진 구간</b>을 기계로 세어 정리한 것입니다.
+     사람이 고른 것이 아니라 <b>정해진 기준을 그대로 적용</b>한 결과입니다.
+     (앞 절에서 본 대로 이 편차는 <b>3개월 이동평균</b> 값이고, 표시된 달은 그 석 달의 <b>가운데 달</b>입니다.)</p>
+  <div class="tblwrap"><table class="evt" id="evtT"></table></div>
+  <p class="datacard" id="evtNote"></p>
+
+  <div id="quizC"></div>
+</section>
+
+<!-- ================= 7 ================= -->
+<section class="step" id="s7" data-min="9" data-nav="대처 방안과 협약">
+  <h2><span class="n">07</span>그래서 무엇을 하는가 — 대처 방안과 기후변화 협약</h2>
+  <p class="lead">성취기준은 <b>영향</b>까지가 아니라 <b>“영향과 대처 방안을 분석”</b>까지 요구합니다. 여기서부터가 그 절반입니다.</p>
+
+  <div class="card">
+    <h3>대처의 두 갈래</h3>
+    <p><b>완화(감축)</b> — 원인을 줄이는 것. 온실 기체 배출량 자체를 줄입니다.<br>
+       <b>적응</b> — 이미 일어난 변화에 맞추어 피해를 줄이는 것. 변화 자체를 막지는 못합니다.</p>
+    <p>둘은 <b>대체 관계가 아니라 병행 관계</b>입니다. 완화만으로는 이미 진행된 변화를 되돌릴 수 없고, 적응만으로는 변화가 계속 커지는 것을 막을 수 없습니다.</p>
+  </div>
+
+  <p>카드를 고른 뒤 알맞은 칸을 누르세요.</p>
+  <div id="sortB"></div>
+
+  <div class="teach-only" data-yt="IC05k5-IzAM" data-cap="뉴스 — 파리 기후 협정 타결 (YTN)" data-find="파리 기후 협정 타결 뉴스"></div>
+
+  <h3>국제 사회는 어떻게 움직였는가</h3>
+  <ul class="tl" id="tlBox"></ul>
+
+  <div class="tblwrap"><table class="cmp" id="ktT"></table></div>
+
+  <div class="note">
+    <span class="lbl">갈리는 지점</span>
+    <b>교토의정서</b>는 <b>선진국</b>에만 감축 의무를 지웠고, <b>파리협정</b>은 <b>모든 당사국</b>이 스스로 정한 목표(NDC)를 내고 이행 상황을 정기적으로 보고합니다.
+    “선진국만이냐, 모두냐” 그리고 “위에서 정해 주느냐, 각국이 정해 제출하느냐” — 이 두 가지가 시험에서 갈리는 지점입니다.
+  </div>
+
+  <h3>순위를 매겨 봅니다</h3>
+  <div id="noteB"></div>
+</section>
+
+<!-- ================= 8 ================= -->
+<section class="step" id="s8" data-min="4" data-nav="정리 확인">
+  <h2><span class="n">08</span>정리 확인</h2>
   <p class="lead">오늘 다룬 것을 확인합니다. 틀려도 괜찮습니다. 해설을 읽는 것이 목적입니다.</p>
   <div id="quizB"></div>
 
@@ -386,9 +468,9 @@
   </div>
 </section>
 
-<!-- ================= 7 ================= -->
-<section class="step" id="s7" data-nav="내 학습 기록">
-  <h2><span class="n">07</span>내 학습 기록</h2>
+<!-- ================= 9 ================= -->
+<section class="step" id="s9" data-nav="내 학습 기록">
+  <h2><span class="n">09</span>내 학습 기록</h2>
   <p class="lead">오늘 배운 개념과 내가 푼 것이 한 파일로 저장됩니다.</p>
   <div id="repA"></div>
 </section>
@@ -884,6 +966,189 @@ ACT.sort('#sortA', {
     { t:'상승 기류가 발달한다', bin:'e', why:'표층 수온이 높아져 공기가 데워지고 올라갑니다.' },
     { t:'평상시보다 강수량이 증가한다', bin:'e', why:'구름이 만들어지는 자리가 동쪽으로 옮겨왔습니다.' },
     { t:'폭우와 홍수 피해가 나타난다', bin:'e', why:'평상시에는 건조하던 지역입니다.' }
+  ]
+});
+
+
+/* ============================================================
+   세 상태 비교표 — 라니냐 / 평상시 / 엘니뇨
+   §6-3 ① 표의 모든 칸이 아래 CMP 하나에서 나옵니다.
+   §6-3 ② CHK 가 "라니냐 칸과 엘니뇨 칸이 정말 서로 반대인지"를
+          반대말 사전으로 대조합니다. 한 칸이라도 어긋나면 화면에 붉게 표시됩니다.
+   ============================================================ */
+(() => {
+  const OPP = [['강함','약함'],['높음','낮음'],['두꺼움','얇음'],['많음','적음'],
+               ['서쪽','동쪽'],['서태평양','중앙·동태평양'],['가뭄','홍수·폭우'],
+               ['서쪽 — 평상시보다 더 두껍게','동쪽'],
+               ['서태평양 — 평상시보다 더 강하게','중앙·동태평양']];
+  const opp = (a, b) => OPP.some(([x, y]) => (a === x && b === y) || (a === y && b === x));
+
+  /* la = 라니냐 · no = 평상시 · el = 엘니뇨 */
+  const CMP = [
+    { k:'적도 무역풍',                 la:'강함',   no:'평년 수준',        el:'약함' },
+    { k:'동태평양(페루 앞바다)의 용승', la:'강함',   no:'꾸준히 일어남',    el:'약함' },
+    { k:'동태평양 표층 수온(평년 대비)', la:'낮음',   no:'평년 수준',        el:'높음' },
+    { k:'서태평양 표층 수온(평년 대비)', la:'높음',   no:'평년 수준',        el:'낮음' },
+    { k:'따뜻한 물이 두껍게 쌓이는 곳', la:'서쪽 — 평상시보다 더 두껍게', no:'서쪽', el:'동쪽' },
+    { k:'강한 상승 기류와 많은 비',     la:'서태평양 — 평상시보다 더 강하게', no:'서태평양', el:'중앙·동태평양' },
+    { k:'페루 연안의 날씨',             la:'가뭄',   no:'건조',             el:'홍수·폭우' },
+    { k:'인도네시아·호주의 날씨',       la:'홍수·폭우', no:'비가 많음',      el:'가뭄' }
+  ];
+
+  const bad = CMP.filter(r => !opp(r.la, r.el)).map(r => r.k);
+  window.CMPCHK = () => bad;
+
+  document.getElementById('cmpT').innerHTML +=
+    '<thead><tr><th>구분</th><th>라니냐 — 무역풍이 <b>더 강할 때</b></th><th>평상시</th><th>엘니뇨 — 무역풍이 <b>약할 때</b></th></tr></thead><tbody>' +
+    CMP.map(r => `<tr><th scope="row">${r.k}</th><td class="la">${r.la}</td><td>${r.no}</td><td class="el">${r.el}</td></tr>`).join('') +
+    '</tbody>';
+})();
+
+/* ============================================================
+   관측 자료에서 엘니뇨·라니냐 구간 세기
+   판정은 CPC 공식 편차(anom 열)로만 합니다. 학생이 정한 기준이 아닙니다.
+   ============================================================ */
+(() => {
+  const T = document.getElementById('evtT'), N = document.getElementById('evtNote');
+  fetch('../../data/nino34.csv', { cache:'no-store' })
+    .then(r => { if(!r.ok) throw new Error('없음'); return r.text(); })
+    .then(txt => {
+      const rows = txt.trim().split(/\r?\n/).filter(l => l.trim() && !l.trim().startsWith('#'));
+      const head = rows.shift().toLowerCase().split(',').map(t => t.trim());
+      const iy = head.indexOf('year'), im = head.indexOf('month'), ia = head.indexOf('anom');
+      if(iy < 0 || im < 0 || ia < 0) throw new Error('머리글');
+      const D = rows.map(l => l.split(',')).map(c => ({ y:+c[iy], m:+c[im], a:+c[ia] }))
+                    .filter(d => isFinite(d.y) && isFinite(d.a));
+
+      /* 부호를 바꿔 넣으면 라니냐도 같은 함수로 셉니다 — 두 판정이 한 소스에서 나옵니다 */
+      const runs = (sign) => {
+        const out = []; let s = -1;
+        for(let i = 0; i <= D.length; i++){
+          const on = i < D.length && sign * D[i].a >= 0.5;
+          if(on && s < 0) s = i;
+          if(!on && s >= 0){ if(i - s >= 5) out.push([s, i - 1]); s = -1; }
+        }
+        return out;
+      };
+      const ymd = d => `${d.y}.${String(d.m).padStart(2,'0')}`;
+      const EL = runs(+1), LA = runs(-1);
+      const peak = ([a, b]) => {
+        let best = D[a];
+        for(let i = a; i <= b; i++) if(Math.abs(D[i].a) > Math.abs(best.a)) best = D[i];
+        return best;
+      };
+
+      const rank = EL.map(r => ({ r, p: peak(r) })).sort((x, y) => y.p.a - x.p.a);
+      const top3 = new Set(rank.slice(0, 3).map(o => o.r[0]));
+
+      T.innerHTML = '<thead><tr><th>기간</th><th>이어진 개월</th><th>가장 큰 편차</th><th>그때</th></tr></thead><tbody>' +
+        EL.map(r => {
+          const p = peak(r), mark = top3.has(r[0]) ? ' ★' : '';
+          return `<tr><td class="num">${ymd(D[r[0]])} ~ ${ymd(D[r[1]])}${mark}</td>` +
+                 `<td class="num">${r[1] - r[0] + 1}개월</td>` +
+                 `<td class="num">+${p.a.toFixed(1)} ℃</td><td class="num">${ymd(p)}</td></tr>`;
+        }).join('') + '</tbody>';
+
+      N.innerHTML =
+        `<b>세는 방법</b> 편차 ≥ +0.5 ℃ 인 달이 <b>연속 5개월 이상</b> 이어진 구간을 하나의 엘니뇨로 셈 ` +
+        `&nbsp;·&nbsp; <b>기간</b> ${ymd(D[0])} ~ ${ymd(D[D.length-1])} (${D.length}개월) ` +
+        `&nbsp;·&nbsp; <b>결과</b> 엘니뇨 ${EL.length}회 · 라니냐(≤ −0.5 ℃, 같은 방법) ${LA.length}회 ` +
+        `&nbsp;·&nbsp; ★ 는 편차가 가장 컸던 세 구간 ` +
+        `&nbsp;·&nbsp; <b>출처</b> NOAA 기후예측센터(CPC) 공식 ONI 표. 이 편차는 <b>기관이 정한 30년 평년값</b>을 뺀 값입니다.<br>` +
+        `<b>읽을 때 주의</b> 이 표는 위 규칙을 <b>그대로 기계로 적용</b>한 결과입니다. 그래서 여러 해에 걸쳐 이어진 구간은 <b>하나로 묶입니다</b> ` +
+        `(예: 2014~2016 구간을 기관은 2014-15와 2015-16 <b>두 사건</b>으로 셉니다). <b>기관의 공식 사건 목록과 개수가 다를 수 있으므로 ‘몇 회인가’를 외우지 마세요.</b>`;
+    })
+    .catch(() => {
+      T.innerHTML = '<tbody><tr><td>자료 파일을 읽지 못했습니다. 없는 값을 지어내어 채우지 않습니다.</td></tr></tbody>';
+      N.textContent = '';
+    });
+})();
+
+TG.quiz('#quizC', [
+  { stem:'세 상태 비교표에서 <b>라니냐</b> 칸을 지우고 다시 채워야 한다. 표를 외우지 않고 채우는 가장 좋은 방법은?',
+    opts:['엘니뇨 칸을 그대로 옮겨 적는다',
+          '무역풍이 <b>더 강해졌을 때</b> 무슨 일이 일어나는지를 순서대로 따라간다',
+          '평상시 칸을 그대로 옮겨 적는다',
+          '동태평양 수온만 반대로 바꾸고 나머지는 평상시와 같게 둔다'], ans:1,
+    fb:{ right:'표의 여덟 줄은 <b>무역풍 하나</b>에서 차례로 따라 나옵니다. 바람 → 용승 → 수온 → 대류 → 강수의 순서로 따라가면 외울 것이 하나뿐입니다.',
+         wrong:['엘니뇨와 라니냐는 서로 반대입니다. 그대로 옮기면 전부 틀립니다.','',
+                '라니냐는 평상시가 아니라 평상시보다 더 치우친 상태입니다.',
+                '수온만 바뀌는 것이 아니라 용승·대류·강수까지 함께 옮겨갑니다.'] } },
+  { stem:'관측 자료 표에서 어떤 구간의 “가장 큰 편차”가 +2.6 ℃로 나왔다. 이 값의 뜻으로 옳은 것은?',
+    opts:['그 달 Niño3.4 해역의 해수면 온도가 2.6 ℃였다',
+          '그 달 해수면 온도가 기관이 정한 <b>평년값보다</b> 2.6 ℃ 높았다',
+          '그 달에 지구 평균 기온이 2.6 ℃ 올랐다',
+          '그 구간 동안 수온이 매달 2.6 ℃씩 올랐다'], ans:1,
+    fb:{ right:'편차는 <b>관측값 − 기준값</b>입니다. 기준값이 무엇인지 밝히지 않은 편차는 뜻이 없습니다.',
+         wrong:['2.6 ℃의 바닷물은 열대 태평양에 없습니다. 편차와 절대값을 구분하세요.','',
+                'Niño3.4 해역 한 곳의 값이지 지구 평균이 아닙니다.',
+                '한 달의 편차 값이지 변화율이 아닙니다.'] } }
+]);
+
+/* ============================================================
+   대처 방안 — 완화 / 적응
+   ============================================================ */
+ACT.sort('#sortB', {
+  bins: [{ id:'mit', name:'완화 — 원인을 줄인다' }, { id:'ada', name:'적응 — 피해를 줄인다' }],
+  cards: [
+    { t:'석탄 화력 발전을 태양광·풍력으로 바꾼다', bin:'mit', why:'배출량 자체를 줄입니다.' },
+    { t:'건물 단열을 강화해 냉난방 에너지를 줄인다', bin:'mit', why:'쓰는 에너지가 줄면 배출도 줍니다.' },
+    { t:'숲을 늘려 이산화 탄소를 흡수하게 한다', bin:'mit', why:'대기 중 온실 기체를 줄이는 쪽입니다.' },
+    { t:'배출된 이산화 탄소를 모아 땅속에 저장한다(CCS)', bin:'mit', why:'대기로 나가는 양을 줄입니다.' },
+    { t:'해안에 방조제를 높이 쌓는다', bin:'ada', why:'해수면 상승 자체를 막지는 못합니다. 피해를 줄일 뿐입니다.' },
+    { t:'가뭄에 강한 품종으로 바꾸어 심는다', bin:'ada', why:'달라진 기후에 농사를 맞추는 것입니다.' },
+    { t:'폭염 대비 무더위 쉼터를 늘린다', bin:'ada', why:'이미 온 더위에 대응합니다.' },
+    { t:'홍수 위험 지도를 만들어 대피 계획을 세운다', bin:'ada', why:'피해를 줄이는 준비입니다.' }
+  ]
+});
+
+/* 협약 연표 — 확인한 사실만 적습니다. 출처는 각 항목 끝에 붙였습니다. */
+(() => {
+  const TL = [
+    { yr:'1992 · 1994', ti:'유엔 기후변화 협약 (UNFCCC)', kr:false,
+      tx:'1992년 채택되어 그해 브라질 리우 환경 회의에서 서명이 개방되었고 1994년 발효. <b>기본 틀만 정한 협약</b>이라 구체적인 감축 의무는 담기지 않았습니다. 이후 매년 당사국 총회(COP)를 엽니다.' },
+    { yr:'1993', ti:'대한민국 가입', kr:true, tx:'우리나라는 1993년 12월 이 협약에 가입했습니다.' },
+    { yr:'1997 · 2005', ti:'교토 의정서', kr:false,
+      tx:'1997년 일본 교토 COP3에서 채택, 2005년 발효. <b>선진국(교토의정서 부속서 B)에만</b> 감축 의무를 지웠고, 1차 공약 기간(2008~2012)에 선진국 전체 배출량을 <b>1990년 대비 5.2% 이상</b> 줄이도록 했습니다.' },
+    { yr:'2015 · 2016', ti:'파리 협정', kr:false,
+      tx:'2015년 채택, 2016년 발효. 산업화 이전 대비 기온 상승을 <b>2 ℃보다 훨씬 아래로</b> 억제하고 <b>1.5 ℃</b>로 제한하도록 노력합니다. <b>모든 당사국</b>이 스스로 정한 감축 목표(NDC)를 내고 <b>5년마다</b> 점검·갱신합니다.' },
+    { yr:'2020 · 2021', ti:'대한민국 — 2050 탄소중립', kr:true,
+      tx:'2020년 <b>2050 탄소중립</b>을 선언하고, 2021년 <b>탄소중립기본법</b>을 만들었습니다. 2030년 목표는 <b>2018년 대비 40% 감축</b>입니다.' },
+    { yr:'2025', ti:'대한민국 — 2035 감축 목표', kr:true,
+      tx:'2025년 11월 11일 국무회의에서 2035년 목표를 <b>2018년 대비 53~61% 감축</b>으로 확정했습니다.' }
+  ];
+  document.getElementById('tlBox').innerHTML = TL.map(t =>
+    `<li${t.kr ? ' class="kr"' : ''}><p class="yr">${t.yr}</p><p class="ti">${t.ti}</p><p class="tx">${t.tx}</p></li>`).join('');
+
+  const KT = [
+    { k:'채택 · 발효',      a:'1997년 채택 · 2005년 발효',       b:'2015년 채택 · 2016년 발효' },
+    { k:'감축 의무 대상',   a:'선진국(교토의정서 부속서 B)만',    b:'<b>모든 당사국</b>' },
+    { k:'목표를 정하는 방식', a:'협상으로 <b>정해 준다</b>(하향식)', b:'각국이 <b>스스로 정해 제출</b>한다(NDC · 상향식)' },
+    { k:'점검',            a:'공약 기간별 달성 여부',            b:'<b>5년마다</b> 갱신하고 이행 상황을 보고' },
+    { k:'온도 목표',        a:'따로 명시하지 않음',              b:'2 ℃보다 훨씬 아래 · 1.5 ℃ 노력' }
+  ];
+  document.getElementById('ktT').innerHTML =
+    '<caption class="figsub" style="text-align:left;padding-bottom:8px">교토 의정서와 파리 협정</caption>' +
+    '<thead><tr><th>구분</th><th>교토 의정서</th><th>파리 협정</th></tr></thead><tbody>' +
+    KT.map(r => `<tr><th scope="row">${r.k}</th><td>${r.a}</td><td>${r.b}</td></tr>`).join('') + '</tbody>';
+})();
+
+ACT.note('#noteB', {
+  prompt: '<b>[문항]</b> 위 여덟 가지 대처 방안 중 <u>우리 학교가 올해 안에 실천할 것</u> 하나를 고르고, <b>왜 그것을 1순위로 골랐는지</b>를 서술하시오.<br>' +
+          '<b>&lt;조건&gt;</b> ① 고른 방안이 <b>완화인지 적응인지</b> 밝힐 것 ② <b>어떤 기준</b>으로 순위를 매겼는지 한 가지 이상 밝힐 것(예: 줄일 수 있는 배출량, 드는 비용, 걸리는 시간, 학생이 직접 할 수 있는 정도) ③ 그 기준으로 볼 때 <b>다른 방안보다 나은 점</b>을 비교하여 쓸 것',
+  ph: '나는 (        )을 1순위로 골랐다. 이것은 (완화 / 적응)이다.\n내가 쓴 기준은 (        )이다.\n이 기준으로 보면 (        )보다 …',
+  model: `<p>나는 <b>건물 단열 강화와 냉난방 에너지 줄이기</b>를 1순위로 골랐다. 이것은 배출량 자체를 줄이므로 <b>완화</b>에 해당한다.</p>
+          <p>내가 쓴 기준은 <b>“학교가 올해 안에 스스로 시작할 수 있는가”</b>와 <b>“드는 비용”</b> 두 가지다.</p>
+          <p>이 기준으로 보면, 태양광 발전 설비 설치는 줄일 수 있는 배출량은 더 크지만 <b>예산과 공사 기간이 필요해</b> 올해 안에 시작하기 어렵다.
+             방조제나 무더위 쉼터는 <b>적응</b>이라 배출량 자체를 줄이지 못한다.
+             단열과 냉난방 관리는 <b>비용이 적고 학생이 직접 참여할 수 있어</b> 두 기준 모두에서 앞선다.</p>
+          <p>다만 이 선택은 <b>줄일 수 있는 배출량만</b>을 기준으로 삼으면 순위가 달라진다. 기준이 달라지면 답도 달라진다는 점을 함께 밝힌다.</p>`,
+  checks: [
+    '고른 방안이 <b>완화인지 적응인지</b> 밝혔다',
+    '순위를 매긴 <b>기준</b>을 한 가지 이상 분명히 썼다',
+    '그 기준으로 <b>다른 방안과 비교</b>하여 나은 점을 썼다',
+    '완화와 적응의 차이(원인을 줄이는가 / 피해를 줄이는가)를 정확히 썼다',
+    '기준이 달라지면 순위가 달라질 수 있음을 인정했다'
   ]
 });
 

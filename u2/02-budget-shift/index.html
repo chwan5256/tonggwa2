@@ -54,6 +54,30 @@
 .anomctl{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:14px}
 .anomctl .lb{font-size:14px;color:var(--ink-faint);margin-right:4px}
 .anomctl .pill{font-family:var(--mono);font-size:14px;padding:9px 15px}
+
+/* 두 축 그래프의 범례 */
+.axeskey{display:flex;flex-wrap:wrap;gap:6px 22px;margin:10px 0 0;font-size:13.5px}
+.axeskey .k1{color:var(--s1-ink)}
+.axeskey .k2{color:var(--s2-ink)}
+.axeskey b{color:var(--ink)}
+
+/* 되먹임 고리 */
+.fbg{background:var(--surface);border:1px solid var(--rule);border-radius:16px;padding:20px 22px;margin:16px 0 0}
+.fbtabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:6px}
+.fbtabs .pill{font-size:14.5px;padding:9px 15px}
+.fbstage svg{width:100%;height:auto;display:block}
+.fbnode{display:flex;align-items:center;justify-content:center;height:100%;
+  font:500 14px/1.45 'IBM Plex Sans KR',sans-serif;color:var(--ink);text-align:center;
+  background:var(--surface-2);border:1px solid var(--rule);border-radius:12px;padding:6px 10px;box-sizing:border-box}
+.fbnode.head{background:var(--accent-wash);border-color:var(--accent)}
+.fbsign{margin:6px 0 0;font-size:15.5px;font-weight:600;color:var(--ink)}
+.fbsign .tagp,.fbsign .tagn{display:inline-block;font-family:var(--mono);font-size:12px;
+  letter-spacing:.06em;border-radius:999px;padding:2px 10px;margin-right:8px;
+  background:var(--surface-2);border:1.5px solid currentColor}
+.fbsign .tagp{color:var(--s2-ink)}
+.fbsign .tagn{color:var(--s1-ink)}
+.fbsay{margin:8px 0 0;font-size:15px;line-height:1.75;color:var(--ink-soft)}
+.fbsay b{color:var(--ink)}
 </style>
 </head>
 <body>
@@ -91,7 +115,7 @@
 </section>
 
 <!-- 2 -->
-<section class="step" id="s2" data-min="10" data-nav="지구 열수지">
+<section class="step" id="s2" data-min="9" data-nav="지구 열수지">
   <h2><span class="n">02</span>지구 열수지</h2>
   <p class="lead">지구에 들어오는 태양 복사 에너지를 <b>100 단위</b>로 놓고, 어디로 얼마가 가는지 따라갑니다. 숫자를 고른 뒤 그림의 빈칸을 누르세요.</p>
 
@@ -112,7 +136,7 @@
         <rect x="186" y="34" width="30" height="36"/><polygon points="186,34 216,34 201,20"/>
       </g>
       <g fill="var(--s1)" opacity=".78">
-        <rect x="500" y="34" width="64" height="112"/><polygon points="500,34 564,34 532,20"/>
+        <rect x="500" y="34" width="73" height="112"/><polygon points="500,34 573,34 536.5,20"/>
       </g>
       <text x="60" y="14" font-family="IBM Plex Sans KR, sans-serif" font-size="14" font-weight="600" fill="var(--ink)">태양 복사 100</text>
       <foreignObject x="232" y="30" width="160" height="40"><div xmlns="http://www.w3.org/1999/xhtml"
@@ -202,7 +226,7 @@
     <figcaption><b>읽는 법.</b> 지금의 대기에서는 지표면이 방출한 <b>144</b> 단위 중 <b>132</b> 단위를 온실 기체가 흡수하고, 그중 <b>94</b> 단위가 지표로 되돌아옵니다.
       <b>손잡이를 오른쪽으로 밀어 보세요.</b> 온실 기체가 늘면 대기가 붙잡는 몫이 늘고, 지표로 되돌려 보내는 <b>재복사 94가 커집니다</b>.
       지표는 그만큼 더 데워져 방출량도 함께 커지고, 결국 <b>더 높은 온도</b>에서 다시 균형을 이룹니다.
-      <br><b>앞 그림과 이어 보기.</b> 우주로 나가는 지구 복사 <b>70</b>은 대기를 그냥 통과한 <b>12</b>와 대기가 내보낸 <b>58</b>을 합한 것입니다.
+      <br><b>앞 그림과 이어 보기.</b> 아래 숫자는 모두 <b>지금의 대기(손잡이가 ‘지금’일 때)</b>의 값입니다. 우주로 나가는 지구 복사 <b>70</b>은 대기를 그냥 통과한 <b>12</b>와 대기가 내보낸 <b>58</b>을 합한 것입니다.
       대기 쪽도 흡수 <b>20 + 132 = 152</b>, 방출 <b>94 + 58 = 152</b>로 맞아떨어집니다.</figcaption>
   </figure>
 
@@ -217,11 +241,11 @@
   <p class="lead">손잡이를 <b>‘지금의 대기’</b>에 두고, 그림에서 읽은 숫자로 문장을 완성하세요.</p>
   <div id="clozeB"></div>
 
-  <div class="teach-only" data-yt="" data-cap="지구 열수지 — 숫자로 따라가기" data-find="지구 열수지 100 70 30 설명"></div>
+  <div class="teach-only" data-yt="XqJt5sUOQoY" data-cap="개념 — 지구의 열수지 평형 (고1 통합과학2)" data-find="지구 열수지 100 70 30 설명"></div>
 </section>
 
 <!-- 3 -->
-<section class="step" id="s3" data-min="8" data-nav="에너지 저울">
+<section class="step" id="s3" data-min="7" data-nav="에너지 저울">
   <h2><span class="n">03</span>에너지 저울</h2>
   <p class="lead">지구를 저울로 봅니다. 왼쪽은 <b>들어오는 에너지</b>, 오른쪽은 <b>나가는 에너지</b>. 단계마다 어느 쪽이 큰지 고르세요.</p>
   <div class="note">
@@ -250,6 +274,9 @@
     </div>
     <p class="say" id="say"></p>
     <p class="fb2" id="sfb" hidden></p>
+    <p class="modelnote"><b>2·3단계의 232 W/m² 와 17.2 ℃ 는 이야기를 보이게 하려고 정한 예시 값입니다.</b>
+      실제 지구의 에너지 불균형은 이보다 훨씬 작고, 새 평형의 기온도 이 값이 아닙니다.
+      여기서 가져갈 것은 <b>숫자가 아니라 부등호의 방향</b>입니다 — 들어오는 양과 나가는 양이 <b>같다 → 커진다 → 다시 같아진다</b>.</p>
   </div>
 
   <div class="note">
@@ -259,7 +286,7 @@
 </section>
 
 <!-- 4 -->
-<section class="step" id="s4" data-min="9" data-nav="지구 온난화">
+<section class="step" id="s4" data-min="8" data-nav="지구 온난화">
   <h2><span class="n">04</span>지구 온난화</h2>
   <p class="lead">이제 이름을 붙일 차례입니다. 아래 문장의 빈칸을 채우세요.</p>
   <div id="clozeA"></div>
@@ -275,7 +302,7 @@
     </div>
     <div class="chartbox"><canvas id="co2c" aria-label="마우나로아 연평균 이산화 탄소 농도 그래프"></canvas></div>
     <figcaption><b>출처.</b> NOAA Global Monitoring Laboratory, Mauna Loa 연평균 CO₂
-      (1958~1974년 자료는 Scripps 해양연구소 C. D. Keeling 측정분 포함).
+      (1974년 이전 값은 Scripps 해양연구소 C. D. Keeling 측정분).
       취득일과 검산 내역은 <code>data/co2-annual.csv</code> 머리글에 적혀 있습니다.
       <a href="https://gml.noaa.gov/ccgg/trends/" target="_blank" rel="noopener">gml.noaa.gov/ccgg/trends</a><br>
       <b>연평균이라 계절 변동(봄 최대·가을 최소)은 이미 지워져 있습니다.</b> 톱니 모양을 보려면 월별 자료가 따로 필요합니다.</figcaption>
@@ -292,12 +319,67 @@
 </section>
 
 <!-- 5 -->
-<section class="step" id="s5" data-min="10" data-nav="그래서 무엇이">
-  <h2><span class="n">05</span>그래서 무엇이 달라지는가</h2>
+<section class="step" id="s5" data-min="10" data-nav="두 자료 겹쳐 보기">
+  <h2><span class="n">05</span>두 자료를 겹쳐 봅니다</h2>
+  <p class="lead">앞에서는 이산화 탄소만 보았습니다. 이제 <b>지구 평균 기온</b>을 같은 그래프에 올려 놓습니다.</p>
+
+  <figure class="fig">
+    <p class="figtitle">대기 중 이산화 탄소 농도와 지구 평균 기온 편차</p>
+    <p class="figsub" id="dsub">1959 ~ 2025년 · 연평균</p>
+    <div class="chartbox"><canvas id="dualc"
+      aria-label="1959년부터 2025년까지 마우나로아 연평균 이산화 탄소 농도와 전 지구 평균 기온 편차를 함께 나타낸 그래프"></canvas></div>
+    <p class="axeskey" id="dkey">
+      <span class="k1">■ 이산화 탄소 농도 (ppm) — <b>왼쪽</b> 눈금</span>
+      <span class="k2">■ 지구 평균 기온 편차 (℃) — <b>오른쪽</b> 눈금</span>
+    </p>
+    <figcaption>
+      <b>출처.</b> CO₂ — NOAA Global Monitoring Laboratory, Mauna Loa 연평균
+      (<a href="https://gml.noaa.gov/ccgg/trends/" target="_blank" rel="noopener">gml.noaa.gov/ccgg/trends</a>) ·
+      기온 — NASA GISS 지표면 기온 분석 GISTEMP v4, 육지+해양, <b>1951~1980년 평균을 0으로 놓은 편차</b>
+      (<a href="https://data.giss.nasa.gov/gistemp/" target="_blank" rel="noopener">data.giss.nasa.gov/gistemp</a>).
+      취득일과 검산 내역은 <code>data/co2-annual.csv</code>, <code>data/gistemp-annual.csv</code> 머리글에 있습니다.<br>
+      <b>주의 — 두 곡선의 높이도, 오르내리는 폭도 서로 비교할 수 없습니다.</b> 눈금이 다릅니다. 왼쪽 축은 ppm, 오른쪽 축은 ℃이며,
+      축의 범위를 바꾸면 곡선의 굴곡도 함께 달라 보입니다. 서로 견주어 읽을 수 있는 것은 <b>각 곡선이 어느 방향으로 움직이는가</b>뿐이고,
+      <b>한 곡선 안에서</b> 매끄러운지 들쭉날쭉한지는 볼 수 있습니다.
+    </figcaption>
+  </figure>
+
+  <div id="quizD"></div>
+
+  <div class="note">
+    <span class="lbl">여기서 멈추면 안 됩니다</span>
+    두 값이 함께 올랐다는 것은 <b>상관</b>입니다. 상관은 원인의 <b>후보</b>일 뿐입니다.
+    둘을 이어 주는 다리는 그래프가 아니라 <b>02~03절에서 따라간 열수지</b>입니다 —
+    온실 기체가 늘면 나가는 에너지가 줄고, 남은 에너지가 쌓여 기온이 오릅니다.
+    <b>메커니즘 + 관측 자료</b>가 함께 있을 때 비로소 주장이 됩니다.
+  </div>
+
+  <h3>한 번 오르기 시작하면 — 되먹임</h3>
+  <p>기온이 오르면 그 결과가 <b>다시 원인 쪽으로 돌아옵니다.</b> 이렇게 돌아온 결과가 처음의 변화를
+    <b>더 키우면 양의 되먹임</b>, <b>줄이면 음의 되먹임</b>입니다. 고리를 하나씩 눌러 보세요.</p>
+
+  <div class="fbg">
+    <div class="fbtabs" id="fbtabs"></div>
+    <div class="fbstage"><svg id="fbsvg" viewBox="0 0 720 360" role="img" aria-labelledby="fbttl"><title id="fbttl">되먹임 고리 그림</title></svg></div>
+    <p class="fbsign" id="fbsign"></p>
+    <p class="fbsay" id="fbsay"></p>
+  </div>
+
+  <div class="modelnote">
+    <b>이 그림은 고리의 구조만 나타낸 개념도입니다.</b> 화살표의 굵기나 고리를 도는 데 걸리는 시간은
+    나타내지 않았습니다. 실제로 각 되먹임이 기온을 몇 ℃ 바꾸는지는 이 그림에서 읽을 수 없습니다.
+  </div>
+
+  <div id="clozeC"></div>
+</section>
+
+<!-- 6 -->
+<section class="step" id="s6" data-min="7" data-nav="그래서 무엇이">
+  <h2><span class="n">06</span>그래서 무엇이 달라지는가</h2>
   <p class="lead">지구온난화가 만드는 변화는 네 갈래로 나뉩니다. 카드를 고른 뒤 알맞은 칸을 누르세요.</p>
   <div id="sortA"></div>
 
-  <div class="teach-only" data-yt="" data-cap="지구온난화의 영향 — 뉴스 자료" data-find="지구온난화 해수면 상승 뉴스"></div>
+  <div class="teach-only" data-yt="KHgAfSfi8MA" data-cap="뉴스 — 세계기상기구 지구 온난화 기록 (KBS)" data-find="지구온난화 해수면 상승 뉴스"></div>
 
   <h3>하나만 더 짚고 갑니다</h3>
   <div id="quizC"></div>
@@ -306,9 +388,9 @@
   <div id="noteA"></div>
 </section>
 
-<!-- 6 -->
-<section class="step" id="s6" data-nav="내 학습 기록">
-  <h2><span class="n">06</span>내 학습 기록</h2>
+<!-- 7 -->
+<section class="step" id="s7" data-nav="내 학습 기록">
+  <h2><span class="n">07</span>내 학습 기록</h2>
   <p class="lead">오늘 배운 개념과 내가 푼 것이 한 파일로 저장됩니다.</p>
   <div id="repA"></div>
 </section>
@@ -510,7 +592,7 @@ ACT.cloze('#clozeB', [
 ACT.cloze('#clozeA', [
   { t:'지구 온난화란, 대기 중 {{0}}의 양이 증가하여 {{1}}가 강화되고, 그 결과 지구의 평균 기온이 {{2}}하는 현상이다.',
     blanks:[
-      { opts:['온실 기체','오존','수증기만'], ans:0, fb:'수증기·이산화 탄소·메테인·오존 등을 통틀어 온실 기체라고 합니다.' },
+      { opts:['온실 기체','질소','수증기만'], ans:0, fb:'수증기·이산화 탄소·메테인·오존 등을 통틀어 온실 기체라고 합니다. 질소는 대기의 약 78 %를 차지하지만 적외선을 거의 흡수하지 않아 온실 기체가 아닙니다.' },
       { opts:['오존층 파괴','온실 효과','복사 평형'], ans:1, fb:'없던 것이 생긴 것이 아니라, 원래 있던 것이 커진 것입니다.' },
       { opts:['상승','하강','유지'], ans:0, fb:'더 높은 온도에서 새로운 평형에 도달하기 때문입니다.' }] },
   { t:'지구 온난화의 원인은 산업 혁명 이후 급격히 증가한 {{0}} 사용량, 토지 개발, 과도한 {{1}} 등으로 대기 중 온실 기체의 양이 증가하였기 때문이다.',
@@ -564,9 +646,12 @@ fetch(LESSON.co2, { cache:'no-store' })
       `${co2Range()} 마우나로아 연평균 이산화 탄소 농도 그래프`);
   })
   .catch(() => { /* 붙박이 값 그대로 씁니다 */ });
-document.querySelector('.anomctl').addEventListener('click', e => {
+/* 이 화면에는 .anomctl 이 둘(04절 CO₂ · 05절 이중축)입니다.
+   문서 전체에서 .pill 을 훑으면 다른 절의 단추가 함께 꺼집니다 — 반드시 자기 상자 안만 봅니다. */
+const anomCtl4 = document.querySelector('#s4 .anomctl');
+anomCtl4.addEventListener('click', e => {
   const b = e.target.closest('.pill'); if(!b) return;
-  document.querySelectorAll('.anomctl .pill').forEach(x => x.classList.toggle('on', x === b));
+  anomCtl4.querySelectorAll('.pill').forEach(x => x.classList.toggle('on', x === b));
   const m = b.dataset.b;
   if(m === 'raw'){
     co2Chart.update([{ name:'연평균 CO₂', color:'--s1', pts: CO2 }]);
@@ -592,6 +677,254 @@ TG.quiz('#quizB', [
     fb:{ right:'이 자료는 ‘온실 기체가 늘었다’까지만 말해 줍니다. 왜 기온을 올리는지는 <b>열수지 메커니즘</b>이, 실제로 올랐는지는 <b>기온 관측 자료</b>가 말해 줍니다.',
          wrong:['자료가 길어도 그것만으로는 원인을 말할 수 없습니다.','상관은 인과의 후보일 뿐입니다.','',
                 '관측 자료는 근거로 반드시 필요합니다.'] } }
+]);
+
+/* ── CO₂ 와 지구 평균 기온을 한 그림에 ──
+   축이 둘입니다. 왼쪽은 ppm, 오른쪽은 ℃ 이므로 **두 곡선의 높이는 비교할 수 없습니다.**
+   자료 파일을 읽지 못하면 가짜 값으로 채우지 않고 그래프를 아예 띄우지 않습니다. */
+(() => {
+  const cv = document.getElementById('dualc');
+  const sub = document.getElementById('dsub');
+
+  const load = (url, col) => fetch(url, { cache:'no-store' })
+    .then(r => { if(!r.ok) throw new Error(url); return r.text(); })
+    .then(txt => {
+      const rows = txt.trim().split(/\r?\n/).filter(l => l.trim() && !l.trim().startsWith('#'));
+      const head = rows.shift().toLowerCase().split(',').map(t => t.trim());
+      const iy = head.indexOf('year'), iv = head.indexOf(col);
+      if(iy < 0 || iv < 0) throw new Error(url + ' 머리글');
+      const pts = rows.map(l => l.split(','))
+        .map(c => [ +c[iy], +c[iv] ])
+        .filter(p => isFinite(p[0]) && isFinite(p[1]))
+        .sort((a, b) => a[0] - b[0]);
+      if(pts.length < 20) throw new Error(url + ' 너무 짧음');
+      return pts;
+    });
+
+  /* 가운데 정렬 이동 평균 — 계산값입니다. 관측값이 아니라는 사실을 화면에 밝힙니다. */
+  const mavg = (pts, n) => {
+    const h = (n - 1) / 2, out = [];
+    for(let i = h; i < pts.length - h; i++){
+      let s = 0; for(let k = i - h; k <= i + h; k++) s += pts[k][1];
+      out.push([ pts[i][0], s / n ]);
+    }
+    return out;
+  };
+
+  Promise.all([ load('../../data/co2-annual.csv', 'co2'),
+                load('../../data/gistemp-annual.csv', 'anomaly') ])
+  .then(([co2, tmp]) => {
+    /* 두 자료가 겹치는 기간만 씁니다. 한쪽만 있는 해를 그리면 곡선이 끊긴 것처럼 보입니다. */
+    const y0 = Math.max(co2[0][0], tmp[0][0]);
+    const y1 = Math.min(co2[co2.length-1][0], tmp[tmp.length-1][0]);
+    const cut = a => a.filter(p => p[0] >= y0 && p[0] <= y1);
+    const C = cut(co2), T = cut(tmp);
+    const C5 = mavg(C, 5), T5 = mavg(T, 5);
+
+    sub.textContent = `${y0} ~ ${y1}년 · 연평균 · 해마다 값`;
+    const ch = TG.chart(cv, {
+      series: [ { name:'CO₂ 농도',  color:'--s1', pts:C },
+                { name:'기온 편차', color:'--s2', pts:T, axis:'r' } ],
+      xLabel:'연도', yLabel:'CO₂ 농도 (ppm)', y2Label:'기온 편차 (℃)',
+      xFmt: v => String(Math.round(v)), yFmt: v => v.toFixed(0),
+      tipFmt: v => v.toFixed(2) + ' ppm',
+      y2Fmt: v => v.toFixed(1), y2TipFmt: v => (v > 0 ? '+' : '') + v.toFixed(2) + ' ℃'
+    });
+
+    /* 보는 방법 단추 */
+    const ctl = document.createElement('div');
+    ctl.className = 'anomctl';
+    ctl.innerHTML = '<span class="lb">보는 방법</span>' +
+      '<button type="button" class="pill on" data-m="raw">해마다 값</button>' +
+      '<button type="button" class="pill" data-m="ma">5년 이동 평균</button>';
+    cv.parentElement.parentElement.insertBefore(ctl, cv.parentElement);
+    ctl.addEventListener('click', e => {
+      const b = e.target.closest('.pill'); if(!b) return;
+      ctl.querySelectorAll('.pill').forEach(x => x.classList.toggle('on', x === b));
+      if(b.dataset.m === 'raw'){
+        ch.update([ { name:'CO₂ 농도', color:'--s1', pts:C },
+                    { name:'기온 편차', color:'--s2', pts:T, axis:'r' } ]);
+        sub.textContent = `${y0} ~ ${y1}년 · 연평균 · 해마다 값`;
+      } else {
+        ch.update([ { name:'CO₂ 5년 평균', color:'--s1', pts:C5 },
+                    { name:'기온 5년 평균', color:'--s2', pts:T5, axis:'r' } ]);
+        sub.textContent = `${C5[0][0]} ~ ${C5[C5.length-1][0]}년 · 앞뒤 2년을 함께 평균한 계산값(관측값 아님)`;
+      }
+    });
+  })
+  .catch(() => {
+    cv.parentElement.innerHTML =
+      '<p class="fbsay">자료 파일을 읽지 못해 이 그래프를 띄우지 않았습니다. ' +
+      '없는 값을 지어내어 그리지는 않습니다. 선생님께 알려 주세요.</p>';
+    document.getElementById('dkey').hidden = true;
+  });
+})();
+
+TG.quiz('#quizD', [
+  { stem:'<b>기온 곡선만</b> 따라가 보면 해마다 오르내리는데, <b>CO₂ 곡선만</b> 따라가 보면 거의 해마다 오르기만 한다. 기온이 해마다 오르내리는 까닭으로 가장 적절한 것은?',
+    opts:['기온 관측 장비가 이산화 탄소 관측 장비보다 부정확하기 때문이다',
+          '기온은 화산 분화, 엘니뇨처럼 해마다 달라지는 요인의 영향을 함께 받기 때문이다',
+          '이산화 탄소는 1년에 한 번만 측정하기 때문이다',
+          '기온은 기준값을 뺀 편차라서 원래 들쭉날쭉하기 때문이다'], ans:1,
+    fb:{ right:'기온은 온실 기체 말고도 여러 요인이 함께 작용합니다. 그래서 <b>해마다는 오르내리지만 긴 기간의 추세는 상승</b>입니다. 5년 이동 평균을 눌러 보면 그 추세가 드러납니다. (두 곡선의 굴곡을 <b>서로 견주는</b> 것은 눈금이 달라 할 수 없습니다.)',
+         wrong:['두 관측 모두 국제적으로 검증된 방식입니다. 정확도의 문제가 아닙니다.','',
+                '연평균은 매일·매달 잰 값을 평균한 것입니다. 측정 횟수의 문제가 아닙니다.',
+                '편차는 <b>모든 해에서 같은 수를 빼는</b> 것이므로 값은 옮겨가도 오르내리는 폭은 달라지지 않습니다.'] } },
+  { stem:'“2000년 그림에서 CO₂ 곡선이 기온 곡선보다 위에 있으니 CO₂ 쪽이 더 크다.” 이 말은 옳은가?',
+    opts:['옳다. 한 그림에 함께 그렸으므로 비교할 수 있다',
+          '옳다. 두 축 모두 0에서 시작하므로 비교할 수 있다',
+          '옳지 않다. 두 곡선은 눈금과 단위가 달라 높이를 서로 비교할 수 없다',
+          '옳지 않다. 2000년 자료가 빠져 있다'], ans:2,
+    fb:{ right:'왼쪽 축은 ppm, 오른쪽 축은 ℃입니다. 축이 다른 두 곡선에서 읽을 수 있는 것은 <b>각자가 어느 방향으로 움직이는가</b>뿐입니다.',
+         wrong:['한 그림에 있다는 것만으로는 비교의 근거가 되지 않습니다.',
+                '두 축 모두 0에서 시작하지 않습니다. 시작점도 눈금 간격도 다릅니다.','',
+                '2000년 자료는 두 파일에 모두 있습니다.'] } }
+]);
+
+/* ── 되먹임 고리 ──
+   §6-3 ① 소스 단일화 : 마디의 자리·화살표·화살촉·부호 배지가 모두 아래 P() 하나에서 나옵니다.
+   §6-3 ② 좌표 검산   : FBCHK() 가 각 화살표의 시작·끝이 올바른 마디에 붙었는지,
+                        화살촉이 진행 방향을 향하는지, 고리의 부호가 선언한 값과 같은지를 숫자로 확인합니다.
+   부호 약속 : +1 = 앞의 양이 늘면 뒤의 양도 는다(같은 방향) / −1 = 앞이 늘면 뒤는 준다(반대 방향)
+              고리 전체의 성질 = 화살표 부호의 곱. (반대 방향 화살표가 짝수 개면 양의 되먹임) */
+const FB = (() => {
+  const CX = 360, CY = 176, RX = 250, RY = 118, F = 0.55, FB_BADGE = 0.71;
+  const P = (th, f) => [ CX + RX * f * Math.cos(th), CY + RY * f * Math.sin(th) ];
+  const TAN = th => {                      /* 진행 방향(θ가 커지는 쪽)의 접선 */
+    const dx = -RX * F * Math.sin(th), dy = RY * F * Math.cos(th);
+    const L = Math.hypot(dx, dy); return [ dx / L, dy / L ];
+  };
+
+  const LOOPS = [
+    { id:'ice', tab:'얼음과 반사율', expect:+1,
+      nodes:['지구의 평균 기온', '눈·얼음이 덮은 면적', '지표의 반사율', '지표가 흡수하는 태양 복사'],
+      signs:[-1, +1, -1, +1],
+      say:'기온이 오르면 눈과 얼음이 <b>줄고</b>, 하얀 면이 줄면 되반사하는 비율도 <b>줄어</b> 지표가 햇빛을 <b>더 많이</b> 흡수합니다. 그만큼 기온이 또 오릅니다. 반대 방향 화살표가 <b>2개(짝수)</b>이므로 한 바퀴를 돌면 처음의 변화가 더 커집니다.' },
+    { id:'vapor', tab:'수증기', expect:+1,
+      nodes:['지구의 평균 기온', '대기 중 수증기의 양', '대기가 붙잡는 지구 복사'],
+      signs:[+1, +1, +1],
+      say:'수증기도 온실 기체입니다. 기온이 오르면 증발이 활발해져 대기 중 수증기가 늘고, 대기가 붙잡는 지구 복사가 늘어 기온이 또 오릅니다. 반대 방향 화살표가 <b>0개(짝수)</b>입니다.' },
+    { id:'emit', tab:'복사 방출', expect:-1,
+      nodes:['지구의 평균 기온', '우주로 나가는 지구 복사', '지구에 쌓이는 에너지'],
+      signs:[+1, -1, +1],
+      say:'기온이 오르면 지구 복사도 늘어 <b>나가는 양이 커집니다.</b> 나가는 양이 커지면 쌓이는 에너지가 <b>줄어</b> 기온 상승에 제동이 걸립니다. 반대 방향 화살표가 <b>1개(홀수)</b>이므로 처음의 변화를 <b>되돌리는</b> 쪽으로 작용합니다. 03절 에너지 저울에서 기온이 오른 뒤 다시 평형을 이룬 것이 바로 이 고리입니다.' }
+  ];
+
+  /* 그리기 — 모든 좌표는 P() 와 TAN() 에서만 나옵니다 */
+  function geom(L){
+    const n = L.nodes.length, sp = 2 * Math.PI / n, gap = sp * 0.20;
+    const th = i => -Math.PI / 2 + sp * i;
+    return {
+      n, th,
+      node: i => P(th(i), 1),
+      arc : i => {                          /* i → i+1 */
+        const a = th(i) + gap, b = th(i) + sp - gap;
+        return { a, b, p0: P(a, F), p1: P(b, F), tip: P(b, F), dir: TAN(b),
+                 mid: P(th(i) + sp / 2, FB_BADGE) };
+      }
+    };
+  }
+
+  function render(L){
+    const g = geom(L), NW = 196, NH = 76;
+    const rx = (RX * F).toFixed(1), ry = (RY * F).toFixed(1);
+    let s = '';
+    for(let i = 0; i < g.n; i++){
+      const A = g.arc(i);
+      const [dx, dy] = A.dir, px = -dy, py = dx;
+      const [tx, ty] = A.tip;
+      const bx = tx - 13 * dx, by = ty - 13 * dy;
+      s += `<path d="M${A.p0[0].toFixed(1)} ${A.p0[1].toFixed(1)} A${rx} ${ry} 0 0 1 ${A.p1[0].toFixed(1)} ${A.p1[1].toFixed(1)}"
+              fill="none" stroke="var(--ink-faint)" stroke-width="2"/>`;
+      s += `<polygon points="${tx.toFixed(1)},${ty.toFixed(1)} ${(bx+6.5*px).toFixed(1)},${(by+6.5*py).toFixed(1)} ${(bx-6.5*px).toFixed(1)},${(by-6.5*py).toFixed(1)}"
+              fill="var(--ink-faint)"/>`;
+      const same = L.signs[i] > 0;
+      const [mx, my] = A.mid;
+      s += `<g><rect x="${(mx-49).toFixed(1)}" y="${(my-13).toFixed(1)}" width="98" height="26" rx="13"
+              fill="var(--surface)" stroke="${same ? 'var(--s2)' : 'var(--s1)'}" stroke-width="1.2"/>
+            <text x="${mx.toFixed(1)}" y="${(my+4.5).toFixed(1)}" text-anchor="middle"
+              font-family="IBM Plex Sans KR, sans-serif" font-size="13"
+              fill="${same ? 'var(--s2-ink)' : 'var(--s1-ink)'}">${same ? '같은 방향 ↑↑' : '반대 방향 ↑↓'}</text></g>`;
+    }
+    for(let i = 0; i < g.n; i++){
+      const [x, y] = g.node(i);
+      s += `<foreignObject x="${(x - NW/2).toFixed(1)}" y="${(y - NH/2).toFixed(1)}" width="${NW}" height="${NH}">
+              <div xmlns="http://www.w3.org/1999/xhtml" class="fbnode${i ? '' : ' head'}">${L.nodes[i]}</div>
+            </foreignObject>`;
+    }
+    /* 그림 상자의 높이도 마디 좌표에서 계산합니다 — 손으로 정한 값이 없습니다 */
+    let maxY = 0;
+    for(let i = 0; i < g.n; i++) maxY = Math.max(maxY, g.node(i)[1] + NH / 2);
+    const svg = document.getElementById('fbsvg');
+    svg.setAttribute('viewBox', `0 0 720 ${Math.ceil(maxY + 20)}`);
+    svg.innerHTML = '<title id="fbttl">' + L.tab + ' 되먹임 고리</title>' + s;
+
+    const neg = L.signs.filter(v => v < 0).length;
+    const prod = L.signs.reduce((a, b) => a * b, 1);
+    document.getElementById('fbsign').innerHTML =
+      (prod > 0 ? '<span class="tagp">양의 되먹임</span>처음의 변화를 <b>더 키웁니다</b>'
+                : '<span class="tagn">음의 되먹임</span>처음의 변화를 <b>줄입니다</b>') +
+      ` · 반대 방향 화살표 ${neg}개(${neg % 2 ? '홀수' : '짝수'})`;
+    document.getElementById('fbsay').innerHTML = L.say;
+  }
+
+  const tabs = document.getElementById('fbtabs');
+  tabs.innerHTML = LOOPS.map((L, i) =>
+    `<button type="button" class="pill${i ? '' : ' on'}" data-i="${i}">${L.tab}</button>`).join('');
+  tabs.addEventListener('click', e => {
+    const b = e.target.closest('.pill'); if(!b) return;
+    tabs.querySelectorAll('.pill').forEach(x => x.classList.toggle('on', x === b));
+    render(LOOPS[+b.dataset.i]);
+  });
+  render(LOOPS[0]);
+
+  /* 좌표 검산 — 화면을 보지 않고 숫자로 확인합니다 (§6-3 ②) */
+  function check(){
+    const bad = [];
+    LOOPS.forEach(L => {
+      const g = geom(L);
+      if(L.signs.length !== L.nodes.length) bad.push(`${L.id}: 화살표 수 ≠ 마디 수`);
+      const prod = L.signs.reduce((a, b) => a * b, 1);
+      /* 사람이 미리 적어 둔 기대 부호(expect)와 화살표에서 계산한 부호를 맞춰 봅니다.
+         화살표 하나의 방향을 잘못 넣으면 여기서 걸립니다.
+         다만 '각 화살표의 부호가 과학적으로 옳은가'는 기계가 대신 판단해 주지 못합니다. */
+      if(prod !== L.expect) bad.push(`${L.id}: 화살표에서 계산한 부호(${prod})가 기대값(${L.expect})과 다름`);
+      for(let i = 0; i < g.n; i++){
+        const A = g.arc(i), nx = (i + 1) % g.n;
+        const near = pt => {
+          let bi = 0, bd = Infinity;
+          for(let k = 0; k < g.n; k++){
+            const q = g.node(k), d = Math.hypot(q[0] - pt[0], q[1] - pt[1]);
+            if(d < bd){ bd = d; bi = k; }
+          }
+          return bi;
+        };
+        if(near(A.p0) !== i)  bad.push(`${L.id}#${i}: 화살표 시작이 마디 ${i} 가 아니라 ${near(A.p0)} 쪽`);
+        if(near(A.p1) !== nx) bad.push(`${L.id}#${i}: 화살표 끝이 마디 ${nx} 가 아니라 ${near(A.p1)} 쪽`);
+        /* 화살촉은 진행 방향(다음 마디 쪽)을 향해야 합니다 */
+        const q = g.node(nx), v = [ q[0] - A.p1[0], q[1] - A.p1[1] ];
+        const vl = Math.hypot(v[0], v[1]);
+        const dot = (v[0] / vl) * A.dir[0] + (v[1] / vl) * A.dir[1];
+        if(dot <= 0) bad.push(`${L.id}#${i}: 화살촉이 진행 방향의 반대를 향함 (cos=${dot.toFixed(2)})`);
+      }
+    });
+    return bad;
+  }
+  return { check, LOOPS };
+})();
+window.FBCHK = FB.check;
+
+ACT.cloze('#clozeC', [
+  { t:'기온이 오르면 눈과 얼음이 녹아 지표의 {{0}}이 낮아지고, 지표가 흡수하는 태양 에너지가 {{1}}. 그 결과 기온이 더 올라간다. 이렇게 결과가 처음의 변화를 더 키우는 것을 {{2}} 되먹임이라고 한다.',
+    blanks:[
+      { opts:['반사율','투과율','방출률'], ans:0, fb:'하얀 눈과 얼음은 햇빛을 잘 되반사합니다. 그 면적이 줄면 반사율이 낮아집니다.' },
+      { opts:['늘어난다','줄어든다','변하지 않는다'], ans:0, fb:'되반사되어 나가던 몫이 줄었으니 흡수되는 몫은 늘어납니다.' },
+      { opts:['양의','음의','복사'], ans:0, fb:'결과가 원인 쪽으로 돌아와 변화를 더 키우면 양의 되먹임입니다.' }] },
+  { t:'한편 기온이 오르면 지구가 우주로 내보내는 지구 복사도 {{0}}. 이것은 기온이 계속 오르는 것을 {{1}} 쪽으로 작용하므로 {{2}} 되먹임이다.',
+    blanks:[
+      { opts:['늘어난다','줄어든다','변하지 않는다'], ans:0, fb:'온도가 높은 물체는 더 많은 복사 에너지를 내보냅니다.' },
+      { opts:['막는','부추기는','되돌릴 수 없게 만드는'], ans:0, fb:'나가는 양이 늘면 쌓이는 양이 줄어듭니다.' },
+      { opts:['음의','양의','되풀이'], ans:0, fb:'03절에서 기온이 오른 뒤 다시 평형을 이룬 것이 이 고리 덕분입니다.' }] }
 ]);
 
 ACT.sort('#sortA', {

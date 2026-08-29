@@ -5,72 +5,159 @@
   "part": "지구과학 파트",
   "teacher": "진로진학부 최찬환",
   "contact": "자료 문의는 진로진학부 최찬환 선생님께 주세요.",
-
   "_today": "교사 화면에서 정한 값이 없을 때 쓰는 기본 '오늘 수업'. 비우면 열린 차시 중 마지막.",
   "today": "",
-
   "units": [
-    { "id": "u2", "no": "Ⅱ", "title": "환경과 에너지",
-      "sub": "생태계 · 지구 환경의 변화 · 에너지 전환과 효율" },
-    { "id": "u3", "no": "Ⅲ", "title": "과학과 미래 사회",
-      "sub": "감염병 · 빅데이터 · 로봇 · 과학기술과 윤리" }
+    {
+      "id": "u2",
+      "no": "Ⅱ",
+      "title": "환경과 에너지",
+      "sub": "생태계 · 지구 환경의 변화 · 에너지 전환과 효율"
+    },
+    {
+      "id": "u3",
+      "no": "Ⅲ",
+      "title": "과학과 미래 사회",
+      "sub": "감염병 · 빅데이터 · 로봇 · 과학기술과 윤리"
+    }
   ],
   "chapters": [
-    { "id": "u2c2a", "unit": "u2", "no": "2-1", "title": "온실 효과와 지구 온난화",
+    {
+      "id": "u2c2a",
+      "unit": "u2",
+      "no": "2-1",
+      "title": "온실 효과와 지구 온난화",
       "sub": "복사 평형 · 온실 효과 · 지구 열수지 · 지구 온난화",
-      "std": "[10통과2-02-03]" },
-    { "id": "u2c2b", "unit": "u2", "no": "2-2", "title": "지구 환경 변화와 인간 생활",
+      "std": "[10통과2-02-03]"
+    },
+    {
+      "id": "u2c2b",
+      "unit": "u2",
+      "no": "2-2",
+      "title": "지구 환경 변화와 인간 생활",
       "sub": "대기 대순환 · 해수의 표층 순환 · 엘니뇨 · 사막화",
-      "std": "[10통과2-02-03]" }
+      "std": "[10통과2-02-03]"
+    },
+    {
+      "id": "u2rev",
+      "unit": "u2",
+      "no": "2-정리",
+      "title": "대단원 정리",
+      "sub": "Ⅱ-2 전체를 하나의 줄기로 — 메커니즘 · 영향 · 대처 방안",
+      "std": "[10통과2-02-03]"
+    }
   ],
   "lessons": [
     {
-      "unit": "u2", "chapter": "u2c2a", "no": "01",
+      "unit": "u2",
+      "chapter": "u2c2a",
+      "no": "01",
       "title": "복사 평형과 온실 효과",
       "topic": "1. 온실 효과와 지구 열수지",
       "sum": "태양 복사와 지구 복사는 파장이 다릅니다. 온실 기체가 무엇을 붙잡는지부터 확인합니다.",
-      "std": "[10통과2-02-03]", "path": "u2/01-radiation/",
-      "videos": [ { "cap": "도입 — 지구는 왜 이 온도일까", "find": "지구 복사 평형 온실효과 설명" } ],
-      "open": true, "used": null, "form": ""
+      "std": "[10통과2-02-03]",
+      "path": "u2/01-radiation/",
+      "videos": [
+        {
+          "cap": "도입 — 지구는 왜 이 온도일까",
+          "find": "지구 복사 평형 온실효과 설명"
+        }
+      ],
+      "open": true,
+      "used": null,
+      "form": ""
     },
     {
-      "unit": "u2", "chapter": "u2c2a", "no": "02",
+      "unit": "u2",
+      "chapter": "u2c2a",
+      "no": "02",
       "title": "지구 열수지와 지구 온난화",
       "topic": "3. 지구 열수지 · 2. 지구 온난화",
       "sum": "100·70·30 그리고 144·132·94. 지구가 주고받는 에너지를 숫자로 따라갑니다.",
-      "std": "[10통과2-02-03]", "path": "u2/02-budget-shift/",
+      "std": "[10통과2-02-03]",
+      "path": "u2/02-budget-shift/",
       "videos": [
-        { "cap": "지구 열수지 — 숫자로 따라가기", "find": "지구 열수지 100 70 30 설명" },
-        { "cap": "지구온난화의 영향 — 뉴스 자료", "find": "지구온난화 해수면 상승 뉴스" }
+        {
+          "cap": "개념 — 지구의 열수지 평형 (고1 통합과학2)",
+          "yt": "https://www.youtube.com/watch?v=XqJt5sUOQoY"
+        },
+        {
+          "cap": "뉴스 — 세계기상기구 지구 온난화 기록 (KBS)",
+          "yt": "https://www.youtube.com/watch?v=KHgAfSfi8MA"
+        }
       ],
-      "open": true, "used": null, "form": ""
+      "open": true,
+      "used": null,
+      "form": ""
     },
     {
-      "unit": "u2", "chapter": "u2c2b", "no": "03",
-      "title": "대기 대순환과 해수의 순환",
-      "topic": "1. 대기 대순환 · 2. 해수의 표층 순환",
-      "sum": "저위도는 남고 고위도는 모자랍니다. 지구가 그 불균형을 해소하는 방식을 봅니다.",
-      "std": "[10통과2-02-03]", "path": "u2/03-circulation/",
-      "videos": [ { "cap": "도입 — 지구의 바람은 왜 이렇게 부는가", "find": "대기 대순환 무역풍 편서풍 설명" } ],
-      "open": true, "used": null, "form": ""
+      "unit": "u2",
+      "chapter": "u2c2b",
+      "no": "03",
+      "title": "대기 대순환·표층 순환·사막화",
+      "topic": "1. 대기 대순환 · 2. 해수의 표층 순환 · 4. 사막화",
+      "sum": "저위도는 남고 고위도는 모자랍니다. 바람 → 해류 → 사막까지 하나의 순환으로 잇습니다.",
+      "std": "[10통과2-02-03]",
+      "path": "u2/03-circulation/",
+      "videos": [
+        {
+          "cap": "개념 — 대기 대순환과 지상의 바람 (고1 통합과학)",
+          "yt": "https://www.youtube.com/watch?v=TlHWIpGrkXU"
+        },
+        {
+          "cap": "짧게 — 대기 대순환 한 번에 (숏츠)",
+          "yt": "https://www.youtube.com/watch?v=P2XnD9fi4Zs"
+        },
+        {
+          "cap": "사막화 — 날씨학개론 (YTN 사이언스)",
+          "yt": "https://www.youtube.com/watch?v=UfZk_w7DpJQ"
+        }
+      ],
+      "open": true,
+      "used": null,
+      "form": ""
     },
     {
-      "unit": "u2", "chapter": "u2c2b", "no": "04",
-      "title": "엘니뇨",
-      "topic": "3. 엘니뇨",
-      "sum": "무역풍 하나가 약해지면 페루에는 홍수가, 인도네시아에는 가뭄이 옵니다. 직접 움직여 봅니다.",
-      "std": "[10통과2-02-03]", "path": "u2/04-el-nino/",
-      "videos": [],
-      "open": true, "used": null, "form": ""
+      "unit": "u2",
+      "chapter": "u2c2b",
+      "no": "04",
+      "title": "엘니뇨와 대처 방안",
+      "topic": "3. 엘니뇨 · 대처 방안과 기후변화 협약",
+      "sum": "무역풍 하나가 약해지면 페루에는 홍수가 옵니다. 영향을 확인한 뒤 대처 방안과 협약까지 잇습니다.",
+      "std": "[10통과2-02-03]",
+      "path": "u2/04-el-nino/",
+      "videos": [
+        {
+          "cap": "개념 — 엘니뇨와 라니냐 (기상청 날씨공부 45강)",
+          "yt": "https://www.youtube.com/watch?v=YmFCRuRpIr0"
+        },
+        {
+          "cap": "뉴스 — 파리 기후 협정 타결 (YTN)",
+          "yt": "https://www.youtube.com/watch?v=IC05k5-IzAM"
+        }
+      ],
+      "open": true,
+      "used": null,
+      "form": ""
     },
     {
-      "unit": "u2", "chapter": "u2c2b", "no": "05",
-      "title": "사막화와 단원 정리",
-      "topic": "4. 사막화 · 단원 정리",
-      "sum": "사막이 왜 위도 30° 부근에 몰려 있는지 확인하고, 단원 전체를 하나의 사슬로 잇습니다.",
-      "std": "[10통과2-02-03]", "path": "u2/05-desert/",
-      "videos": [ { "cap": "도입 — 사막은 어디에 생기는가", "find": "사막화 원인 위도 30도 하강기류" } ],
-      "open": true, "used": null, "form": ""
+      "unit": "u2",
+      "chapter": "u2rev",
+      "no": "05",
+      "title": "대단원 정리",
+      "topic": "단원 종합",
+      "sum": "새 내용은 없습니다. 다섯 덩어리가 하나의 줄기였다는 것을 확인하고 시험 준비를 마칩니다.",
+      "std": "[10통과2-02-03]",
+      "path": "u2/05-desert/",
+      "videos": [
+        {
+          "cap": "마무리 — 기후 안정 상태를 벗어났다 (KBS)",
+          "yt": "https://www.youtube.com/watch?v=CNYMQnHZq1s"
+        }
+      ],
+      "open": true,
+      "used": null,
+      "form": ""
     }
   ]
 }
