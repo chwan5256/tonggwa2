@@ -33,7 +33,7 @@ const FALLBACK_PIN_HASH = '743392a6cfca212568fbd1ca6b693f91f583f67672f2698b000dc
    그 방식은 **허들이지 잠금이 아닙니다** — 계정 주소만 알면 누구나 칠 수 있습니다.
    만드는 방법은 README 의 '구글 로그인 붙이기' 절에 적어 두었습니다.
    같은 ID 를 Apps Script 의 `구글로그인_설정()` 에도 한 번 넣어 주세요.        */
-const CLIENT_ID = '';
+const CLIENT_ID = '1036707162661-v7jeqklr0ga8jlgqm1e36pga4j42mje2.apps.googleusercontent.com';
 
 /* 이 응답이 정말 '그 요청'에 대한, 충분히 새로운 배포의 답인가.
    옛 배포는 모르는 요청을 응답 집계(ok:true)로 흘려보냅니다.
