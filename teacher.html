@@ -391,7 +391,9 @@ const HUB = {
   /* 구글 로그인 클라이언트 ID.
      비워 두면 계정 주소를 직접 입력하는 방식으로 넘어갑니다.
      발급 방법은 README 의 '구글 로그인 붙이기' 절에 적어 두었습니다. */
-  clientId: "",
+  /* 구글 로그인 클라이언트 ID — shared/gate.js 한 곳에만 둡니다.
+     수업 진행 화면의 문도 같은 값을 씁니다. */
+  clientId: TG2.CLIENT_ID,
 
   /* 구글에 닿지 못할 때만 쓰는 예비 값 — 이 파일은 누구나 소스를 볼 수 있으므로
      비밀번호는 그대로 적지 않고 지문(SHA-256)만 둡니다. */
@@ -484,14 +486,28 @@ function manualMode(why){
 }
 
 /* 구글이 보내 준 토큰에서 이메일만 꺼냅니다. */
+/* 구글이 준 토큰을 **브라우저에서 열어 보고 믿지 않습니다.**
+   토큰 안의 이메일은 손으로 고쳐 넣을 수 있으므로, 서버(Apps Script)에 보내
+   구글에 직접 물어 확인하게 합니다.                                   */
 function onCred(res){
-  let p;
-  try{
-    p = JSON.parse(decodeURIComponent(escape(atob(
-      res.credential.split('.')[1].replace(/-/g,'+').replace(/_/g,'/')))));
-  }catch(e){ say1('no', '로그인 정보를 읽지 못했습니다. 다시 시도해 주세요.'); return; }
-  if(!p.email_verified){ say1('no', '이메일이 확인되지 않은 계정입니다.'); return; }
-  checkAccount(p.email);
+  say1('mute', '구글에 확인하는 중…');
+  TG2.gToken(HUB.api, res.credential).then(d => {
+    if(!d || !d.ok){
+      say1('no', (d && d.error) || '로그인 정보를 확인하지 못했습니다. 다시 시도해 주세요.');
+      return;
+    }
+    if(!d.allowed){
+      say1('no', d.email + ' 은 허용된 계정이 아닙니다. 다른 계정으로 로그인해 주세요.');
+      return;
+    }
+    ME = d.email;
+    say1('ok', '허용된 계정입니다 — ' + d.email);
+    s1.classList.add('done');
+    $('who1').hidden = false; $('who1').textContent = '✓ ' + d.email;
+    $('gbtn').hidden = true; $('manual').hidden = true;
+    s2.disabled = false;
+    $('pw').focus();
+  });
 }
 
 $('mailBtn').addEventListener('click', () => checkAccount($('mail').value));

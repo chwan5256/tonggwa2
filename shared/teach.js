@@ -107,13 +107,29 @@ const CSS = `
   background:var(--surface);color:var(--ink-soft);border-radius:999px;padding:6px 13px;cursor:pointer}
 .tclsbar button.on{background:var(--accent);border-color:var(--accent);color:var(--on-accent);font-weight:600}
 .tclsbar .cnt{font-size:11px;opacity:.75;margin-left:4px}
+.tclsbar .lb{font-size:12.5px;color:var(--ink-faint);align-self:center;margin-right:4px}
 
 .tresp .body{overflow:auto;padding:16px 20px 28px;flex:1}
-.tresp .item{margin-bottom:22px}
+.tresp .item{margin-bottom:22px;padding-bottom:18px;border-bottom:1px solid var(--rule-soft)}
+.tresp .item:last-child{border-bottom:0}
+.tresp .item h4{display:flex;align-items:center;gap:9px}
+.tresp .qn{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;
+  background:var(--accent);color:var(--on-accent);font-family:var(--mono);font-size:11.5px;flex:none}
+.tresp .qk{font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--ink-faint)}
+.tresp .qq{margin:0 0 12px;font-size:14px;line-height:1.6;color:var(--ink-soft)}
+.tresp .qsum{margin:0 0 9px;font-family:var(--mono);font-size:11.5px;color:var(--ink-faint)}
+.tresp .none{margin:0;font-size:13.5px;color:var(--ink-faint);
+  background:var(--surface-2);border-radius:9px;padding:9px 12px}
+.tresp .trow.ok .lb{color:var(--ink);font-weight:700}
+.tresp .trow .pc{text-align:right}
+.tresp .trow .lb i{font-style:normal;font-family:var(--mono);margin-right:5px;color:var(--ink-faint)}
+.tresp .txts .who{display:inline-block;font-family:var(--mono);font-size:10.5px;letter-spacing:.05em;
+  color:var(--on-accent);background:var(--accent);border-radius:999px;padding:1px 8px;margin-right:8px}
+.tresp .trange .lb{font-size:11.5px}
 .tresp .item h4{margin:0 0 10px;font-family:var(--mono);font-size:12px;letter-spacing:.06em;
   color:var(--ink-faint);font-weight:400}
-.trow{display:grid;grid-template-columns:52px 1fr 58px;align-items:center;gap:10px;margin-bottom:7px}
-.trow .lb{font-size:15px;font-weight:600;color:var(--ink)}
+.trow{display:grid;grid-template-columns:1fr 96px;align-items:center;gap:4px 12px;margin-bottom:11px}
+.trow .lb{grid-column:1 / -1;font-size:14px;line-height:1.55;font-weight:500;color:var(--ink-soft)}
 .trow .tk{height:22px;border-radius:6px;background:var(--surface-2);overflow:hidden}
 .trow .tk i{display:block;height:100%;background:var(--accent);border-radius:6px;width:0;
   transition:width .4s cubic-bezier(.4,0,.2,1)}
@@ -156,6 +172,7 @@ const DOOR_CSS = `
   background:none;color:var(--ink-soft);text-decoration:underline;cursor:pointer;padding:8px}
 .tdoor .foot{margin-top:16px;padding-top:14px;border-top:1px solid var(--rule-soft);
   font-size:12.5px;line-height:1.7;color:var(--ink-soft)}
+.tdoor .gbox{display:flex;justify-content:center;min-height:44px;margin-bottom:8px}
 `;
 
 /* ---------- 상태 ---------- */
@@ -227,6 +244,7 @@ function build(){
     <div class="grp">
       <button type="button" data-a="resp">응답 보기</button>
       <button type="button" data-a="full" title="전체화면 (F)">⛶</button>
+      <button type="button" data-a="lock" title="이 브라우저에 기억된 교사 통행증을 지웁니다">잠그기</button>
       <button type="button" data-a="exit" title="나가기 (Esc)">나가기</button>
     </div>`;
   document.body.appendChild(bar);
@@ -242,6 +260,7 @@ function build(){
   resp.innerHTML = `
     <header><h3>학생 응답</h3><span class="n" id="tn">—</span></header>
     <div class="tclsbar" id="tcls"></div>
+    <div class="tclsbar trange" id="trange"></div>
     <div class="body" id="tbody"></div>
     <div class="ft"><span id="tfoot">—</span><span style="flex:1"></span>
       <button type="button" data-a="reload">새로고침</button></div>`;
@@ -251,7 +270,8 @@ function build(){
     const b = e.target.closest('[data-a]');
     if(!b) return;
     ({ prev:()=>go(idx-1), next:()=>go(idx+1), exit:off, resp:toggleResp,
-       full:fullscreen, clock:toggleClock, clockr:resetClock, reload:load }[b.dataset.a] || (()=>{}))();
+       full:fullscreen, clock:toggleClock, clockr:resetClock, reload:load,
+       lock:lockOut, range:()=>{} }[b.dataset.a] || (()=>{}))();
   });
 
   /* 반 고르개 — 어느 반 응답만 볼지 */
@@ -346,18 +366,40 @@ function fullscreen(){
   else if(root.requestFullscreen) root.requestFullscreen();
 }
 
-/* ---------- 응답판 ---------- */
+/* ---------- 응답판 ----------
+   무엇을 보여 주는가
+     · 이 페이지에 있는 **모든 문항**을 화면에 그려진 순서대로 세워 두고,
+       문항마다 선택지 분포를 막대와 비율로 보여 줍니다. 아직 응답이 없으면
+       '아직 없음'이라고 적습니다 — 목록에서 빠지지 않습니다.
+     · 서술형은 분포가 뜻이 없으므로 **문항별로 묶어 문장을 그대로** 보여 줍니다.
+   문항 목록은 act.js 의 카탈로그(ACT.items())에서 옵니다.
+   학생의 답이 하나도 없어도 문항을 알 수 있는 이유가 그것입니다.        */
+let respRange = 0;                 /* 0 = 전체 · 그 밖에는 분 단위 */
+const RANGES = [
+  { v:0,    t:'전체' },
+  { v:1440, t:'오늘' },
+  { v:180,  t:'최근 3시간' },
+  { v:50,   t:'이번 시간' }
+];
+
 function toggleResp(){
   respOpen = !respOpen;
   resp.classList.toggle('on', respOpen);
-  if(respOpen){ load(); poll = setInterval(load, 12000); }
+  if(respOpen){ rangeBar(); load(); poll = setInterval(load, 15000); }
   else { clearInterval(poll); poll = null; }
 }
 
-const LABEL = {
-  'ox-elnino': 'O/X · 엘니뇨는 지구온난화 때문에 생긴다',
-  'check'    : '이해도 체크'
-};
+function rangeBar(){
+  const box = document.getElementById('trange');
+  if(!box) return;
+  box.innerHTML = '<span class="lb">기간</span>' + RANGES.map(r =>
+    `<button type="button" data-r="${r.v}" class="${r.v === respRange ? 'on' : ''}">${r.t}</button>`).join('');
+  box.onclick = e => {
+    const b = e.target.closest('button'); if(!b) return;
+    respRange = Number(b.dataset.r);
+    rangeBar(); load();
+  };
+}
 
 function load(){
   const body = document.getElementById('tbody');
@@ -371,17 +413,17 @@ function load(){
     body.innerHTML = `<p class="empty"><code>shared/gate.js</code> 가 함께 올라가지 않았습니다.</p>`;
     return;
   }
-  TG2.jsonp(api, { mode:'stats', lesson: code(), since: 180, cls: CLS_PICK, pin: teacherPin() })
+  TG2.jsonp(api, { mode:'stats', lesson: code(), since: respRange, cls: CLS_PICK, pin: teacherPin() }, 15000)
     .then(d => {
       /* 옛 배포는 모르는 요청도 응답 집계로 흘려보내며 ok:true 를 돌려줍니다.
          그대로 그리면 '전체 통계'를 '3반 통계'라고 적어 보여 주게 됩니다. */
       if(!d || d.mode !== 'stats' || Number(d.ver) < TG2.NEED_VER){
-        document.getElementById('tbody').innerHTML =
+        body.innerHTML =
           `<p class="empty"><b>옛 배포입니다.</b><br>
             Apps Script 에서 <b>배포 관리 → 편집 → 새 버전</b>으로 다시 배포해 주세요.<br>
-            그 전까지는 반별로 나누어 볼 수 없습니다.</p>`;
+            그 전까지는 문항별 분포와 서술형 답안을 볼 수 없습니다.</p>`;
         document.getElementById('tn').textContent = '—';
-        document.getElementById('tfoot').textContent = '옛 배포 · 반별 보기 잠김';
+        document.getElementById('tfoot').textContent = '옛 배포 · 새 버전으로 배포해 주세요';
         const cb = document.getElementById('tcls'); if(cb) cb.innerHTML = '';
         return;
       }
@@ -395,44 +437,117 @@ function load(){
     });
 }
 
+const rangeName = () => (RANGES.find(r => r.v === respRange) || {}).t || '전체';
+
 function render(d){
   const body = document.getElementById('tbody');
   document.getElementById('tn').textContent = (d.total || 0) + '개 응답';
   document.getElementById('tfoot').textContent =
-    '최근 3시간 · 12초마다 갱신' + (CLS_PICK ? ' · ' + CLS_PICK : ' · 전체 반') +
-    (d.locked && d.textN ? ' · 문장 ' + d.textN + '개 잠김' : '');
+    rangeName() + ' · 15초마다 갱신' + (CLS_PICK ? ' · ' + CLS_PICK : ' · 전체 반') +
+    (d.locked ? ' · 서술형 잠김(비밀번호 필요)' : '') +
+    (d.capped ? ' · 최근 것부터만 셈' : '');
   clsBar(d.byCls || {});
 
-  if(!d.total){
-    body.innerHTML = `<p class="empty">아직 응답이 없습니다.<br>학생들이 보내면 여기에 바로 쌓입니다.</p>`;
+  /* 문항별 선택 분포 : { 문항코드 → { 선택지 → 수 } } */
+  const cnt = {};
+  Object.entries(d.count || {}).forEach(([k, v]) => {
+    const p = k.indexOf('|');
+    const it = k.slice(0, p), ch = k.slice(p + 1);
+    (cnt[it] = cnt[it] || {})[ch || '(무응답)'] = v;
+  });
+
+  /* 문항별 서술형 답안 */
+  const byItem = {};
+  (d.texts || []).forEach(t => (byItem[t.item] = byItem[t.item] || []).push(t));
+
+  /* 문항 번호는 **화면에 그려진 순서**를 따릅니다.
+     등록 순서는 페이지 아래쪽 스크립트가 부른 차례라 화면 순서와 다를 수 있습니다. */
+  const CAT = (typeof ACT === 'object' && ACT && ACT.catalog) ? ACT.catalog() : [];
+  const pos = new Map();
+  CAT.forEach(it => {
+    if(pos.has(it.sel)) return;
+    const el = it.sel ? document.querySelector(it.sel) : null;
+    pos.set(it.sel, el ? [...document.querySelectorAll('*')].indexOf(el) : 1e9);
+  });
+  CAT.sort((a, b) => (pos.get(a.sel) - pos.get(b.sel)) || 0);
+  const seen = {};
+  let html = '', n = 0;
+
+  CAT.forEach(it => {
+    seen[it.id] = true;
+    n++;
+    html += it.kind === '서술형'
+      ? noteCard(n, it, byItem[it.id] || [], d.locked)
+      : distCard(n, it, cnt[it.id] || {});
+  });
+
+  /* 카탈로그에 없는 문항(옛 자료·직접 만든 전송) — 뒤에 붙입니다 */
+  Object.keys(cnt).forEach(id => {
+    if(seen[id]) return;
+    n++;
+    html += distCard(n, { id, sec:'', kind:'', q:id, opts:[], ans:'' }, cnt[id]);
+  });
+  Object.keys(byItem).forEach(id => {
+    if(seen[id]) return;
+    n++;
+    html += noteCard(n, { id, sec:'', kind:'서술형', q:id }, byItem[id], d.locked);
+  });
+
+  if(!n){
+    body.innerHTML = `<p class="empty">이 페이지에서 문항을 찾지 못했습니다.</p>`;
     return;
   }
-
-  const items = {};
-  Object.entries(d.count || {}).forEach(([k, v]) => {
-    const [it, ch] = k.split('|');
-    (items[it] = items[it] || []).push([ch || '(무응답)', v]);
-  });
-
-  let html = '';
-  Object.entries(items).forEach(([it, rows]) => {
-    const sum = rows.reduce((s, r) => s + r[1], 0);
-    rows.sort((a, b) => b[1] - a[1]);
-    html += `<div class="item"><h4>${LABEL[it] || it}</h4>` + rows.map(([ch, v]) => {
-      const p = Math.round(v / sum * 100);
-      return `<div class="trow"><span class="lb">${esc(ch)}</span>
-        <span class="tk"><i style="width:${p}%"></i></span>
-        <span class="pc">${v}·${p}%</span></div>`;
-    }).join('') + `</div>`;
-  });
-
-  const texts = (d.texts || []).filter(Boolean).slice(-14).reverse();
-  if(texts.length){
-    html += `<div class="item"><h4>학생이 쓴 근거 (최근 ${texts.length}개)</h4>
-      <div class="txts">${texts.map(t => `<p>${esc(t)}</p>`).join('')}</div></div>`;
+  if(!d.total){
+    html = `<p class="empty" style="margin-bottom:18px">
+      <b>${rangeName()}</b> 안에 들어온 응답이 없습니다.
+      기간을 <b>전체</b>로 바꾸어 보세요.</p>` + html;
   }
   body.innerHTML = html;
 }
+
+/* 선택형 한 문항 */
+function distCard(n, it, dist){
+  const rows = Object.entries(dist);
+  const sum = rows.reduce((s, r) => s + r[1], 0);
+  const head = `<div class="item"><h4><span class="qn">${n}</span>
+      <span class="qk">${esc(it.sec || '')}${it.sec && it.kind ? ' · ' : ''}${esc(it.kind || '')}</span></h4>
+      <p class="qq">${esc(cut(it.q, 110))}</p>`;
+
+  if(!sum) return head + `<p class="none">아직 응답 없음</p></div>`;
+
+  /* 보기 순서를 지킵니다 — 많이 고른 순으로 섞으면 ①②③ 과 어긋나 읽기 어렵습니다. */
+  const order = (it.opts && it.opts.length ? it.opts.slice() : []).concat(
+    rows.map(r => r[0]).filter(c => !(it.opts || []).includes(c)));
+
+  return head + `<p class="qsum">${sum}명 응답</p>` + order.map((ch, i) => {
+    const v = dist[ch] || 0;
+    const p = Math.round(v / sum * 100);
+    const right = it.ans && ch === it.ans;
+    return `<div class="trow${right ? ' ok' : ''}">
+      <span class="lb">${it.opts && it.opts.length ? '<i>' + '①②③④⑤⑥⑦⑧'[i] + '</i>' : ''}${esc(cut(ch, 46))}${right ? ' <b>✓</b>' : ''}</span>
+      <span class="tk"><i style="width:${p}%"></i></span>
+      <span class="pc">${v}명 · ${p}%</span></div>`;
+  }).join('') + `</div>`;
+}
+
+/* 서술형 한 문항 */
+function noteCard(n, it, list, locked){
+  let html = `<div class="item note"><h4><span class="qn">${n}</span>
+      <span class="qk">${esc(it.sec || '')}${it.sec ? ' · ' : ''}서술형</span></h4>
+      <p class="qq">${esc(cut(it.q, 160))}</p>`;
+  if(locked){
+    return html + `<p class="none">비밀번호로 들어오지 않아 답안을 볼 수 없습니다.</p></div>`;
+  }
+  if(!list.length) return html + `<p class="none">아직 제출한 학생이 없습니다.</p></div>`;
+
+  const rows = list.slice().sort((a, b) => b.t - a.t).slice(0, 60);
+  html += `<p class="qsum">${list.length}명 제출${list.length > rows.length ? ' · 최근 ' + rows.length + '개만 표시' : ''}</p>`;
+  html += `<div class="txts">` + rows.map(r =>
+    `<p><span class="who">${esc(r.cls || '(반 없음)')}</span>${esc(r.text)}</p>`).join('') + `</div>`;
+  return html + `</div>`;
+}
+
+const cut = (s, n) => { s = String(s || ''); return s.length > n ? s.slice(0, n - 1) + '…' : s; };
 
 const esc = s => String(s).replace(/[<>&"]/g, c => ({ '<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;' }[c]));
 
@@ -461,12 +576,15 @@ function doorOpen(){
     <h2 id="tdH" tabindex="-1">수업 진행 화면</h2>
     <p class="lead">이 화면에는 <b>학생이 쓴 답안</b>이 그대로 보입니다.
       그래서 <b>선생님만</b> 들어올 수 있습니다. 학생은 <a href="../../">자료실</a>로 돌아가 주세요.</p>
-    <div class="fld">
-      <label for="tdMail">허용된 계정 주소</label>
-      <input type="email" id="tdMail" autocomplete="username" placeholder="이름@namkang.sen.hs.kr">
+    <div id="tdG" class="gbox"></div>
+    <div id="tdManual" hidden>
+      <div class="fld">
+        <label for="tdMail">허용된 계정 주소</label>
+        <input type="email" id="tdMail" autocomplete="username" placeholder="이름@namkang.sen.hs.kr">
+      </div>
+      <button class="btn" type="button" id="tdB1">확인</button>
     </div>
     <p class="st" id="tdS1"></p>
-    <button class="btn" type="button" id="tdB1">확인</button>
     <fieldset id="tdF2" disabled style="margin-top:18px">
       <div class="fld">
         <label for="tdPw">비밀번호</label>
@@ -476,13 +594,62 @@ function doorOpen(){
       <button class="btn" type="button" id="tdB2">들어가기</button>
     </fieldset>
     <button class="out" type="button" id="tdOut">← 자료실로 돌아가기</button>
-    <p class="foot">비밀번호는 교사 페이지의 것과 같습니다. 한 번 들어오면 이 브라우저에서 <b>12시간</b> 기억합니다.</p>
+    <p class="foot">비밀번호는 교사 페이지의 것과 같습니다. 한 번 들어오면 이 브라우저에서 <b>12시간</b> 기억하며,
+      진행 화면 위쪽 <b>[잠그기]</b>를 누르면 바로 지워집니다.</p>
   </div>`;
   setTimeout(() => { try{ doorEl.querySelector('#tdH').focus(); }catch(e){} }, 60);
 
   const $$ = id => doorEl.querySelector('#' + id);
   const say = (el, c, t) => { el.className = 'st ' + c; el.textContent = t; };
   let mail = '';
+
+  /* 1단계 통과 — 여기서만 비밀번호 칸이 열립니다 */
+  function pass1(email, note){
+    mail = email;
+    say($$('tdS1'), 'ok', note || ('허용된 계정입니다 — ' + email));
+    $$('tdG').hidden = true; $$('tdManual').hidden = true;
+    $$('tdF2').disabled = false;
+    $$('tdPw').focus();
+  }
+
+  /* ── 구글 로그인 ──
+     ★ 계정 주소를 '치는 것'과 그 계정으로 '로그인한 것'은 다릅니다.
+     클라이언트 ID 가 있으면 구글 로그인만 받고, 토큰은 **서버가 구글에 물어**
+     진짜인지 확인합니다. ID 가 없으면 주소를 직접 치는 방식으로 내려앉는데,
+     그 방식은 허들이지 잠금이 아닙니다 — 화면에 그렇게 적어 둡니다.        */
+  function manual(why){
+    $$('tdG').hidden = true;
+    $$('tdManual').hidden = false;
+    say($$('tdS1'), 'no', why);
+  }
+  if(TG2.CLIENT_ID){
+    say($$('tdS1'), '', '구글 로그인 창을 준비하는 중…');
+    const sc = document.createElement('script');
+    sc.src = 'https://accounts.google.com/gsi/client';
+    sc.async = true; sc.defer = true;
+    sc.onerror = () => manual('구글 로그인을 불러오지 못했습니다. 계정 주소를 직접 넣어 확인합니다.');
+    sc.onload = () => {
+      try{
+        google.accounts.id.initialize({ client_id: TG2.CLIENT_ID, auto_select:false,
+          callback: res => {
+            say($$('tdS1'), '', '구글에 확인하는 중…');
+            TG2.gToken(cfg().api, res.credential).then(d => {
+              if(!d || !d.ok){ say($$('tdS1'), 'no', (d && d.error) || '로그인 정보를 확인하지 못했습니다.'); return; }
+              if(!d.allowed){ say($$('tdS1'), 'no', d.email + ' 은 허용된 계정이 아닙니다.'); return; }
+              pass1(d.email);
+            });
+          } });
+        google.accounts.id.renderButton($$('tdG'),
+          { theme:'outline', size:'large', width:330, text:'signin_with', locale:'ko' });
+        say($$('tdS1'), '', '선생님 계정으로 로그인해 주세요.');
+      }catch(e){ manual('구글 로그인을 시작하지 못했습니다. 계정 주소를 직접 넣어 확인합니다.'); }
+    };
+    document.head.appendChild(sc);
+  } else {
+    $$('tdG').hidden = true;
+    $$('tdManual').hidden = false;
+    say($$('tdS1'), '', '구글 로그인이 아직 연결되지 않았습니다. 계정 주소를 직접 넣어 확인합니다.');
+  }
 
   $$('tdOut').addEventListener('click', () => { location.href = cfg().hub || '../../'; });
 
@@ -497,10 +664,7 @@ function doorOpen(){
       const ok = w === true ||
         (w === null && TG2.FALLBACK_WHO.map(x => x.toLowerCase()).includes(v));
       if(!ok){ say($$('tdS1'), 'no', '허용된 계정이 아닙니다.'); return; }
-      mail = v;
-      say($$('tdS1'), 'ok', w === null ? '구글에 닿지 못해 예비 목록으로 확인했습니다.' : '확인했습니다.');
-      $$('tdF2').disabled = false;
-      $$('tdPw').focus();
+      pass1(v, w === null ? '구글에 닿지 못해 예비 목록으로 확인했습니다.' : '확인했습니다.');
     });
   });
 
@@ -525,8 +689,18 @@ function doorOpen(){
     });
   });
 
-  [$$('tdMail'), $$('tdPw')].forEach((el, i) =>
-    el.addEventListener('keydown', ev => { if(ev.key === 'Enter'){ ev.preventDefault(); $$(i ? 'tdB2' : 'tdB1').click(); } }));
+  [['tdMail','tdB1'], ['tdPw','tdB2']].forEach(([inp, btn]) => {
+    const el = $$(inp); if(!el) return;
+    el.addEventListener('keydown', ev => { if(ev.key === 'Enter'){ ev.preventDefault(); $$(btn).click(); } });
+  });
+}
+
+/* 공용 컴퓨터에서 수업하고 나올 때 — 이 브라우저에 기억된 교사 통행증을 지웁니다.
+   교사 페이지의 [잠그기]와 같은 값을 지우므로 두 곳이 함께 잠깁니다. */
+function lockOut(){
+  try{ localStorage.removeItem('tg2.teacher.pass'); }catch(e){}
+  off();
+  location.href = cfg().hub || '../../';
 }
 
 function doorClose(){

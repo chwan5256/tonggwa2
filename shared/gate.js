@@ -18,13 +18,22 @@ const TG2 = (() => {
    Apps Script 는 fetch 로 읽으면 브라우저가 CORS 로 막습니다.
    <script> 태그로 불러오면 그 제약을 받지 않습니다.               */
 /* 페이지가 요구하는 최소 배포 버전 — Code.gs 의 VER 과 같아야 합니다. */
-const NEED_VER = 5;
+const NEED_VER = 6;
 
 /* 구글에 닿지 못할 때만 쓰는 예비 값 — 교사 페이지와 수업 진행 화면이 **함께** 씁니다.
    이 파일은 누구나 소스를 볼 수 있으므로 비밀번호는 적지 않고 지문(SHA-256)만 둡니다.
    계정을 늘리거나 비밀번호를 바꿀 때 두 곳을 따로 고치지 않도록 여기 한 곳에 둡니다.  */
 const FALLBACK_WHO = ['cadrical@gmail.com', 'chwan5256@namkang.sen.hs.kr'];
 const FALLBACK_PIN_HASH = '743392a6cfca212568fbd1ca6b693f91f583f67672f2698b000dc20e062ddf6e';
+
+/* ---------- 구글 로그인 클라이언트 ID ----------
+   ★ 여기에 ID 를 넣으면 **교사 페이지와 수업 진행 화면 두 곳 모두**
+     "그 구글 계정으로 로그인한 상태"에서만 비밀번호 칸이 열립니다.
+   비워 두면 계정 주소를 직접 치는 방식으로 내려앉습니다.
+   그 방식은 **허들이지 잠금이 아닙니다** — 계정 주소만 알면 누구나 칠 수 있습니다.
+   만드는 방법은 README 의 '구글 로그인 붙이기' 절에 적어 두었습니다.
+   같은 ID 를 Apps Script 의 `구글로그인_설정()` 에도 한 번 넣어 주세요.        */
+const CLIENT_ID = '';
 
 /* 이 응답이 정말 '그 요청'에 대한, 충분히 새로운 배포의 답인가.
    옛 배포는 모르는 요청을 응답 집계(ok:true)로 흘려보냅니다.
@@ -88,6 +97,14 @@ function chkWho(api, email){
     .then(d => fresh(d, 'chkwho') && typeof d.ok === 'boolean' ? d.ok : null)
     .catch(() => null);
 }
+/* 구글에서 받은 ID 토큰을 **서버에** 보내 진짜인지 확인합니다.
+   브라우저가 스스로 "나 이 계정이야" 라고 말하는 것은 근거가 되지 않습니다.
+   돌려주는 값 : { ok, allowed, email }  ·  닿지 못하면 null            */
+function gToken(api, idtoken){
+  return jsonp(api, { mode:'gtoken', idtoken }, 12000)
+    .then(d => fresh(d, 'gtoken') ? d : null).catch(() => null);
+}
+
 function who(api, pin){
   return jsonp(api, { mode:'who', pin }, 8000)
     .then(d => fresh(d, 'who') ? d : null).catch(() => null);
@@ -197,6 +214,6 @@ if(document.readyState === 'loading')
   document.addEventListener('DOMContentLoaded', guard);
 else guard();
 
-return { jsonp, NEED_VER, FALLBACK_WHO, FALLBACK_PIN_HASH, gates, state, setGate, setGates, setToday, setCls, vids, setVid, ytId, ping, checkPin,
+return { jsonp, NEED_VER, FALLBACK_WHO, FALLBACK_PIN_HASH, CLIENT_ID, gToken, gates, state, setGate, setGates, setToday, setCls, vids, setVid, ytId, ping, checkPin,
          chkWho, who, setWho, setPin, sha256, lockPage };
 })();

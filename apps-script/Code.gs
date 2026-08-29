@@ -22,6 +22,7 @@
  *   who   : ["a@b.com", …]         교사 화면에 들어올 수 있는 계정
  *   pin   : "ai2026"               교사 화면 입장 비밀번호
  *   cls   : ["1반","2반", …]        반 목록 (학생이 처음 들어올 때 고릅니다)
+ *   clientid : 구글 로그인 클라이언트 ID (아래 '구글로그인_설정' 함수로 넣습니다)
  */
 
 /* ★ 처음 한 번만 쓰이는 기본값입니다.
@@ -31,9 +32,18 @@ var DEFAULT_WHO = ['cadrical@gmail.com', 'chwan5256@namkang.sen.hs.kr'];
 var DEFAULT_CLS = ['1반', '2반', '3반', '4반', '5반', '6반', '7반', '8반'];
 
 /* 페이지가 요구하는 최소 버전. 코드에 새 mode 를 더할 때마다 올립니다. */
-var VER = 5;
+var VER = 6;
 
 var SHEET = '응답';
+
+/* 서술형 답안을 차시별로 따로 쌓는 시트 이름 앞머리.
+   예) '서술형 u2-04'  ← 4차시 서술형만 모입니다. 반으로 정렬해 보면 반별 아카이브가 됩니다. */
+var NOTE_PREFIX = '서술형 ';
+
+/* 응답 집계를 할 때 한 번에 읽는 최대 줄 수.
+   빈칸·분류까지 모두 쌓이면 시트가 금세 수만 줄이 됩니다.
+   전부 읽으면 [응답 보기]가 느려지므로 **맨 아래(최근)부터** 이만큼만 봅니다. */
+var STAT_MAX_ROWS = 8000;
 
 /* 비밀번호를 마구 대입하는 것을 막는 아주 단순한 빗장.
    한 시간 안에 열 번 틀리면 십 분 동안 받지 않습니다. */
@@ -48,14 +58,20 @@ function doPost(e) {
     /* d.name 같은 것이 실려 와도 절대 적지 않습니다.
        반(cls)은 학급 단위라 개인을 가리키지 않으므로 받습니다.
        이름이 필요한 과제는 이 경로가 아니라 구글 폼·클래스룸으로 갑니다. */
-    _sheet().appendRow([
-      new Date(),
-      _safe(d.lesson, 20),
-      _safe(d.item,   40),
-      _safe(d.choice, 20),
-      _safe(d.text,  300),
-      _safe(d.cls,    12)
-    ]);
+    var now    = new Date();
+    var lesson = _safe(d.lesson, 20);
+    var item   = _safe(d.item,   40);
+    var choice = _safe(d.choice, 60);
+    var text   = _safe(d.text,  300);
+    var cls    = _safe(d.cls,    12);
+
+    _sheet().appendRow([now, lesson, item, choice, text, cls]);
+
+    /* 서술형(문장이 있는 것)은 **차시별 시트에 한 벌 더** 남깁니다.
+       '응답' 시트는 선택지까지 뒤섞여 금세 수만 줄이 되므로,
+       나중에 답안을 되읽으려면 차시별로 갈라 두는 편이 훨씬 낫습니다. */
+    if (text && lesson) _noteSheet(lesson).appendRow([now, cls, item, text]);
+
     return _out({ ok: true });
   } catch (err) {
     return _out({ ok: false, error: String(err) });
@@ -78,10 +94,12 @@ function _safe(v, n) {
      ?mode=state                         차시 공개 상태 + 오늘 수업
      ?mode=gate                          (옛 방식) 공개 상태만
      ?mode=vid                           차시별 영상 주소
-     ?mode=stats                         응답 집계 (기본)
+     ?mode=stats[&lesson=&cls=&since=]   응답 집계 (기본) · since 분 · 0 이면 전부
      ?mode=chkwho&email=____             이 계정이 교사 화면에 들어올 수 있는지
                                          → 참·거짓만 돌려줍니다. 목록은 알려주지 않습니다.
      ?mode=checkpin&pin=____             비밀번호가 맞는지
+     ?mode=gtoken&idtoken=____           구글 로그인 토큰이 진짜인지 + 허용 계정인지
+                                         → 구글에 직접 물어 확인합니다(주소만 치는 것과 다릅니다)
 
    비밀번호가 있어야
      ?mode=who&pin=____                  허용 계정 목록 보기
@@ -107,6 +125,7 @@ function doGet(e) {
       case 'gate':     out = { ok: true, open: _prop('gate', {}) }; break;
       case 'vid':      out = { ok: true, vid: _prop('vid', {}) }; break;
       case 'chkwho':   out = { ok: _allowed(p.email) }; break;
+      case 'gtoken':   out = _gToken(p); break;
       case 'checkpin': out = { ok: _pinOk(p.pin) }; break;
       case 'who':      out = _guard(p, function () { return { ok: true, who: _who() }; }); break;
       case 'setwho':   out = _guard(p, function () { return _setWho(p); }); break;
@@ -146,6 +165,56 @@ function _who() {
 }
 
 function _norm(s) { return String(s || '').trim().toLowerCase(); }
+
+/* ============================================================
+   구글 로그인 토큰 확인
+
+   페이지가 스스로 "나 이 계정이야" 라고 말하는 것은 근거가 되지 않습니다.
+   (계정 주소는 누구나 칠 수 있습니다.)
+   그래서 브라우저가 구글에서 받아 온 **ID 토큰**을 여기로 보내면,
+   이 서버가 구글에 직접 물어 진짜인지 확인한 뒤 허용 목록과 대조합니다.
+
+   돌려주는 것 : { ok, allowed, email }
+     ok=false      토큰이 가짜이거나 우리 앱의 것이 아님
+     allowed=false 진짜 구글 계정이지만 허용 목록에 없음
+   ============================================================ */
+function _gToken(p) {
+  var t = String(p.idtoken || '');
+  if (!t) return { ok: false, error: '토큰이 없습니다' };
+  try {
+    var r = UrlFetchApp.fetch(
+      'https://oauth2.googleapis.com/tokeninfo?id_token=' + encodeURIComponent(t),
+      { muteHttpExceptions: true });
+    if (r.getResponseCode() !== 200) return { ok: false, error: '구글이 이 토큰을 모릅니다' };
+    var d = JSON.parse(r.getContentText());
+
+    /* 우리 앱을 향해 발급된 토큰인지 확인합니다.
+       이 확인을 빼면 아무 사이트에서 받은 토큰이나 통과합니다. */
+    var want = _prop('clientid', '');
+    if (want && d.aud !== want) return { ok: false, error: '다른 앱에서 발급된 토큰입니다' };
+    if (d.email_verified === 'false' || d.email_verified === false)
+      return { ok: false, error: '확인되지 않은 계정입니다' };
+
+    return { ok: true, email: d.email || '', allowed: _allowed(d.email) };
+  } catch (err) {
+    return { ok: false, error: String(err) };
+  }
+}
+
+/* 차시별 서술형 시트 */
+function _noteSheet(lesson) {
+  var name = (NOTE_PREFIX + lesson).slice(0, 90);
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var sh = ss.getSheetByName(name);
+  if (!sh) {
+    sh = ss.insertSheet(name);
+    sh.appendRow(['시각', '반', '문항', '답안']);
+    sh.setFrozenRows(1);
+    sh.setColumnWidth(4, 560);
+    sh.getRange('D:D').setWrap(true);
+  }
+  return sh;
+}
 
 function _allowed(email) {
   var t = _norm(email);
@@ -289,14 +358,24 @@ function _setVid(p) {
 function _stats(p) {
   var lesson = p.lesson || '', item = p.item || '';
   var cls    = String(p.cls || '').trim();
-  var since  = Number(p.since || 180);
-  var from   = new Date(Date.now() - since * 60 * 1000);
 
-  var rows = _sheet().getDataRange().getValues();
-  rows.shift();
+  /* since 는 '몇 분 전까지 볼 것인가'입니다. **0 이면 처음부터 전부** 봅니다.
+     기본값을 180분으로 두면 지난 시간에 쌓인 답안이 안 보여
+     "응답이 없다"로 오해하게 됩니다.                                   */
+  var since = (p.since === undefined || p.since === '') ? 0 : Number(p.since);
+  var from  = since > 0 ? new Date(Date.now() - since * 60 * 1000) : null;
+
+  var sh   = _sheet();
+  var last = sh.getLastRow();
+  if (last < 2) return { ok: true, total: 0, count: {}, byCls: {}, texts: [], textN: 0, locked: !_pinOk(p.pin), scanned: 0 };
+
+  /* 맨 아래(최근)부터 최대 STAT_MAX_ROWS 줄만 읽습니다 */
+  var startRow = Math.max(2, last - STAT_MAX_ROWS + 1);
+  var rows = sh.getRange(startRow, 1, last - startRow + 1, 6).getValues();
 
   var picked = rows.filter(function (r) {
-    if (!(r[0] instanceof Date) || r[0] < from) return false;
+    if (!(r[0] instanceof Date)) return false;
+    if (from && r[0] < from) return false;
     if (lesson && r[1] !== lesson) return false;
     if (item   && r[2] !== item)   return false;
     /* 반을 고르지 않았으면 전부. 골랐으면 그 반만.
@@ -323,14 +402,34 @@ function _stats(p) {
      주소만 알면 남의 글을 통째로 읽을 수 있으면 안 됩니다. */
   var mine = _pinOk(p.pin);
 
+  /* 서술형 답안은 **문항·반·시각**과 함께 돌려줍니다.
+     그래야 진행 화면에서 문항별로 묶어 보여 줄 수 있습니다.
+     비밀번호가 맞을 때만 실어 보냅니다 — 주소만 알면 남의 글을 읽을 수 있으면 안 됩니다. */
+  var texts = [];
+  if (mine) {
+    picked.forEach(function (r) {
+      if (!r[4]) return;
+      texts.push({
+        item: String(r[2] || ''),
+        cls:  String(r[5] || ''),
+        text: String(r[4]),
+        t:    (r[0] instanceof Date) ? r[0].getTime() : 0
+      });
+    });
+    texts = texts.slice(-400);        /* 너무 많으면 화면이 감당하지 못합니다 */
+  }
+
   return {
     ok: true,
     total: picked.length,
     count: count,
     byCls: byCls,
-    texts: mine ? picked.map(function (r) { return r[4]; }).filter(String) : [],
-    textN: picked.map(function (r) { return r[4]; }).filter(String).length,
-    locked: !mine
+    texts: texts,
+    textN: picked.filter(function (r) { return !!r[4]; }).length,
+    locked: !mine,
+    scanned: rows.length,
+    capped: (last - 1) > rows.length,
+    since: since
   };
 }
 
@@ -362,6 +461,20 @@ function _out(obj, callback) {
   return ContentService
     .createTextOutput(txt)
     .setMimeType(ContentService.MimeType.JSON);
+}
+
+/**
+ * 구글 로그인 클라이언트 ID 를 넣습니다.
+ * 아래 따옴표 안에 ID 를 붙여 넣고, 편집기에서 이 함수를 **한 번** 실행하세요.
+ * (만드는 방법은 README 의 '구글 로그인 붙이기' 절에 적어 두었습니다.)
+ *
+ * 이 값이 있어야 서버가 "이 토큰이 우리 앱을 향해 발급된 것인가"까지 확인합니다.
+ * 비워 두면 토큰이 진짜인지까지만 확인합니다.
+ */
+function 구글로그인_설정() {
+  var CLIENT_ID = '';        // ← 여기에 붙여 넣으세요
+  PropertiesService.getScriptProperties().setProperty('clientid', CLIENT_ID);
+  Logger.log('클라이언트 ID 를 저장했습니다: ' + (CLIENT_ID || '(비움)'));
 }
 
 /**

@@ -34,7 +34,9 @@ function send(o){
   const body = {
     lesson: (typeof LESSON === 'object' && LESSON.code) || '',
     item:   String(o.item   || '').slice(0, 40),
-    choice: String(o.choice || '').slice(0, 20),
+    /* 보기에 태그가 섞여 있으면 시트에 태그가 그대로 쌓이고,
+       교사 화면에서 보기 목록과 대조가 되지 않습니다. 같은 규칙으로 걷어냅니다. */
+    choice: plain(o.choice).slice(0, 60),
     text:   String(o.text   || '').slice(0, 300),
     /* 반만 붙입니다. 이름은 붙이지 않습니다 — 이 줄을 고치지 마세요. */
     cls:    (typeof ME === 'object' && ME && ME.cls) ? ME.cls() : ''
@@ -45,6 +47,28 @@ function send(o){
                  body: JSON.stringify(body) }).catch(() => {});
   }catch(e){}
 }
+
+/* ---------- 이 페이지의 문항 목록(카탈로그) ----------
+   교사 진행 화면은 **학생의 답이 하나도 없어도** 문항 목록을 알아야
+   "1번 문항 · 아직 응답 없음" 을 그릴 수 있습니다.
+   그래서 각 활동이 **그려지는 순간** 자기 문항을 여기에 등록합니다.
+   순서는 화면에 그려진 순서와 같습니다.                                   */
+const CAT = [];
+function reg(o){
+  if(!o || !o.id) return;
+  if(CAT.some(x => x.id === o.id)) return;
+  /* 발문·보기에는 <b> 같은 태그가 섞여 있습니다.
+     교사 화면과 시트에는 **글자만** 남겨야 읽을 수 있고, 보내는 값과도 맞아떨어집니다. */
+  CAT.push({ id:o.id, sec:o.sec || '', kind:o.kind || '', q:plain(o.q),
+             sel:o.sel || '', opts:(o.opts || []).map(plain), ans:plain(o.ans) });
+}
+const catalog = () => CAT.slice();
+
+document.addEventListener('tg:quizreg', e => {
+  const d = e.detail;
+  d.items.forEach(it => reg({ id:'quiz-' + d.host + '-' + it.i, sec:d.sec, kind:'객관식',
+                              sel:d.sel, q:it.stem, opts:it.opts, ans:it.ans }));
+});
 
 /* ---------- 기록 ---------- */
 const REC = { items: [] };
@@ -63,6 +87,18 @@ function saved(){
 }
 const esc = s => String(s == null ? '' : s)
   .replace(/[<>&"]/g, c => ({ '<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;' }[c]));
+
+/* 발문에서 태그를 걷어내고 &lt; 같은 문자 참조도 되돌립니다.
+   되돌리지 않으면 교사 화면에 '&lt;조건&gt;' 이 그대로 보입니다. */
+function plain(html){
+  return String(html || '')
+    .replace(/<br\s*\/?>/gi, ' ')
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/&lt;/g, '<').replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"').replace(/&#39;/g, "'")
+    .replace(/&nbsp;/g, ' ').replace(/&amp;/g, '&')
+    .replace(/\s+/g, ' ').trim();
+}
 const secOf = el => {
   const s = el.closest('section.step');
   return s ? (s.dataset.nav || s.id) : '';
@@ -111,6 +147,10 @@ function cloze(sel, items){
   const host = document.querySelector(sel);
   if(!host) return;
   askAdd(items.reduce((n, it) => n + (it.blanks ? it.blanks.length : 0), 0));
+  items.forEach((it, i) => (it.blanks || []).forEach((b, k) =>
+    reg({ id:`cloze-${sel}-${i}-${k}`, sec:secOf(host), kind:'빈칸', sel,
+          q:it.t.replace(/\{\{\d+\}\}/g, '____') + `  (빈칸 ${k + 1})`,
+          opts:b.opts, ans:b.opts[b.ans] })));
   host.classList.add('cloze');
   host.innerHTML = items.map((it, i) => {
     let n = -1;
@@ -185,6 +225,8 @@ function cloze(sel, items){
     put({ id:`cloze-${sel}-${i}-${k}`, sec:secOf(host), kind:'빈칸',
           q:items[i].t.replace(/\{\{\d+\}\}/g, '____'),
           my:b.opts[j], ans:b.opts[b.ans], ok });
+    /* 무엇을 골랐는지만 보냅니다. 맞았는지는 보내지 않습니다. */
+    send({ item:`cloze-${sel}-${i}-${k}`, choice:b.opts[j] });
   }
 }
 
@@ -197,6 +239,9 @@ function place(sel, cfg){
   askAdd((cfg && cfg.slots ? cfg.slots.length : 0));
   const host = document.querySelector(sel);
   if(!host) return;
+  (cfg.slots || []).forEach((s0, i) =>
+    reg({ id:`place-${sel}-${i}`, sec:secOf(host), kind:'그림 채우기', sel,
+          q:s0.q || s0.el, opts:cfg.chips || [], ans:s0.ans }));
   const tray = document.createElement('div');
   tray.className = 'tray';
   tray.innerHTML = `<span class="lb">숫자를 고른 뒤, 그림의 빈칸을 누르세요</span>` +
@@ -223,6 +268,7 @@ function place(sel, cfg){
       sel_.classList.remove('on'); sel_ = null;
       put({ id:`place-${sel}-${i}`, sec:secOf(host), kind:'그림 채우기',
             q:s.q || s.el, my:v, ans:s.ans, ok });
+      send({ item:`place-${sel}-${i}`, choice:v });
     });
   });
 }
@@ -235,6 +281,10 @@ function sort(sel, cfg){
   askAdd((cfg && cfg.cards ? cfg.cards.length : 0));
   const host = document.querySelector(sel);
   if(!host) return;
+  (cfg.cards || []).forEach((c, i) =>
+    reg({ id:`sort-${sel}-${i}`, sec:secOf(host), kind:'분류', sel, q:c.t,
+          opts:(cfg.bins || []).map(b => b.name),
+          ans:((cfg.bins || []).find(b => b.id === c.bin) || {}).name || '' }));
   host.classList.add('sortg');
   host.innerHTML = `
     <div class="deck" id="${id(sel)}-deck">${cfg.cards.map((c, i) =>
@@ -275,9 +325,11 @@ function sort(sel, cfg){
           host.querySelector(`.bin[data-b="${card.bin}"] .drop`).appendChild(pick);
         }, 1500);
       }
+      const myBin = (cfg.bins.find(b => b.id === bin.dataset.b) || {}).name || '';
       put({ id:`sort-${sel}-${i}`, sec:secOf(host), kind:'분류',
-            q:card.t, my:bin.querySelector('.bh').textContent,
+            q:card.t, my:myBin,
             ans:(cfg.bins.find(b => b.id === card.bin) || {}).name, ok });
+      send({ item:`sort-${sel}-${i}`, choice:myBin });
       pick = null;
     }
   });
@@ -291,6 +343,7 @@ function note(sel, cfg){
   const host = document.querySelector(sel);
   if(!host) return;
   askAdd(1);
+  reg({ id:'note-' + sel, sec:secOf(host), kind:'서술형', sel, q:plain(cfg.prompt) });
   const uid = id(sel);
   host.classList.add('noteg');
   host.innerHTML = `
@@ -308,7 +361,7 @@ function note(sel, cfg){
   const record = () => {
     const got = [...host.querySelectorAll('.checks input')].filter(x => x.checked).length;
     put({ id:'note-' + sel, sec:secOf(host), kind:'서술형',
-          q:cfg.prompt.replace(/<[^>]+>/g, ''), my:ta.value.trim(),
+          q:plain(cfg.prompt), my:ta.value.trim(),
           ans:`스스로 점검 ${got}/${cfg.checks.length}`, ok:got === cfg.checks.length });
   };
   document.getElementById(uid + '-go').addEventListener('click', () => {
@@ -473,6 +526,6 @@ function report(sel, cfg){
 let seq = 0;
 function id(){ return 'a' + (++seq); }
 
-return { cloze, place, sort, note, report, put, send, countAsk,
+return { cloze, place, sort, note, report, put, send, countAsk, catalog, reg,
          items: () => REC.items };
 })();

@@ -61,6 +61,17 @@ function quiz(sel, items){
       ).join('')}</div>
     </div>`).join('');
 
+  /* 그리는 즉시 '이 페이지에 어떤 문항이 있는지'를 알립니다.
+     교사 진행 화면은 학생의 답 없이도 문항 목록을 알아야 분포판을 그릴 수 있습니다. */
+  {
+    const sec = host.closest('section.step');
+    document.dispatchEvent(new CustomEvent('tg:quizreg', { detail:{
+      host: sel.replace(/\W/g, ''), sel,
+      sec: sec ? (sec.dataset.nav || sec.id) : '',
+      items: items.map((it, i) => ({ i, stem: it.stem, opts: it.opts, ans: it.opts[it.ans] }))
+    }}));
+  }
+
   host.addEventListener('click', ev => {
     const btn = ev.target.closest('.opt');
     if(!btn || btn.disabled) return;
