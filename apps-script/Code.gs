@@ -32,7 +32,7 @@ var DEFAULT_WHO = ['cadrical@gmail.com', 'chwan5256@namkang.sen.hs.kr'];
 var DEFAULT_CLS = ['1반', '2반', '3반', '4반', '5반', '6반', '7반', '8반'];
 
 /* 페이지가 요구하는 최소 버전. 코드에 새 mode 를 더할 때마다 올립니다. */
-var VER = 7;
+var VER = 8;
 
 var SHEET = '응답';
 
@@ -115,6 +115,10 @@ function _safe(v, n) {
      ?mode=setgate&code=u2-03&open=1&pin=____
      ?mode=settoday&code=u2-03&pin=____  (code 를 비우면 '자동'으로 돌아갑니다)
      ?mode=setvid&key=u2-02|0&id=영상ID&pin=____
+     ?mode=clearlesson&lesson=u3-02[&cls=3반][&dry=1]&pin=____
+                                         (VER 8) 그 차시(와 반)의 응답 줄을 지웁니다.
+                                         dry=1 이면 몇 줄인지 세기만 합니다.
+                                         지운 줄은 '지운 응답' 시트에 한 벌 남깁니다(되살리기용).
 
    ?callback=fn 을 붙이면 JSONP 로 돌려줍니다 (브라우저 CORS 우회)
    ============================================================ */
@@ -148,6 +152,7 @@ function doGet(e) {
       case 'settoday': out = _guard(p, function () { return _setToday(p); }); break;
       case 'setvid':   out = _guard(p, function () { return _setVid(p); }); break;
       case 'uniq':     out = _uniq(p); break;
+      case 'clearlesson': out = _guard(p, function () { return _clearLesson(p); }); break;
       case 'stats':
       case undefined:
       case '':         out = _stats(p); break;
@@ -372,6 +377,57 @@ function _setVid(p) {
   if (id) v[key] = id.slice(0, 20); else delete v[key];
   PropertiesService.getScriptProperties().setProperty('vid', JSON.stringify(v));
   return { ok: true, vid: v };
+}
+
+/* ============================================================
+   차시 응답 지우기 (VER 8) — 교사 화면 [응답 초기화]
+   · '응답' 시트에서 차시(B열)가 같고, 반을 골랐다면 반(F열)도 같은 줄을 지웁니다.
+   · 지우기 전에 '지운 응답' 시트에 [지운 시각 + 원래 6칸]을 한 벌 남깁니다.
+   · 학생이 지우는 도중에 답을 보내도 섞이지 않도록 **아래에서 위로, 이어진 덩어리 단위로** 지웁니다.
+   · '서술형 uX-XX' 시트(아카이브)는 건드리지 않습니다.
+   ============================================================ */
+function _clearLesson(p) {
+  var lesson = String(p.lesson || '').trim();
+  if (!/^u\d-\d{2}$/.test(lesson)) return { ok: false, error: '차시 코드가 올바르지 않습니다 (예: u3-02)' };
+  var cls = String(p.cls || '').trim();
+  var dry = p.dry === '1';
+  var lock = LockService.getScriptLock();
+  if (!lock.tryLock(15000)) return { ok: false, error: '다른 작업이 진행 중입니다. 잠시 뒤 다시 눌러 주세요.' };
+  try {
+    var sh = _sheet(), last = sh.getLastRow();
+    if (last < 2) return { ok: true, n: 0, dry: dry };
+    var rows = sh.getRange(2, 1, last - 1, 6).getValues();
+    var hit = [];
+    rows.forEach(function (r, i) {
+      if (String(r[1]) !== lesson) return;
+      if (cls && String(r[5] || '') !== cls) return;
+      hit.push(i);
+    });
+    if (dry || !hit.length) return { ok: true, n: hit.length, dry: dry };
+
+    var ss = SpreadsheetApp.getActiveSpreadsheet();
+    var bk = ss.getSheetByName('지운 응답');
+    if (!bk) {
+      bk = ss.insertSheet('지운 응답');
+      bk.appendRow(['지운 시각', '시각', '차시', '문항', '선택', '문장', '반']);
+      bk.setFrozenRows(1);
+    }
+    var now = new Date();
+    var out = hit.map(function (i) { return [now].concat(rows[i]); });
+    bk.getRange(bk.getLastRow() + 1, 1, out.length, 7).setValues(out);
+
+    /* 아래에서 위로, 이어진 줄은 한 번에 */
+    var k = hit.length - 1;
+    while (k >= 0) {
+      var end = hit[k], start = end;
+      while (k - 1 >= 0 && hit[k - 1] === start - 1) { k--; start--; }
+      sh.deleteRows(start + 2, end - start + 1);     /* 시트 행 번호 = 배열 번호 + 2 */
+      k--;
+    }
+    return { ok: true, n: hit.length, dry: false };
+  } finally {
+    lock.releaseLock();
+  }
 }
 
 /* ============================================================

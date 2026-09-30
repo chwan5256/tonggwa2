@@ -99,6 +99,19 @@
   <div class="card" style="padding:14px 18px"><div id="rS"></div><p class="status" id="sStat" style="margin:10px 0 0"></p></div>
 
   <div class="card">
+    <h3 style="margin-top:0">선택 자료 — 05차시에 우리 반이 고른 가치</h3>
+    <p style="color:var(--ink-soft)">지난 시간 자율주행 투표를 다시 불러옵니다. <b>같은 가치의 충돌</b>이 데이터센터 문제에도 들어 있습니다.</p>
+    <div class="duo" style="margin-bottom:10px">
+      <div><p class="k" style="font-family:var(--mono);font-size:11.5px;color:var(--ochre);margin:0 0 8px">③ 어떤 차를 사겠는가 · <span id="v3k"></span></p><div id="v3"></div></div>
+      <div><p class="k" style="font-family:var(--mono);font-size:11.5px;color:var(--ochre);margin:0 0 8px">④ 사고의 책임은 누구에게 · <span id="v4k"></span></p><div id="v4"></div></div>
+    </div>
+    <p class="status" id="vStat" style="margin:0 0 10px"></p>
+    <div class="note" style="margin:0"><span class="lbl">이렇게 이어 봅니다</span>
+      ③ <b>‘탑승자 먼저’(차를 쓰는 나의 이익)</b> ↔ <b>‘피해 최소’(사회 전체의 이익)</b> — 데이터센터에서는 <b>AI를 쓰는 사람의 편익</b> ↔ <b>모두가 함께 지는 기후 부담</b>입니다.<br>
+      ④ 사고의 <b>책임 주체</b> — 데이터센터의 배출은 <b>운영 기업 · 이용자 · 전력과 부지를 허가하는 정부</b> 가운데 누가 책임질까요? 조건 ④(윤리·대안)를 쓸 때 근거로 삼을 수 있습니다.</div>
+  </div>
+
+  <div class="card">
     <h3 style="margin-top:0">[문항]</h3>
     <p><b>발문</b> “우리나라는 AI 데이터센터를 계속 늘려야 하는가?”에 대한 자신의 입장을 정하고 논증하시오.</p>
     <p><b>자료</b> 04절의 IEA 자료, Ⅱ단원에서 배운 온실 효과의 메커니즘</p>
@@ -106,7 +119,8 @@
       ① 04절 자료에서 <b>수치를 한 개 이상</b> 인용하되, 전망값이면 ‘전망’임을 밝힐 것<br>
       ② 전력 사용이 기온 상승으로 이어지는 과정을 <b>온실 기체·지구 복사</b>를 써서 설명할 것<br>
       ③ <b>반대 입장의 근거 한 가지</b>를 들고 그것을 반박하거나 받아들일 것<br>
-      ④ <b>과학 윤리 또는 조건(대안)</b>을 한 가지 제시할 것</p>
+      ④ <b>과학 윤리 또는 조건(대안)</b>을 한 가지 제시할 것<br>
+      <span style="color:var(--ink-soft)">(선택 자료) 위 05차시 우리 반 투표 결과를 반론이나 조건의 근거로 써도 됩니다. 조건은 아니므로 쓰지 않아도 됩니다.</span></p>
   </div>
   <div class="frame"><b>쓰기 틀</b> 나의 입장은 … 이다. → 자료에 따르면 … (수치) → 이것이 기후에 영향을 주는 까닭은 … (온실 기체·지구 복사) → 반대 입장에서는 … 라고 할 수 있다. 그러나 … → 따라서 … 라는 조건(윤리)을 지켜야 한다.</div>
   <div id="noteS"></div>
@@ -269,7 +283,24 @@ TG.quiz('#quizD', [
 const OPT_S = ['계속 늘려야 한다','조건을 붙여 늘려야 한다','늘리지 말아야 한다'];
 U3.poll('#pS', { item:'ssi-stance', q:'“우리나라는 AI 데이터센터를 계속 늘려야 하는가?” 지금 나의 입장은?', opts:OPT_S, onPick:() => setTimeout(LOAD, 1500) });
 let CLS = location.hash === '#t' ? '' : ((typeof ME === 'object' && ME.cls) ? ME.cls() : '');
+/* 05차시 투표를 다시 불러옵니다 — 보기 문구는 05차시(u3/05-ssi-ethics)의 V 와 같아야 셀 수 있습니다 */
+const V05 = {
+  'mm-3': ['어떤 경우에도 탑승자를 먼저 지키는 차','다치는 사람 수가 가장 적도록 판단하는 차'],
+  'mm-4': ['차를 만든 회사','판단 프로그램을 만든 개발자','차 주인(탑승자)','운행을 허가한 정부']
+};
+function LOAD05(){
+  U3.live('u3-05', CLS ? { cls:CLS } : {}).then(d => {
+    [['mm-3', '#v3', 'v3k'], ['mm-4', '#v4', 'v4k']].forEach(([it, host, k]) => {
+      U3.hbars(host, V05[it].map(o => ({ label:o, n:((d.ok && d.by[it]) || {})[o] || 0 })), { unit:'명' });
+      document.getElementById(k).textContent = CLS || '모든 반';
+    });
+    const n = d.ok ? Object.values(d.by['mm-3'] || {}).reduce((s, x) => s + x, 0) : 0;
+    document.getElementById('vStat').innerHTML = !d.ok ? `05차시 결과를 불러오지 못했습니다 (${d.why}).`
+      : n ? `<b>${CLS || '모든 반'}</b> ${n}명의 선택 (05차시)` : '아직 이 반의 05차시 투표가 없습니다.';
+  });
+}
 function LOAD(){
+  LOAD05();
   U3.live(LESSON.code, CLS ? { cls:CLS } : {}).then(d => {
     U3.hbars('#rS', OPT_S.map(o => ({ label:o, n:((d.ok && d.by['ssi-stance']) || {})[o] || 0 })), { unit:'명' });
     document.getElementById('sStat').innerHTML = d.ok ? `<b>${CLS || '모든 반'}</b>의 입장 분포 — 입장이 달라도 <b>좋은 논증</b>은 같은 조건을 갖춥니다.`

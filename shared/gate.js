@@ -18,7 +18,7 @@ const TG2 = (() => {
    Apps Script 는 fetch 로 읽으면 브라우저가 CORS 로 막습니다.
    <script> 태그로 불러오면 그 제약을 받지 않습니다.               */
 /* 페이지가 요구하는 최소 배포 버전 — Code.gs 의 VER 과 같아야 합니다. */
-const NEED_VER = 7;
+const NEED_VER = 8;
 
 /* 구글에 닿지 못할 때만 쓰는 예비 값 — 교사 페이지와 수업 진행 화면이 **함께** 씁니다.
    이 파일은 누구나 소스를 볼 수 있으므로 비밀번호는 적지 않고 지문(SHA-256)만 둡니다.
@@ -117,6 +117,13 @@ function setPin(api, next, pin){
   return jsonp(api, { mode:'setpin', next, pin }, 9000)
     .then(d => fresh(d, 'setpin') ? d : null).catch(() => null);
 }
+/* 차시 응답 지우기 (VER 8) — dry 면 세기만 */
+function clearLesson(api, lesson, cls, dry, pin){
+  const q = { mode:'clearlesson', lesson, pin };
+  if(cls) q.cls = cls;
+  if(dry) q.dry = 1;
+  return jsonp(api, q, 30000).then(d => fresh(d, 'clearlesson') ? d : null).catch(() => null);
+}
 function setCls(api, list, pin){
   return jsonp(api, { mode:'setcls', list: list.join(','), pin }, 9000)
     .then(d => fresh(d, 'setcls') ? d : null).catch(() => null);
@@ -214,6 +221,6 @@ if(document.readyState === 'loading')
   document.addEventListener('DOMContentLoaded', guard);
 else guard();
 
-return { jsonp, NEED_VER, FALLBACK_WHO, FALLBACK_PIN_HASH, CLIENT_ID, gToken, gates, state, setGate, setGates, setToday, setCls, vids, setVid, ytId, ping, checkPin,
+return { jsonp, clearLesson, NEED_VER, FALLBACK_WHO, FALLBACK_PIN_HASH, CLIENT_ID, gToken, gates, state, setGate, setGates, setToday, setCls, vids, setVid, ytId, ping, checkPin,
          chkWho, who, setWho, setPin, sha256, lockPage };
 })();
