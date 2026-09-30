@@ -1,0 +1,404 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>데이터 탐정 · 통합과학2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=IBM+Plex+Sans+KR:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../../shared/base.css">
+<link rel="stylesheet" href="../u3.css">
+<style>
+.srcs{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin:0 0 18px}
+.srcs a{display:block;background:var(--surface);border:1px solid var(--rule);border-radius:12px;padding:14px 16px;
+  text-decoration:none;color:var(--ink)}
+.srcs a:hover{border-color:var(--accent)}
+.srcs a b{display:block;font-size:15px;margin-bottom:4px}
+.srcs a span{font-size:13px;color:var(--ink-soft);line-height:1.55;display:block}
+.srcs a code{font-size:11.5px}
+</style>
+</head>
+<body>
+
+<div class="topbar"><div class="wrap">
+  <a class="home" href="../../">← 자료실</a>
+  <nav></nav>
+  <button class="tbtn" id="themeBtn" type="button">테마</button>
+</div></div>
+
+<header class="mast"><div class="wrap">
+  <p class="eyebrow">Ⅲ-1. 과학과 미래 사회 · 03차시</p>
+  <h1>데이터 탐정 — 이 결론, 믿어도 될까?</h1>
+  <p class="dek">‘데이터는 거짓말을 하지 않는다.’ 반은 맞고 반은 틀립니다. 데이터는 거짓말을 하지 않지만, <b>데이터를 읽는 사람</b>은 자주 틀립니다. 실제 자료로 네 사건을 수사합니다.</p>
+  <div class="tags">
+    <span class="tag std">[10통과2-03-02]</span>
+    <span class="tag">2. 과학 기술 사회에서 빅데이터의 활용 · 나</span>
+    <span class="tag">지식·이해 · 과정·기능 · 가치·태도</span>
+  </div>
+  <div class="stdbar">
+    <p class="k">성취기준 <span class="code">[10통과2-03-02]</span></p>
+    <p>빅데이터를 과학기술사회에서 사용하고 있는 사례를 조사하고, 빅데이터 활용의 장점과 문제점을 추론할 수 있다.</p>
+    <p class="sub"><b>이 차시가 맡는 부분</b> — 빅데이터의 뜻과 <b>활용 사례</b>, 그리고 <b>장점과 문제점을 추론</b>하는 부분입니다. 2028 수능 통합과학의 행동 영역 <b>‘자료 변환 및 해석’</b>을 함께 연습합니다.</p>
+  </div>
+</div></header>
+
+<main><div class="wrap">
+  <div id="meBar"></div>
+
+<!-- 1 -->
+<section class="step" id="s1" data-min="2" data-nav="오늘의 질문">
+  <h2><span class="n">01</span>오늘의 질문</h2>
+  <p class="q">같은 데이터로 정반대의 결론을 낼 수 있다면, 무엇을 보고 믿을지 정해야 할까?</p>
+  <div class="teach-only" data-yt="AZjgCWwKNLQ" data-cap="도입 — 빅데이터 활용 사례" data-find="빅데이터 활용 사례"></div>
+</section>
+
+<!-- 2 -->
+<section class="step" id="s2" data-min="7" data-nav="빅데이터란">
+  <h2><span class="n">02</span>빅데이터란</h2>
+  <p class="lead">현대 사회는 여러 분야에서 방대한 양의 데이터를 실시간으로 빠르게 모아 디지털 형태로 저장합니다. 이렇게 <b>방대한 양의 데이터 집합</b>이 빅데이터입니다. 기존 데이터에 비해 <b>양이 많고, 종류가 다양하며, 처리 속도가 빠릅니다.</b></p>
+  <div id="clozeA"></div>
+
+  <h3>출처 확인 1분 투어 — 오늘 쓸 자료는 어디서 왔나</h3>
+  <p class="lead">오늘 자료는 선생님이 미리 받아 두었습니다. 대신 <b>어디서 왔는지</b>는 직접 확인합니다. 출처를 확인하는 것이 데이터를 믿기 위한 첫 단계입니다.</p>
+  <div class="srcs">
+    <a href="https://www.data.go.kr" target="_blank" rel="noopener"><b>공공데이터포털</b><span>공공 기관의 데이터를 한 곳에서 — 과학 기술 · 환경 기상 · 보건 의료</span><code>data.go.kr</code></a>
+    <a href="https://data.kma.go.kr" target="_blank" rel="noopener"><b>기상자료개방포털</b><span>기상청의 관측 자료 — 기온·강수·바람</span><code>data.kma.go.kr</code></a>
+    <a href="https://data.giss.nasa.gov/gistemp/" target="_blank" rel="noopener"><b>NASA GISTEMP</b><span>사건 ①② — 1880년부터의 지구 평균 기온 편차</span><code>data.giss.nasa.gov</code></a>
+    <a href="https://github.com/owid/covid-19-data" target="_blank" rel="noopener"><b>Our World in Data</b><span>사건 ③ — 코로나19 검사 건수(원자료 질병관리청)</span><code>github.com/owid</code></a>
+    <a href="https://github.com/CSSEGISandData/COVID-19" target="_blank" rel="noopener"><b>존스홉킨스대 CSSE</b><span>사건 ③ — 코로나19 하루 확진자 수</span><code>github.com/CSSEGISandData</code></a>
+    <a href="https://gml.noaa.gov/ccgg/trends/" target="_blank" rel="noopener"><b>NOAA 마우나로아</b><span>사건 ② — 대기 중 이산화 탄소 농도</span><code>gml.noaa.gov</code></a>
+    <a href="https://github.com/datasets/s-and-p-500" target="_blank" rel="noopener"><b>S&amp;P 500 (Shiller 자료)</b><span>사건 ② — 미국 주가 지수</span><code>github.com/datasets</code></a>
+  </div>
+</section>
+
+<!-- 3 -->
+<section class="step" id="s3" data-min="7" data-nav="사건 ① 기간">
+  <h2><span class="n">03</span>사건 ① — 어디서 자르느냐</h2>
+  <div class="case"><span class="no">주장</span><p class="claim">“2016년부터 2022년까지 지구 기온은 <b>내려갔다</b>. 지구 온난화는 끝났다.”</p></div>
+  <figure class="fig">
+    <p class="figtitle">지구 평균 기온 편차와 고른 기간의 추세선</p>
+    <p class="figsub" id="c1Sub">불러오는 중…</p>
+    <div class="ctrl">
+      <div class="btnrow">
+        <button class="pill" type="button" data-w="2016,2022">2016~2022</button>
+        <button class="pill" type="button" data-w="1975,2025">1975~2025</button>
+        <button class="pill" type="button" data-w="1880,2025">1880~2025 (전체)</button>
+      </div>
+      <div class="row"><label for="wA">시작 연도</label><input type="range" id="wA" min="1880" max="2020" step="1" value="2016"><span class="val" id="wAv">2016</span></div>
+      <div class="row"><label for="wB">끝 연도</label><input type="range" id="wB" min="1885" max="2025" step="1" value="2022"><span class="val" id="wBv">2022</span></div>
+    </div>
+    <div class="tiles">
+      <div class="tile"><p class="k">고른 기간</p><p class="v" id="t1n">–</p></div>
+      <div class="tile s2"><p class="k">추세 (10년에)</p><p class="v" id="t1m">–</p></div>
+    </div>
+    <div class="legend">
+      <span><i style="background:var(--chart-axis)"></i>전체 자료</span>
+      <span><i style="background:var(--s1)"></i>고른 기간</span>
+      <span><i style="background:var(--s2)"></i>고른 기간의 추세선 <span class="model-tag">참고: 최소제곱</span></span>
+    </div>
+    <div class="chartbox"><canvas id="c1" aria-label="1880년부터의 지구 평균 기온 편차와 고른 기간의 추세선"></canvas></div>
+    <p class="dcard"><b>출처</b> NASA GISS GISTEMP v4 (육지+해양 연평균) · <b>기준</b> 1951~1980 평균 = 0 · <b>추세</b> 고른 기간의 연도-편차 점에 맞춘 직선의 기울기 × 10</p>
+  </figure>
+  <div id="quiz1"></div>
+</section>
+
+<!-- 4 -->
+<section class="step" id="s4" data-min="7" data-nav="사건 ② 상관">
+  <h2><span class="n">04</span>사건 ② — 함께 오르면 원인일까</h2>
+  <div class="case"><span class="no">주장</span><p class="claim">“미국 주가가 오를수록 지구 기온도 올랐다. 상관계수가 0.8이 넘는다. <b>주가가 지구를 데운다.</b>”</p></div>
+  <figure class="fig">
+    <p class="figtitle">주가 지수(S&amp;P 500)와 지구 평균 기온 편차</p>
+    <p class="figsub" id="c2Sub">불러오는 중…</p>
+    <div class="legend">
+      <span><i style="background:var(--s2)"></i>기온 편차 (왼쪽 축, ℃)</span>
+      <span><i style="background:var(--s1)"></i>S&amp;P 500 연평균 (오른쪽 축)</span>
+    </div>
+    <div class="chartbox"><canvas id="c2" aria-label="1880~2025년 주가 지수와 지구 평균 기온 편차"></canvas></div>
+    <div class="tiles" style="margin-top:14px">
+      <div class="tile s1"><p class="k" id="r1k">주가 ↔ 기온 상관계수</p><p class="v" id="r1">–</p></div>
+      <div class="tile"><p class="k" id="r3k">주가 ↔ 기온 (CO₂와 같은 기간)</p><p class="v" id="r3">–</p></div>
+      <div class="tile s2"><p class="k" id="r2k">CO₂ ↔ 기온 상관계수</p><p class="v" id="r2">–</p></div>
+    </div>
+    <figcaption><b>※ 두 곡선의 높이는 비교할 수 없습니다.</b> 왼쪽과 오른쪽의 눈금이 다릅니다.<br>
+      <b>상관계수</b>는 두 값이 얼마나 함께 움직이는지를 −1~1로 나타낸 수입니다 <span class="model-tag">참고 용어</span>. 1에 가까울수록 함께 오르내립니다. 두 계수 모두 화면에서 자료로 바로 계산한 값입니다.</figcaption>
+    <p class="dcard"><b>출처</b> 주가: Shiller 자료(github.com/datasets/s-and-p-500) 월별 → 연평균 · 기온: NASA GISTEMP v4 · CO₂: NOAA 마우나로아(1959~) · <b>취득</b> 2026-09-30</p>
+  </figure>
+  <div id="quiz2"></div>
+</section>
+
+<!-- 5 -->
+<section class="step" id="s5" data-min="6" data-nav="사건 ③ 요일">
+  <h2><span class="n">05</span>사건 ③ — 주말에는 바이러스도 쉰다?</h2>
+  <div class="case"><span class="no">주장</span><p class="claim">“코로나19 확진자는 늘 일요일·월요일에 적게 나왔다. <b>주말에는 사람들이 덜 감염된다.</b>”</p></div>
+  <figure class="fig">
+    <p class="figtitle">요일별 평균 — 2021년 7월~10월, 대한민국</p>
+    <p class="figsub" id="c3Sub">불러오는 중…</p>
+    <div class="duo">
+      <div class="card"><p class="k">하루 확진자 수 (요일별 평균)</p><div id="hbC"></div></div>
+      <div class="card"><p class="k">하루 검사 건수 (요일별 평균)</p><div id="hbT"></div></div>
+    </div>
+    <p class="dcard"><b>출처</b> 확진: 존스홉킨스대 CSSE · 검사: Our World in Data(원자료 질병관리청) · <b>주의</b> 날짜는 자료에 <b>집계된 날짜</b>입니다. 실제로 감염된 날도, 검사한 날도 아닙니다. 가장 낮은 두 요일을 주황색으로 표시했습니다.</p>
+  </figure>
+  <div id="quiz3"></div>
+</section>
+
+<!-- 6 -->
+<section class="step" id="s6" data-min="5" data-nav="사건 ④ 표본">
+  <h2><span class="n">06</span>사건 ④ — 우리 반은 대한민국 고1인가</h2>
+  <div class="case"><span class="no">주장</span><p class="claim">“지난 시간 우리 반 자료를 보니, <b>대한민국 고등학생</b>은 대부분 이 시각에 일어난다.”</p></div>
+  <figure class="fig">
+    <p class="figtitle">02차시 ‘오늘 일어난 시각’ — 우리 반 vs 모든 반</p>
+    <p class="figsub" id="c4Sub">불러오는 중…</p>
+    <div class="duo">
+      <div class="card"><p class="k" id="c4a">우리 반</p><div id="hbM"></div></div>
+      <div class="card"><p class="k">우리 학교 모든 반</p><div id="hbA"></div></div>
+    </div>
+  </figure>
+  <div id="quiz4"></div>
+</section>
+
+<!-- 7 -->
+<section class="step" id="s7" data-min="4" data-nav="정리">
+  <h2><span class="n">07</span>정리 — 장점과 문제점</h2>
+  <p class="lead">빅데이터는 <b>복잡한 문제를 빠르게 분석해 해결</b>하게 해 줍니다(장점). 그러나 교과서는 세 가지 문제점을 듭니다. 오늘과 지난 시간의 사건을 문제점별로 나눠 봅니다.</p>
+  <div id="sortA"></div>
+  <div id="clozeB"></div>
+  <div id="quizA"></div>
+</section>
+
+<!-- 8 -->
+<section class="step" id="s8" data-nav="내 학습 기록">
+  <h2><span class="n">08</span>내 학습 기록</h2>
+  <div id="repA"></div>
+</section>
+
+</div></main>
+
+<footer><div class="wrap">
+  <span>통합과학2 · Ⅲ-1. 과학과 미래 사회 · 03차시</span>
+  <span><a href="../../">자료실로 돌아가기</a></span>
+</div></footer>
+
+<script src="../../shared/lib.js"></script>
+<script src="../../shared/gate.js"></script>
+<script src="../../shared/me.js"></script>
+<script src="../../shared/act.js"></script>
+<script src="../u3kit.js"></script>
+<script>
+const LESSON = {
+  code: "u3-03", form: "",
+  api : "https://script.google.com/macros/s/AKfycbxGwVShBta72VSwPeJxaVDRWyEgv6Nl2tNsGNjdf_0AIKeI86oDrx806MAwoNJgezStNw/exec"
+};
+
+TG.theme('themeBtn');
+TG.nav('.topbar nav');
+if(location.hash !== '#t'){
+  ME.bar('meBar');
+  ME.askOnce();
+  TG2.state(LESSON.api).then(st => {
+    const cls = (st && st.cls && st.cls.length) ? st.cls : null;
+    if(cls){ ME.bar('meBar', cls); ME.clsList(cls); }
+  });
+}
+const FAIL = id => { const e = document.getElementById(id); if(e) e.innerHTML = '<span style="color:var(--danger)">자료 파일을 읽지 못했습니다. 없는 값을 지어내어 채우지 않습니다.</span>'; };
+
+ACT.cloze('#clozeA', [
+  { t:'빅데이터는 기존 데이터에 비해 양이 {{0}}, 종류가 {{1}}, 처리 속도가 빠르다.',
+    blanks:[
+      { opts:['많고','적고'], ans:0, fb:'‘빅’이 가리키는 것입니다.' },
+      { opts:['한 가지이며','다양하며'], ans:1, fb:'숫자뿐 아니라 글·사진·영상·위치 정보도 데이터입니다.' }] },
+  { t:'빅데이터는 과학 실험 장비뿐 아니라 {{0}} 속 다양한 정보에서도 얻을 수 있다.',
+    blanks:[{ opts:['생활','교과서'], ans:0, fb:'지난 시간 우리 반의 세 가지 답도 생활 속 정보였습니다.' }] }
+]);
+
+/* ============================================================
+   사건 ① — 선·추세선·기울기 타일이 모두 fit() 하나에서 나옵니다 (§6-3 ①)
+   ============================================================ */
+U3.csv('../../data/gistemp-annual.csv').then(rows => {
+  const D = rows.map(r => [+r.year, +r.anomaly]).filter(p => isFinite(p[0]) && isFinite(p[1]));
+  const wA = document.getElementById('wA'), wB = document.getElementById('wB');
+  const y0 = D[0][0], y1 = D[D.length - 1][0];
+  const fit = () => {
+    let a = +wA.value, b = +wB.value;
+    if(b < a + 5){ b = Math.min(y1, a + 5); wB.value = b; }
+    const sel = D.filter(p => p[0] >= a && p[0] <= b);
+    const L = U3.linreg(sel);
+    const line = []; for(let y = a; y <= b; y++) line.push([y, L.m * y + L.b]);   /* 툴팁이 해마다 맞는 값을 보이도록 */
+    return { a, b, sel, L, line };
+  };
+  const ser = f => [
+    { name:'전체', color:'--chart-axis', pts:D },
+    { name:'고른 기간', color:'--s1', pts:f.sel },
+    { name:'추세선', color:'--s2', pts:f.line }
+  ];
+  const f0 = fit();
+  const ch = TG.chart(document.getElementById('c1'), {
+    series: ser(f0), xLabel:'연도', yLabel:'기온 편차 (℃)', hline:{ y:0, text:'1951~1980 평균' },
+    xFmt: v => String(Math.round(v)), yFmt: v => v.toFixed(1), tipFmt: v => (v >= 0 ? '+' : '') + v.toFixed(2) + ' ℃'
+  });
+  function refresh(){
+    const f = fit();
+    document.getElementById('wAv').textContent = f.a;
+    document.getElementById('wBv').textContent = f.b;
+    const m10 = f.L.m * 10;
+    document.getElementById('t1n').innerHTML = `${f.a}~${f.b}<span class="u">${f.sel.length}년</span>`;
+    document.getElementById('t1m').innerHTML = (m10 >= 0 ? '+' : '') + m10.toFixed(2) + '<span class="u">℃</span>';
+    document.getElementById('c1Sub').textContent =
+      `${f.a}~${f.b}년 추세는 10년에 ${(m10 >= 0 ? '+' : '') + m10.toFixed(2)} ℃ — ${m10 < 0 ? '내려가는 것처럼 보입니다' : '올라갑니다'}`;
+    document.querySelectorAll('[data-w]').forEach(b => b.classList.toggle('on', b.dataset.w === f.a + ',' + f.b));
+    ch.update(ser(f));
+  }
+  wA.min = y0; wA.max = y1 - 5; wB.min = y0 + 5; wB.max = y1;
+  wA.addEventListener('input', refresh); wB.addEventListener('input', refresh);
+  document.querySelectorAll('[data-w]').forEach(b => b.addEventListener('click', () => {
+    const [a, c] = b.dataset.w.split(',').map(Number); wA.value = a; wB.value = c; refresh();
+  }));
+  refresh();
+}).catch(() => FAIL('c1Sub'));
+
+TG.quiz('#quiz1', [
+  { stem:'‘2016~2022’을 고르면 추세선이 내려간다. 그러나 이것으로 “온난화가 끝났다”고 할 수 <b>없는</b> 까닭으로 가장 알맞은 것은?',
+    opts:['2016~2022년 자료가 틀렸기 때문',
+          '짧은 기간만 잘라 보면 해마다의 오르내림(예: 2016년 강한 엘니뇨)이 추세를 가리기 때문',
+          '기온은 원래 측정할 수 없기 때문',
+          '기간이 길수록 추세선은 반드시 올라가기 때문'], ans:1,
+    fb:{ right:'2016년은 강한 엘니뇨로 유난히 더웠던 해입니다(Ⅱ단원 4차시). <b>출발점을 높은 곳에 두고 짧게 자르면</b> 내려가는 것처럼 보입니다. 기간을 넓히면 추세는 다시 뚜렷하게 올라갑니다. 교과서의 문제점 가운데 <b>잘못된 결과 도출</b>입니다.',
+         wrong:['자료는 같은 NASA 자료입니다. 틀린 것은 자료가 아니라 자른 방법입니다.','',
+                '측정했기 때문에 이 그래프가 있습니다.',
+                '“반드시”는 성립하지 않습니다. 1940~1975년처럼 긴 기간에도 거의 평평한 구간이 있습니다.'] } }
+]);
+
+/* ============================================================
+   사건 ② — 상관계수는 화면의 자료에서 바로 계산합니다
+   ============================================================ */
+Promise.all([U3.csv('../../data/sp500-annual.csv'), U3.csv('../../data/gistemp-annual.csv'), U3.csv('../../data/co2-annual.csv')])
+.then(([sp, gi, co]) => {
+  const G = {}; gi.forEach(r => G[+r.year] = +r.anomaly);
+  const both = sp.filter(r => G[+r.year] != null).map(r => ({ y:+r.year, s:+r.sp500, t:G[+r.year] }));
+  const r1 = U3.corr(both.map(x => x.s), both.map(x => x.t));
+  const bc = co.filter(r => G[+r.year] != null).map(r => ({ c:+r.co2, t:G[+r.year] }));
+  const r2 = U3.corr(bc.map(x => x.c), bc.map(x => x.t));
+  const c0 = +co[0].year;
+  const bs = both.filter(x => x.y >= c0);
+  const r3 = U3.corr(bs.map(x => x.s), bs.map(x => x.t));
+  document.getElementById('r1').textContent = r1.toFixed(2);
+  document.getElementById('r2').textContent = r2.toFixed(2);
+  document.getElementById('r3').textContent = r3.toFixed(2);
+  document.getElementById('r1k').textContent = `주가 ↔ 기온 (${both[0].y}~${both[both.length - 1].y})`;
+  document.getElementById('r3k').textContent = `주가 ↔ 기온 (${bs[0].y}~${bs[bs.length - 1].y})`;
+  document.getElementById('r2k').textContent = `CO₂ ↔ 기온 (${c0}~${bc.length ? co[co.length - 1].year : ''})`;
+  document.getElementById('c2Sub').textContent = `${both[0].y}~${both[both.length - 1].y}년 · ${both.length}개 연도`;
+  TG.chart(document.getElementById('c2'), {
+    series:[ { name:'기온 편차', color:'--s2', pts: both.map(x => [x.y, x.t]) },
+             { name:'S&P 500', color:'--s1', axis:'r', pts: both.map(x => [x.y, x.s]) } ],
+    xLabel:'연도', yLabel:'기온 편차 (℃)', y2Label:'S&P 500 (지수)', y2Color:'--s1', y2Min:0,
+    xFmt: v => String(Math.round(v)), yFmt: v => v.toFixed(1), y2Fmt: v => (Math.round(v) || 0).toLocaleString(),
+    tipFmt: v => (v >= 0 ? '+' : '') + v.toFixed(2) + ' ℃', y2TipFmt: v => Math.round(v).toLocaleString()
+  });
+}).catch(() => FAIL('c2Sub'));
+
+TG.quiz('#quiz2', [
+  { stem:'주가↔기온, CO₂↔기온 모두 상관계수가 높다. 그런데 과학자들은 <b>CO₂만</b> 기온 상승의 원인으로 본다. 둘을 가르는 것은?',
+    opts:['상관계수가 더 높은 쪽이 원인이다',
+          '온실 기체가 지구 복사를 흡수한다는 메커니즘(작동 원리)이 있느냐이다',
+          '더 오래된 자료가 원인이다',
+          '그래프의 색이다'], ans:1,
+    fb:{ right:'함께 움직인다는 것(상관)만으로는 원인을 말할 수 없습니다. 주가와 기온은 <b>각자 다른 이유로 시간이 흐르며</b> 올랐을 뿐입니다. CO₂는 Ⅱ단원에서 배운 <b>온실 효과라는 메커니즘</b>이 있기에 원인으로 인정됩니다.',
+         wrong:['상관계수의 크기는 원인을 말해 주지 않습니다.','',
+                '자료의 기간은 원인과 관계가 없습니다.','색은 읽기 편하라고 정한 것입니다.'] } }
+]);
+
+/* ============================================================
+   사건 ③ — 요일별 평균
+   ============================================================ */
+U3.csv('../../data/kor-covid-daily.csv').then(rows => {
+  const DAYS = ['월','화','수','목','금','토','일'];
+  const acc = DAYS.map(() => ({ c:0, t:0, n:0 }));
+  rows.forEach(r => {
+    const d = new Date(r.date + 'T00:00:00');
+    if(d < new Date('2021-07-01T00:00:00') || d > new Date('2021-10-31T00:00:00')) return;
+    const k = (d.getDay() + 6) % 7;             /* 월=0 … 일=6 */
+    acc[k].c += +r.cases; acc[k].t += +r.tests; acc[k].n++;
+  });
+  const avgC = acc.map(a => a.n ? a.c / a.n : 0), avgT = acc.map(a => a.n ? a.t / a.n : 0);
+  const low2 = arr => arr.map((v, i) => [v, i]).sort((a, b) => a[0] - b[0]).slice(0, 2).map(x => x[1]);
+  const lc = low2(avgC), lt = low2(avgT);
+  U3.hbars('#hbC', DAYS.map((d, i) => ({ label:d + '요일', n:Math.round(avgC[i]), hi:lc.includes(i) })), { unit:'명', pct:false, fmt:v => v.toLocaleString() });
+  U3.hbars('#hbT', DAYS.map((d, i) => ({ label:d + '요일', n:Math.round(avgT[i]), hi:lt.includes(i) })), { unit:'건', pct:false, fmt:v => v.toLocaleString() });
+  document.getElementById('c3Sub').textContent = `2021-07-01 ~ 2021-10-31 · 요일마다 ${Math.min(...acc.map(a => a.n))}~${Math.max(...acc.map(a => a.n))}일의 평균 · 확진이 가장 적은 두 요일: ${lc.map(i => DAYS[i]).join('·')} / 검사가 가장 적은 두 요일: ${lt.map(i => DAYS[i]).join('·')}`;
+}).catch(() => FAIL('c3Sub'));
+
+TG.quiz('#quiz3', [
+  { stem:'두 막대그래프를 함께 볼 때, 특정 요일에 확진자가 적게 기록된 까닭으로 가장 알맞은 것은?',
+    opts:['주말에는 바이러스가 약해진다',
+          '주말에 검사를 적게 해서 그 결과가 반영되는 요일에 확진자가 적게 기록된다',
+          '요일마다 사람의 면역력이 다르다',
+          '자료가 가짜다'], ans:1,
+    fb:{ right:'검사 건수가 적은 요일과 확진자가 적게 기록된 요일이 겹칩니다. 감염이 줄어든 것이 아니라 <b>데이터를 모으는 과정</b>이 요일마다 달랐던 것입니다. 데이터가 <b>어떻게 모였는지</b> 모르고 읽으면 잘못된 결론에 이릅니다.',
+         wrong:['바이러스는 달력을 모릅니다.','','그런 근거는 자료에 없습니다.','자료는 질병관리청과 존스홉킨스대의 실제 집계입니다. 문제는 읽는 법입니다.'] } }
+]);
+
+/* ============================================================
+   사건 ④ — 02차시 자료를 다시 불러옵니다(공개 집계 창구)
+   ============================================================ */
+(() => {
+  const OPTS = ['6시 전','6:00~6:29','6:30~6:59','7:00~7:29','7:30 이후','답하지 않음'];
+  const my = (typeof ME === 'object' && ME.cls) ? ME.cls() : '';
+  document.getElementById('c4a').textContent = my ? `우리 반 (${my})` : '우리 반 (반을 정하지 않음)';
+  const draw = (id, d) => U3.hbars(id, OPTS.map(o => ({ label:o, n:((d && d.by && d.by['live-wake']) || {})[o] || 0 })), { unit:'명' });
+  Promise.all([my ? U3.live('u3-02', { cls:my }) : Promise.resolve({ ok:false }), U3.live('u3-02', {})]).then(([a, b]) => {
+    draw('#hbM', a.ok ? a : null); draw('#hbA', b.ok ? b : null);
+    const na = a.ok ? Object.values((a.by['live-wake'] || {})).reduce((s, n) => s + n, 0) : 0;
+    const nb = b.ok ? Object.values((b.by['live-wake'] || {})).reduce((s, n) => s + n, 0) : 0;
+    document.getElementById('c4Sub').textContent = b.ok
+      ? `우리 반 ${na}명 · 모든 반 ${nb}명 — 대한민국 고1 전체는 수십만 명입니다`
+      : '지난 시간 자료를 불러오지 못했습니다. 그래도 아래 질문은 풀 수 있습니다.';
+  });
+})();
+
+TG.quiz('#quiz4', [
+  { stem:'우리 반 자료로 “대한민국 고등학생은 대부분 이 시각에 일어난다”고 말하면 안 되는 까닭은?',
+    opts:['우리 반은 모두 같은 시각에 일어나기 때문',
+          '한 학교 한 반은 통학 거리·지역이 비슷해 전체를 대표하지 못하는 표본이기 때문',
+          '일어난 시각은 데이터가 될 수 없기 때문',
+          '답하지 않은 사람이 있으면 어떤 결론도 낼 수 없기 때문'], ans:1,
+    fb:{ right:'데이터가 <b>누구에게서</b> 모였는지가 결론의 범위를 정합니다. 편향된 표본으로 전체를 말하면 <b>잘못된 결과</b>를 이끌어 냅니다. 빅데이터라도 한쪽으로 치우쳐 모이면 같은 일이 생깁니다.',
+         wrong:['그래프를 보면 그렇지 않습니다.','','모두 데이터가 됩니다.','결론을 낼 수는 있지만 그 범위를 좁혀야 합니다.'] } }
+]);
+
+ACT.sort('#sortA', {
+  bins:[{ id:'p', name:'개인 정보 유출' }, { id:'w', name:'잘못된 결과 도출' }, { id:'o', name:'지나친 데이터 의존' }],
+  cards:[
+    { t:'02차시 — 이름 없이 세 답의 조합으로 사람이 드러남', bin:'p', why:'여러 데이터를 합치면 개인을 알아볼 수 있습니다.' },
+    { t:'사건 ① — 짧은 기간만 잘라 “온난화 끝”', bin:'w', why:'분석 방법에 따라 편향된 결론이 나옵니다.' },
+    { t:'사건 ② — 상관만 보고 “주가가 지구를 데운다”', bin:'w', why:'함께 움직이는 것과 원인은 다릅니다.' },
+    { t:'사건 ③ — 요일 효과를 보고 “주말엔 덜 감염된다”', bin:'w', why:'데이터가 모인 과정을 모르면 잘못된 결론에 이릅니다.' },
+    { t:'사건 ④ — 한 반의 자료로 전국을 말함', bin:'w', why:'편향된 표본은 잘못된 결과를 만듭니다.' },
+    { t:'내비게이션 안내만 믿고 공사 중인 길로 들어감', bin:'o', why:'데이터가 틀릴 수 있다는 것을 잊고 판단을 모두 맡긴 경우입니다.' },
+    { t:'추천 알고리즘이 골라 준 영상만 보며 생각이 한쪽으로 쏠림', bin:'o', why:'판단을 데이터에 넘겨 버린 경우입니다.' }
+  ]
+});
+ACT.cloze('#clozeB', [
+  { t:'빅데이터를 바르게 활용하려면 {{0}} 정보의 보호와 관리에 주의하고, 문제점을 정확히 인식하여 필요한 데이터를 {{1}}하여 활용해야 한다.',
+    blanks:[
+      { opts:['공개된','민감한'], ans:1, fb:'02차시 반전 활동이 이것입니다.' },
+      { opts:['선별','삭제','복제'], ans:0, fb:'무엇을 쓸지 고르는 눈 — 디지털 소양입니다.' }] }
+]);
+TG.quiz('#quizA', [
+  { stem:'다음 중 빅데이터 활용의 <b>장점</b>에 해당하는 것은?',
+    opts:['개인의 동의 없이 위치 정보를 모은다','복잡한 문제를 빠르게 분석해 해결에 쓸 수 있다',
+          '짧은 기간만 골라 원하는 결론을 낸다','데이터가 있으면 사람의 판단은 필요 없다'], ans:1,
+    fb:{ right:'교과서: 다양한 분야에 활용되어 복잡한 문제를 빠르게 분석하여 해결할 수 있도록 합니다.',
+         wrong:['개인 정보 유출의 위험입니다.','','잘못된 결과 도출입니다.','지나친 데이터 의존입니다.'] } }
+]);
+
+ACT.report('#repA', {
+  school:'남강고등학교', term:'2026학년도 1학년 2학기',
+  title:'통합과학2 · Ⅲ-03차시 데이터 탐정',
+  std:'[10통과2-03-02]', topic:'Ⅲ-1. 과학과 미래 사회 · 2. 빅데이터의 활용(나)'
+});
+</script>
+<script src="../../shared/teach.js"></script>
+</body>
+</html>

@@ -1,0 +1,460 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>우리 반이 빅데이터가 된다 · 통합과학2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=IBM+Plex+Sans+KR:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../../shared/base.css">
+<link rel="stylesheet" href="../u3.css">
+<style>
+.livegrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px}
+.livegrid .card h3{margin:0 0 12px;font-size:16px}
+.uniq{font-family:var(--serif);font-size:clamp(22px,3vw,30px);line-height:1.45;margin:0 0 10px}
+.uniq b{color:var(--s2-ink)}
+.kbar{display:flex;height:26px;border-radius:8px;overflow:hidden;border:1px solid var(--rule);margin:8px 0 8px}
+.kbar span{display:block;height:100%}
+.klegend{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:13.5px;color:var(--ink-soft)}
+.klegend i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+textarea.csvin{width:100%;min-height:110px;font-family:var(--mono);font-size:13px;border:1px solid var(--rule);
+  border-radius:10px;padding:10px 12px;background:var(--surface);color:var(--ink)}
+</style>
+</head>
+<body>
+
+<div class="topbar"><div class="wrap">
+  <a class="home" href="../../">← 자료실</a>
+  <nav></nav>
+  <button class="tbtn" id="themeBtn" type="button">테마</button>
+</div></div>
+
+<header class="mast"><div class="wrap">
+  <p class="eyebrow">Ⅲ-1. 과학과 미래 사회 · 02차시</p>
+  <h1>우리 반이 빅데이터가 된다</h1>
+  <p class="dek">오늘은 여러분이 <b>데이터</b>입니다. 이름 없이 세 가지만 답하고, 그 답이 모이는 순간 무슨 일이 생기는지 봅니다.</p>
+  <div class="tags">
+    <span class="tag std">[10통과2-03-02]</span>
+    <span class="tag">2. 과학 기술 사회에서 빅데이터의 활용 · 가</span>
+    <span class="tag">지식·이해 · 과정·기능 · 가치·태도</span>
+  </div>
+  <div class="stdbar">
+    <p class="k">성취기준 <span class="code">[10통과2-03-02]</span></p>
+    <p>빅데이터를 과학기술사회에서 사용하고 있는 사례를 조사하고, 빅데이터 활용의 장점과 문제점을 추론할 수 있다.</p>
+    <p class="sub"><b>이 차시가 맡는 부분</b> — 데이터가 <b>어떻게 수집·저장·처리되는가</b>(실시간 생활 데이터·피지컬 컴퓨팅)와, 모인 데이터의 <b>문제점 한 가지(개인 정보)</b>를 직접 겪어 봅니다. 장점과 문제점 전체는 03차시에서 이어집니다.</p>
+  </div>
+</div></header>
+
+<main><div class="wrap">
+  <div id="meBar"></div>
+
+<!-- 1 -->
+<section class="step" id="s1" data-min="3" data-nav="오늘의 질문">
+  <h2><span class="n">01</span>오늘의 질문</h2>
+  <p class="q">이름을 지운 데이터는 더 이상 ‘개인 정보’가 아닐까?</p>
+  <p>수업 끝에 여러분이 직접 답합니다. 그 전에 데이터가 <b>어떻게 모이는지</b>부터 봅니다.</p>
+  <div class="teach-only" data-yt="" data-cap="도입 — 우리 주변의 실시간 생활 데이터" data-find="실시간 생활 데이터 빅데이터 활용 사례"></div>
+</section>
+
+<!-- 2 -->
+<section class="step" id="s2" data-min="7" data-nav="생활 데이터">
+  <h2><span class="n">02</span>실시간 생활 데이터와 피지컬 컴퓨팅</h2>
+  <p class="lead">날씨 앱을 보고 옷을 고르고, 실시간 교통 정보로 길을 고릅니다. 일상의 문제를 푸는 데 쓰이는 이런 데이터가 <b>생활 데이터</b>입니다. 이 데이터는 <b>센서</b>를 단 스마트 기기나 <b>피지컬 컴퓨팅</b> 기기가 모읍니다.</p>
+
+  <figure class="fig">
+    <p class="figtitle">피지컬 컴퓨팅 — 현실 세계와 컴퓨터가 주고받는 길</p>
+    <p class="figsub">입력 → 처리 → 출력, 그리고 다시 현실 세계로</p>
+    <svg viewBox="0 0 760 260" role="img" aria-label="현실 세계의 온도·빛·압력 등을 입력 장치(센서)가 측정해 처리 장치로 보내고, 처리 장치는 입력받은 값을 처리한 뒤 출력 장치를 제어하며, 출력 장치는 빛·소리 등으로 현실 세계에 나타낸다." style="width:100%;height:auto;display:block">
+      <defs><marker id="ma" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="var(--ink-soft)"/></marker></defs>
+      <g font-family="IBM Plex Sans KR, sans-serif" text-anchor="middle">
+        <!-- 세 상자 : x 40·290·540, 폭 180, y 30~110 -->
+        <rect x="40"  y="30" width="180" height="80" rx="12" fill="var(--surface-2)" stroke="var(--s1)" stroke-width="2"/>
+        <rect x="290" y="30" width="180" height="80" rx="12" fill="var(--surface-2)" stroke="var(--accent)" stroke-width="2"/>
+        <rect x="540" y="30" width="180" height="80" rx="12" fill="var(--surface-2)" stroke="var(--s2)" stroke-width="2"/>
+        <text x="130" y="64" font-size="15" font-weight="600" fill="var(--ink)">입력 장치</text>
+        <text x="130" y="88" font-size="13" fill="var(--ink-soft)">센서 — 값을 측정</text>
+        <text x="380" y="64" font-size="15" font-weight="600" fill="var(--ink)">처리 장치</text>
+        <text x="380" y="88" font-size="13" fill="var(--ink-soft)">받은 값을 처리·판단</text>
+        <text x="630" y="64" font-size="15" font-weight="600" fill="var(--ink)">출력 장치</text>
+        <text x="630" y="88" font-size="13" fill="var(--ink-soft)">빛·소리·화면으로</text>
+        <!-- 현실 세계 : y 180~240 -->
+        <rect x="40" y="180" width="680" height="60" rx="12" fill="none" stroke="var(--rule)" stroke-width="2" stroke-dasharray="6 5"/>
+        <text x="380" y="216" font-size="15" font-weight="600" fill="var(--ink-soft)">현실 세계 (온도 · 빛 · 압력 · 미세먼지 …)</text>
+      </g>
+      <!-- 화살표: 입력→처리, 처리→출력 (가로), 현실→입력 (위로), 출력→현실 (아래로) -->
+      <line x1="222" y1="70" x2="286" y2="70" stroke="var(--ink-soft)" stroke-width="2.4" marker-end="url(#ma)"/>
+      <line x1="472" y1="70" x2="536" y2="70" stroke="var(--ink-soft)" stroke-width="2.4" marker-end="url(#ma)"/>
+      <line x1="130" y1="178" x2="130" y2="114" stroke="var(--s1)" stroke-width="2.4" marker-end="url(#ma)"/>
+      <line x1="630" y1="112" x2="630" y2="176" stroke="var(--s2)" stroke-width="2.4" marker-end="url(#ma)"/>
+      <g font-family="IBM Plex Sans KR, sans-serif" font-size="12.5" fill="var(--ink-faint)">
+        <text x="140" y="150">측정</text>
+        <text x="620" y="150" text-anchor="end">빛·소리로 나타냄</text>
+        <text x="504" y="58" text-anchor="middle">제어 신호</text>
+        <text x="254" y="58" text-anchor="middle">값 전달</text>
+      </g>
+    </svg>
+    <figcaption><b>화살표 검산.</b> ① 현실 세계 → 입력 장치(측정) ② 입력 → 처리(값 전달) ③ 처리 → 출력(제어 신호) ④ 출력 → 현실 세계(빛·소리로 나타냄). 교과서의 ‘마이크로컨트롤러’는 처리 장치에 해당합니다.</figcaption>
+  </figure>
+
+  <div id="clozeA"></div>
+
+  <details class="card">
+    <summary style="cursor:pointer;font-weight:600">(선택) 우리 학교 센서 측정값 불러오기 — 교과서 미세먼지 탐구</summary>
+    <p style="margin-top:14px">교과서 탐구처럼 센서 보드·MBL로 측정한 값이 있으면 <b>두 열(시각,값)</b>로 붙여 넣으세요. 이 기기 안에서만 그려지고 어디에도 보내지 않습니다.</p>
+    <textarea class="csvin" id="csvIn" placeholder="시각,값&#10;08:40,21&#10;09:40,18&#10;…"></textarea>
+    <div class="btnrow" style="margin:10px 0 12px"><button class="btn ghost" type="button" id="csvGo">그래프로 그리기</button></div>
+    <div class="tiles" id="csvTiles" hidden>
+      <div class="tile"><p class="k">측정 개수</p><p class="v" id="cN">–</p></div>
+      <div class="tile s1"><p class="k">가장 낮은 값</p><p class="v" id="cLo">–</p></div>
+      <div class="tile s2"><p class="k">가장 높은 값</p><p class="v" id="cHi">–</p></div>
+    </div>
+    <div class="chartbox" id="csvBox" hidden><canvas id="csvC" aria-label="붙여 넣은 측정값의 시간에 따른 변화"></canvas></div>
+    <p class="status" id="csvStat"></p>
+  </details>
+</section>
+
+<!-- 3 -->
+<section class="step" id="s3" data-min="7" data-nav="데이터 되기">
+  <h2><span class="n">03</span>우리 반 데이터 만들기</h2>
+  <p class="lead">세 가지에 답합니다. <b>이름은 보내지 않습니다.</b> 반과 고른 답만 갑니다. 답하기 싫은 것은 <b>‘답하지 않음’</b>을 고르세요 — 그것도 존중받아야 할 선택입니다.</p>
+  <div class="card" id="form">
+    <div id="fq"></div>
+    <div class="btnrow" style="margin-top:14px"><button class="btn" type="button" id="fGo" disabled>세 가지를 모두 골랐으면 보내기</button></div>
+    <p class="status" id="fStat"></p>
+  </div>
+  <div class="note"><span class="lbl">이것이 ‘수집’입니다</span>
+    지금 여러분 기기(입력)에서 보낸 값이 구글 시트(저장)에 쌓이고, 다음 절의 그래프(처리·출력)로 바뀝니다. 교과서의 <b>수집 → 저장 → 처리</b>를 교실에서 그대로 한 번 돈 것입니다.</div>
+</section>
+
+<!-- 4 -->
+<section class="step" id="s4" data-min="7" data-nav="실시간 집계">
+  <h2><span class="n">04</span>실시간 집계 — 우리 반의 아침</h2>
+  <p class="lead">모인 답이 곧바로 그래프가 됩니다. 이 절을 보고 있는 동안 저절로 새로 고칩니다(1분 안쪽).</p>
+  <div id="clsPick"></div>
+  <div class="btnrow" style="margin:0 0 12px">
+    <button class="pill on" type="button" data-since="60">이번 시간(최근 60분)</button>
+    <button class="pill" type="button" data-since="0">지금까지 전부</button>
+    <button class="pill" type="button" id="demoBtn">가상 예시 반으로 보기</button>
+    <button class="btn ghost" type="button" id="refBtn">새로 고침</button>
+  </div>
+  <p class="status" id="liveStat">불러오는 중…</p>
+  <div class="livegrid">
+    <div class="card"><h3>오늘 일어난 시각</h3><div id="hbW"></div></div>
+    <div class="card"><h3>등교 수단</h3><div id="hbG"></div></div>
+    <div class="card"><h3>생일이 있는 달</h3><div id="hbB"></div></div>
+  </div>
+  <div id="quizL"></div>
+</section>
+
+<!-- 5 -->
+<section class="step" id="s5" data-min="8" data-nav="반전">
+  <h2><span class="n">05</span>반전 — 이름이 없어도 알아볼 수 있다</h2>
+  <p class="lead">위 그래프는 세 질문을 <b>따로따로</b> 센 것입니다. 이제 한 사람의 세 답을 <b>묶어서</b> 봅니다. 같은 조합을 가진 사람이 반에 몇 명인지 셉니다.</p>
+  <figure class="fig">
+    <p class="figtitle">세 답의 조합이 반에서 ‘나 혼자’인 사람</p>
+    <p class="figsub" id="uSub">—</p>
+    <p class="uniq" id="uHead">—</p>
+    <div class="kbar" id="kbar"></div>
+    <div class="klegend">
+      <span><i style="background:var(--s2)"></i>나 혼자인 조합 — 알아볼 수 있음</span>
+      <span><i style="background:var(--ochre)"></i>2명이 같은 조합</span>
+      <span><i style="background:var(--s1)"></i>3명 이상이 같은 조합</span>
+    </div>
+    <div class="ctrl" style="margin-top:16px">
+      <p style="margin:0;font-weight:600">공개하기 전에 지켜 줄 방법을 골라 보세요</p>
+      <div class="btnrow">
+        <button class="pill" type="button" data-p="season">생일 ‘달’을 ‘계절’로 묶기</button>
+        <button class="pill" type="button" data-p="drop">등교 수단 지우기</button>
+        <button class="pill" type="button" data-p="wake">일어난 시각을 ‘7시 전/후’로 묶기</button>
+      </div>
+      <p class="status" id="pStat" style="margin:0"></p>
+    </div>
+    <figcaption><b>조합의 목록은 보여 주지 않습니다.</b> 몇 명이 혼자인지만 셉니다. 누가 어떤 조합인지를 화면에 띄우는 순간, 이 활동 자체가 개인 정보를 드러내는 일이 되기 때문입니다.</figcaption>
+  </figure>
+  <div class="note warn"><span class="lbl">실제로 일어나는 일</span>
+    미국의 한 연구(Sweeney, 2000)는 <b>우편번호 · 성별 · 생년월일</b> 세 가지만으로 미국인의 약 <b>87%</b>를 한 사람으로 특정할 수 있다고 보고했습니다. 이름이 없어도, <b>여러 데이터를 합치면</b> 사람이 드러납니다. 빅데이터 활용의 대표적인 문제점인 <b>개인 정보 유출</b>이 이렇게 생깁니다.</div>
+  <div id="quizP"></div>
+</section>
+
+<!-- 6 -->
+<section class="step" id="s6" data-min="5" data-nav="정리 확인">
+  <h2><span class="n">06</span>정리 확인</h2>
+  <div id="quizA"></div>
+</section>
+
+<!-- 7 -->
+<section class="step" id="s7" data-nav="내 학습 기록">
+  <h2><span class="n">07</span>내 학습 기록</h2>
+  <p class="lead">오늘 배운 개념과 내가 고른 것이 한 파일로 저장됩니다. 세 가지 답은 이 파일에도 <b>적히지 않습니다</b>.</p>
+  <div id="repA"></div>
+</section>
+
+</div></main>
+
+<footer><div class="wrap">
+  <span>통합과학2 · Ⅲ-1. 과학과 미래 사회 · 02차시</span>
+  <span><a href="../../">자료실로 돌아가기</a></span>
+</div></footer>
+
+<script src="../../shared/lib.js"></script>
+<script src="../../shared/gate.js"></script>
+<script src="../../shared/me.js"></script>
+<script src="../../shared/act.js"></script>
+<script src="../u3kit.js"></script>
+<script>
+const LESSON = {
+  code: "u3-02", form: "",
+  api : "https://script.google.com/macros/s/AKfycbxGwVShBta72VSwPeJxaVDRWyEgv6Nl2tNsGNjdf_0AIKeI86oDrx806MAwoNJgezStNw/exec"
+};
+
+TG.theme('themeBtn');
+TG.nav('.topbar nav');
+if(location.hash !== '#t'){
+  ME.bar('meBar');
+  ME.askOnce();
+  TG2.state(LESSON.api).then(st => {
+    const cls = (st && st.cls && st.cls.length) ? st.cls : null;
+    if(cls){ ME.bar('meBar', cls); ME.clsList(cls); }
+  });
+}
+
+ACT.cloze('#clozeA', [
+  { t:'교통 상황, 시간대별 기온처럼 일상생활의 문제를 해결하는 수단으로 활용되는 데이터를 {{0}} 데이터라고 한다.',
+    blanks:[{ opts:['생활','실험','관측'], ans:0, fb:'교과서 확인 문제의 답입니다.' }] },
+  { t:'피지컬 컴퓨팅은 디지털 기술 및 장치를 이용하여 {{0}}와 컴퓨팅 장치가 상호작용하도록 만든 시스템이다.',
+    blanks:[{ opts:['현실 세계','인터넷','인공지능'], ans:0, fb:'센서로 현실을 재고, 출력 장치로 현실에 나타냅니다.' }] },
+  { t:'피지컬 컴퓨팅을 활용하면 데이터를 {{0}}하고, 원하는 형태의 자료를 구성한 후 장치로 {{1}}한다.',
+    blanks:[
+      { opts:['삭제','수집','암호화'], ans:1, fb:'센서가 값을 모으는 단계입니다.' },
+      { opts:['출력','입력','저장'], ans:0, fb:'화면·빛·소리로 나타내는 단계입니다.' }] }
+]);
+
+/* ---------- (선택) 측정값 붙여 넣기 — 이 기기 안에서만 ---------- */
+(() => {
+  let ch = null, labels = [];
+  document.getElementById('csvGo').addEventListener('click', () => {
+    const rows = document.getElementById('csvIn').value.split(/\r?\n/)
+      .map(l => l.split(/[,\t]/).map(s => s.trim())).filter(c => c.length >= 2 && c[1] !== '' && isFinite(+c[1]));
+    const st = document.getElementById('csvStat');
+    if(rows.length < 2){ st.innerHTML = '숫자로 된 값이 두 줄 이상 필요합니다. <b>시각,값</b> 모양인지 확인하세요.'; return; }
+    labels = rows.map(r => r[0]);
+    const pts = rows.map((r, i) => [i, +r[1]]);
+    const ys = pts.map(p => p[1]);
+    document.getElementById('csvTiles').hidden = false;
+    document.getElementById('csvBox').hidden = false;
+    document.getElementById('cN').textContent = rows.length;
+    document.getElementById('cLo').textContent = Math.min(...ys);
+    document.getElementById('cHi').textContent = Math.max(...ys);
+    const series = [{ name:'측정값', color:'--s1', pts }];
+    const cfg = { series, xLabel:'측정 순서 (시각)', yLabel:'측정값',
+                  xFmt: v => labels[Math.round(v)] || '', tipFmt: v => String(+v.toFixed(2)) };
+    if(ch) ch.update(series); else ch = TG.chart(document.getElementById('csvC'), cfg);
+    st.innerHTML = '그렸습니다. <b>언제 높고 언제 낮은가, 왜 그럴까</b>를 모둠에서 이야기해 보세요.';
+  });
+})();
+
+/* ============================================================
+   세 질문 — 보기·전송·집계·조합 계산이 모두 Q 하나에서 나옵니다 (§6-3 ①)
+   ============================================================ */
+const NA = '답하지 않음';
+const Q = [
+  { id:'live-wake', h:'오늘 일어난 시각', opts:['6시 전','6:00~6:29','6:30~6:59','7:00~7:29','7:30 이후', NA] },
+  { id:'live-go',   h:'오늘 등교 수단',   opts:['걸어서','버스','지하철','자전거·기타', NA] },
+  { id:'live-bm',   h:'생일이 있는 달',   opts:['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월', NA] }
+];
+const SENT_KEY = 'u3-02-sent';
+
+(() => {
+  const pick = {};
+  let sent = false;
+  try{ sent = localStorage.getItem(SENT_KEY) === '1'; }catch(e){}
+  const fq = document.getElementById('fq'), go = document.getElementById('fGo'), st = document.getElementById('fStat');
+  Q.forEach(q => ACT.reg({ id:q.id, sec:'데이터 되기', kind:'투표', q:q.h, opts:q.opts, ans:'' }));
+  fq.innerHTML = Q.map(q => `<p style="font-weight:600;margin:14px 0 8px">${q.h}</p>
+    <div class="btnrow" data-q="${q.id}">${q.opts.map(o =>
+      `<button type="button" class="pill" data-v="${o}" ${sent ? 'disabled' : ''}>${o}</button>`).join('')}</div>`).join('');
+  if(sent){ go.disabled = true; st.innerHTML = '이미 보냈습니다. 한 사람이 여러 번 보내면 집계가 틀어지므로 <b>한 번만</b> 받습니다.'; }
+  fq.addEventListener('click', e => {
+    const b = e.target.closest('button[data-v]'); if(!b || b.disabled) return;
+    const row = b.closest('[data-q]');
+    pick[row.dataset.q] = b.dataset.v;
+    row.querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b));
+    go.disabled = Q.some(q => !pick[q.id]);
+  });
+  go.addEventListener('click', () => {
+    if(sent || Q.some(q => !pick[q.id])) return;
+    if(!(typeof ME === 'object' && ME.cls && ME.cls())){ st.innerHTML = '위쪽에서 <b>반</b>을 먼저 정해 주세요. 반별로 모아 보기 때문입니다.'; return; }
+    Q.forEach(q => ACT.send({ item:q.id, choice:pick[q.id] }));
+    ACT.send({ item:'live-combo', choice: Q.map(q => pick[q.id]).join('|') });
+    /* 학습 기록에는 '보냈다'만 남깁니다. 고른 값은 PDF 에도 적지 않습니다. */
+    ACT.put({ id:'live-sent', sec:'데이터 되기', kind:'참여', q:'우리 반 데이터 만들기', my:'보냄', ans:'(정답 없음)' });
+    sent = true;
+    try{ localStorage.setItem(SENT_KEY, '1'); }catch(e){}
+    go.disabled = true;
+    fq.querySelectorAll('button').forEach(x => x.disabled = true);
+    st.innerHTML = '보냈습니다. 다음 절에서 <b>우리 반 전체</b>가 어떻게 모였는지 봅니다.';
+    setTimeout(() => LIVE.load(), 1500);
+  });
+})();
+
+/* ============================================================
+   실시간 집계 + 조합의 유일성 — 모두 DATA 하나에서 계산합니다
+   DATA = { total, by:{ 'live-wake':{…}, …, 'live-combo':{ '6시 전|버스|3월': n, … } } }
+   ============================================================ */
+const LIVE = (() => {
+  let since = 60, cls = (location.hash === '#t') ? '' : ((typeof ME === 'object' && ME.cls) ? ME.cls() : '');
+  let DATA = null, demo = false;
+  const P = { season:false, drop:false, wake:false };
+  const stEl = document.getElementById('liveStat');
+
+  /* 가상 예시 반 — 서버가 닿지 않을 때도 활동을 할 수 있게. **실제 학생 자료가 아닙니다.** */
+  function demoData(){
+    let s = 7; const r = () => (s = (s * 16807) % 2147483647) / 2147483647;
+    const w = [.08,.22,.34,.24,.10,.02], g = [.35,.30,.28,.05,.02];
+    const pickW = (arr, ws) => { let x = r(), a = 0; for(let i = 0; i < ws.length; i++){ a += ws[i]; if(x < a) return arr[i]; } return arr[arr.length - 1]; };
+    const by = {}; Q.forEach(q => by[q.id] = {}); by['live-combo'] = {};
+    for(let k = 0; k < 30; k++){
+      const a = pickW(Q[0].opts, w), b = pickW(Q[1].opts, g), c = Q[2].opts[Math.floor(r() * 12)];
+      [[Q[0].id, a], [Q[1].id, b], [Q[2].id, c]].forEach(([i, v]) => by[i][v] = (by[i][v] || 0) + 1);
+      const key = [a, b, c].join('|'); by['live-combo'][key] = (by['live-combo'][key] || 0) + 1;
+    }
+    return { total:30, by };
+  }
+
+  function draw(){
+    const by = (DATA && DATA.by) || {};
+    [['hbW', Q[0]], ['hbG', Q[1]], ['hbB', Q[2]]].forEach(([el, q]) =>
+      U3.hbars('#' + el, q.opts.map(o => ({ label:o, n:(by[q.id] || {})[o] || 0 })), { unit:'명' }));
+    uniq();
+  }
+
+  /* 공개 전 보호 조치를 조합에 적용합니다 — 조합 문자열을 다시 묶어 셉니다 */
+  const SEASON = m => { const n = parseInt(m, 10); if(!n) return m;
+    return [12, 1, 2].includes(n) ? '겨울' : n <= 5 ? '봄' : n <= 8 ? '여름' : '가을'; };
+  const WAKE2 = v => v === NA ? v : (['6시 전','6:00~6:29','6:30~6:59'].includes(v) ? '7시 전' : '7시 이후');
+  /* 가상 예시 반일 때만 이 기기에서 셉니다. 실제 반은 서버(mode=uniq)가 인원수만 돌려줍니다.
+     ★ 묶는 규칙(SEASON·WAKE2)은 apps-script/Code.gs 의 _uniq 와 같아야 합니다. */
+  function localK(){
+    const combo = ((DATA && DATA.by) || {})['live-combo'] || {};
+    const re = {};
+    Object.entries(combo).forEach(([k, n]) => {
+      let [a, b, c] = k.split('|');
+      if(P.wake) a = WAKE2(a);
+      if(P.drop) b = '-';
+      if(P.season) c = SEASON(c);
+      const kk = [a, b, c].join('|'); re[kk] = (re[kk] || 0) + n;
+    });
+    const v = Object.values(re);
+    const people = v.reduce((s, n) => s + n, 0);
+    const k1 = v.filter(n => n === 1).reduce((s, n) => s + n, 0);
+    const k2 = v.filter(n => n === 2).reduce((s, n) => s + n, 0);
+    return { ok:true, people, k1, k2, k3: people - k1 - k2 };
+  }
+  const LOST = { season:'생일이 몇 월인지', drop:'등교 수단', wake:'정확한 기상 시각' };
+  let K0 = null;                                   /* 보호 조치 전의 '혼자인 사람' 수 */
+  function getK(flags){
+    if(demo){ const keep = Object.assign({}, P); Object.assign(P, flags); const k = localK(); Object.assign(P, keep); return Promise.resolve(k); }
+    return U3.uniq(LESSON.code, Object.assign({ cls, since }, flags));
+  }
+  function uniq(){
+    const head = document.getElementById('uHead'), bar = document.getElementById('kbar');
+    const none = { season:false, drop:false, wake:false };
+    Promise.all([getK(none), getK(P)]).then(([b0, k]) => {
+      document.getElementById('uSub').textContent = (demo ? '가상 예시 반 30명 — 실제 학생 자료가 아닙니다' : (cls || '모든 반')) +
+        (k.ok ? ` · 세 답을 모두 보낸 사람 ${k.people}명` : '');
+      if(!k.ok){ head.innerHTML = `조합을 셀 수 없습니다 — ${k.why}. <b>가상 예시 반</b>으로 이어 가세요.`; bar.innerHTML = ''; document.getElementById('pStat').textContent = ''; return; }
+      K0 = b0.ok ? b0.k1 : null;
+      if(!k.people){ head.innerHTML = '아직 모인 조합이 없습니다.'; bar.innerHTML = ''; document.getElementById('pStat').textContent = ''; return; }
+      head.innerHTML = `${k.people}명 중 <b>${k.k1}명</b>은 세 답의 조합이 반에서 <b>나 혼자</b>입니다.`;
+      const seg = (n, c) => n ? `<span style="width:${(n / k.people * 100).toFixed(2)}%;background:var(${c})" title="${n}명"></span>` : '';
+      bar.innerHTML = seg(k.k1, '--s2') + seg(k.k2, '--ochre') + seg(k.k3, '--s1');
+      const on = Object.keys(P).filter(x => P[x]);
+      const lost = on.map(x => LOST[x]).join(' · ');
+      document.getElementById('pStat').innerHTML = !on.length ? '아직 아무것도 고르지 않았습니다.'
+        : (K0 != null && k.k1 < K0)
+          ? `보호 조치 ${on.length}개 — 혼자인 사람이 <b>${K0}명 → ${k.k1}명</b>으로 줄었습니다. 대신 이제 이 데이터로는 <b>${lost}</b>을(를) 알 수 없습니다.`
+          : `보호 조치 ${on.length}개 — 혼자인 사람 수가 <b>줄지 않았습니다</b>(${k.k1}명). 그런데도 <b>${lost}</b>은(는) 알 수 없게 되었습니다. 다른 조치를 더해 보세요.`;
+    });
+  }
+  document.querySelectorAll('[data-p]').forEach(b => b.addEventListener('click', () => {
+    P[b.dataset.p] = !P[b.dataset.p]; b.classList.toggle('on', P[b.dataset.p]); uniq();
+  }));
+
+  function load(){
+    if(demo){ DATA = demoData(); draw(); stEl.innerHTML = '<b>가상 예시 반</b>을 보고 있습니다. 실제 학생 자료가 아닙니다.'; return; }
+    stEl.textContent = '불러오는 중…';
+    U3.live(LESSON.code, { cls, since }).then(d => {
+      if(!d.ok){ stEl.innerHTML = `집계를 불러오지 못했습니다 (${d.why}). 수업 중이라면 <b>가상 예시 반</b>으로 이어 가세요.`; DATA = null; draw(); return; }
+      DATA = d; draw();
+      const t = new Date();
+      stEl.innerHTML = `<b>${cls || '모든 반'}</b> · ${since ? '최근 ' + since + '분' : '전부'} · ${t.getHours()}:${String(t.getMinutes()).padStart(2, '0')} 기준`;
+    });
+  }
+  U3.clsPick('#clsPick', c => { cls = c; demo = false; document.getElementById('demoBtn').classList.remove('on'); load(); });
+  document.querySelectorAll('[data-since]').forEach(b => b.addEventListener('click', () => {
+    since = +b.dataset.since; demo = false;
+    document.querySelectorAll('[data-since]').forEach(x => x.classList.toggle('on', x === b));
+    document.getElementById('demoBtn').classList.remove('on'); load();
+  }));
+  document.getElementById('demoBtn').addEventListener('click', e => {
+    demo = !demo; e.currentTarget.classList.toggle('on', demo); load();
+  });
+  document.getElementById('refBtn').addEventListener('click', load);
+  /* 화면에 보일 때만 20초마다 새로 고침 */
+  let vis = false;
+  new IntersectionObserver(es => es.forEach(x => vis = x.isIntersecting)).observe(document.getElementById('s4'));
+  new IntersectionObserver(es => es.forEach(x => { if(x.isIntersecting) vis = true; })).observe(document.getElementById('s5'));
+  /* 학생 기기가 모두 자주 부르면 Apps Script 의 동시 실행 한도(30)에 걸립니다.
+     진행 화면은 15초, 학생 기기는 40~60초(흩어지게)마다 부릅니다. */
+  const EVERY = location.hash === '#t' ? 15000 : 40000 + Math.random() * 20000;
+  setInterval(() => { if(vis && !demo && !document.hidden) load(); }, EVERY);
+  load();
+  return { load };
+})();
+
+TG.quiz('#quizL', [
+  { stem:'위 세 그래프는 교과서의 <b>수집 → 저장 → 처리</b>를 거친 뒤 무엇을 한 결과인가?',
+    opts:['아직 수집만 한 것','저장만 해 둔 것','처리한 결과를 그래프로 출력한 것','아무 과정도 거치지 않은 것'], ans:2,
+    fb:{ right:'각자 보낸 값(수집)이 시트에 쌓이고(저장), 그것을 세어(처리) 그래프로 나타냈습니다(출력).',
+         wrong:['보내는 순간이 수집이고, 그래프는 그 뒤의 일입니다.','시트에 쌓이는 것이 저장입니다. 그래프는 그 다음입니다.','','데이터가 처리되어 나온 결과입니다.'] } }
+]);
+TG.quiz('#quizP', [
+  { stem:'‘이름을 지웠으니 개인 정보 문제는 없다’는 주장이 틀린 까닭으로 가장 알맞은 것은?',
+    opts:['세 질문 중 하나라도 개인 정보이기 때문',
+          '따로는 흔한 답도 여러 개를 합치면 한 사람을 가리킬 수 있기 때문',
+          '반 이름이 함께 보내졌기 때문에 이름을 안 것과 같기 때문',
+          '데이터가 30개보다 적기 때문'], ans:1,
+    fb:{ right:'하나하나는 흔한 답이지만 <b>조합</b>은 드뭅니다. 빅데이터처럼 여러 데이터를 합칠수록 이 위험은 커집니다.',
+         wrong:['하나씩은 반 안에서도 여러 명이 같은 답입니다. 문제는 합칠 때 생깁니다.','',
+                '반만으로는 누구인지 알 수 없습니다.','수가 많아져도 조합이 드물면 여전히 드러납니다.'] } },
+  { stem:'보호 조치(계절로 묶기·지우기)를 하면 혼자인 사람이 줄었다. 이때 함께 일어나는 일로 알맞은 것은?',
+    opts:['데이터로 알 수 있는 것도 함께 줄어든다','데이터가 더 정확해진다','아무것도 잃지 않는다','다른 반의 자료가 늘어난다'], ans:0,
+    fb:{ right:'보호와 활용은 맞바꿈입니다. <b>민감한 정보를 보호하면서 필요한 데이터를 선별해</b> 쓰는 것 — 교과서가 말하는 ‘빅데이터를 바르게 활용하는 방법’입니다.',
+         wrong:['','묶으면 더 거칠어집니다. 정확해지지 않습니다.','생일 달을 계절로 묶으면 달별 분포는 더 이상 볼 수 없습니다.','자료의 개수는 그대로입니다.'] } }
+]);
+
+TG.quiz('#quizA', [
+  { stem:'피지컬 컴퓨팅 시스템에서 <b>센서</b>가 하는 일은?',
+    opts:['현실 세계의 값을 측정해 입력한다','입력받은 값을 처리하고 판단한다','빛·소리로 결과를 나타낸다','데이터를 영구히 지운다'], ans:0,
+    fb:{ right:'센서는 입력 장치입니다. 처리는 처리 장치(마이크로컨트롤러), 나타내기는 출력 장치가 맡습니다.',
+         wrong:['','처리 장치의 일입니다.','출력 장치의 일입니다.','그런 역할은 없습니다.'] } },
+  { stem:'다음 중 <b>실시간 생활 데이터</b>를 활용한 예로 가장 알맞은 것은?',
+    opts:['100년 전 신문 기사를 스캔해 보관한다','실시간 교통 정보로 추천 경로와 예상 시간을 받는다','교과서를 인쇄한다','지난해 성적표를 코팅한다'], ans:1,
+    fb:{ right:'지금 이 순간 모이는 데이터로 일상의 문제(길 찾기)를 풉니다.',
+         wrong:['실시간도, 생활 문제 해결도 아닙니다.','','데이터 활용이 아닙니다.','데이터 활용이 아닙니다.'] } },
+  { stem:'오늘 활동에서 드러난 빅데이터 활용의 문제점은?',
+    opts:['잘못된 결과 도출','개인 정보 유출','지나친 데이터 의존','데이터 양의 부족'], ans:1,
+    fb:{ right:'이름 없이도 조합으로 사람이 드러날 수 있었습니다. 나머지 두 문제점은 03차시 ‘데이터 탐정’에서 다룹니다.',
+         wrong:['다음 차시에서 다룹니다.','','다음 차시에서 다룹니다.','교과서가 든 문제점이 아닙니다.'] } }
+]);
+
+ACT.report('#repA', {
+  school:'남강고등학교', term:'2026학년도 1학년 2학기',
+  title:'통합과학2 · Ⅲ-02차시 우리 반이 빅데이터가 된다',
+  std:'[10통과2-03-02]', topic:'Ⅲ-1. 과학과 미래 사회 · 2. 빅데이터의 활용(가)'
+});
+</script>
+<script src="../../shared/teach.js"></script>
+</body>
+</html>

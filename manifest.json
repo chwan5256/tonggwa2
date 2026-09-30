@@ -45,6 +45,30 @@
       "title": "대단원 정리",
       "sub": "Ⅱ-2 전체를 하나의 줄기로 — 메커니즘 · 영향 · 대처 방안",
       "std": "[10통과2-02-03]"
+    },
+    {
+      "id": "u3c1a",
+      "unit": "u3",
+      "no": "1-1",
+      "title": "과학의 유용성과 빅데이터의 활용",
+      "sub": "감염병의 진단·추적 · 실시간 생활 데이터 · 빅데이터의 장점과 문제점",
+      "std": "[10통과2-03-01] · [10통과2-03-02]"
+    },
+    {
+      "id": "u3c1b",
+      "unit": "u3",
+      "no": "1-2",
+      "title": "과학 기술의 발전과 과학 윤리",
+      "sub": "인공지능 로봇 · 사물 인터넷 · 과학 관련 사회적 쟁점 · 과학 윤리",
+      "std": "[10통과2-03-03] · [10통과2-03-04]"
+    },
+    {
+      "id": "u3rev",
+      "unit": "u3",
+      "no": "1-정리",
+      "title": "대단원 정리와 SSI 논증",
+      "sub": "Ⅲ단원 전체를 한 줄기로 — 자료 해석 + 과학 관련 사회적 쟁점 논증",
+      "std": "[10통과2-03-01~04]"
     }
   ],
   "lessons": [
@@ -153,6 +177,128 @@
         {
           "cap": "마무리 — 기후 안정 상태를 벗어났다 (KBS)",
           "yt": "https://www.youtube.com/watch?v=CNYMQnHZq1s"
+        }
+      ],
+      "open": true,
+      "used": null,
+      "form": ""
+    },
+    {
+      "unit": "u3",
+      "chapter": "u3c1a",
+      "no": "01",
+      "title": "감염병의 진단과 추적",
+      "topic": "1. 과학의 유용성과 필요성",
+      "sum": "가상 진단 키트와 PCR 모형, 그리고 2020년 대한민국의 실제 검사 자료로 ‘과학의 유용성’을 증명합니다.",
+      "std": "[10통과2-03-01]",
+      "path": "u3/01-diagnosis/",
+      "videos": [
+        {
+          "cap": "도입 — PCR·침·신속항원 검사, 어떻게 다를까 (SBS)",
+          "yt": "https://www.youtube.com/watch?v=FRd0n5JXH-U"
+        }
+      ],
+      "open": true,
+      "used": null,
+      "form": ""
+    },
+    {
+      "unit": "u3",
+      "chapter": "u3c1a",
+      "no": "02",
+      "title": "우리 반이 빅데이터가 된다",
+      "topic": "2. 빅데이터의 활용 · 가. 실시간 생활 데이터",
+      "sum": "이름 없이 세 가지만 답합니다. 모이는 순간 그래프가 되고, 합치는 순간 사람이 드러납니다.",
+      "std": "[10통과2-03-02]",
+      "path": "u3/02-live-data/",
+      "videos": [
+        {
+          "cap": "도입 — 우리 주변의 실시간 생활 데이터",
+          "find": "실시간 생활 데이터 빅데이터 활용 사례"
+        }
+      ],
+      "open": true,
+      "used": null,
+      "form": ""
+    },
+    {
+      "unit": "u3",
+      "chapter": "u3c1a",
+      "no": "03",
+      "title": "데이터 탐정",
+      "topic": "2. 빅데이터의 활용 · 나. 장점과 문제점",
+      "sum": "기간 자르기·상관과 인과·요일 효과·표본 편향 — 실제 자료로 네 사건을 수사합니다.",
+      "std": "[10통과2-03-02]",
+      "path": "u3/03-data-detective/",
+      "videos": [
+        {
+          "cap": "도입 — 빅데이터 활용 사례",
+          "yt": "https://www.youtube.com/watch?v=AZjgCWwKNLQ"
+        }
+      ],
+      "open": true,
+      "used": null,
+      "form": ""
+    },
+    {
+      "unit": "u3",
+      "chapter": "u3c1b",
+      "no": "04",
+      "title": "AI 로봇과 사물 인터넷",
+      "topic": "1. 과학 기술과 인간의 삶",
+      "sum": "스마트팜을 일주일 맡아 봅니다. 규칙을 잘 만들면 사람보다 낫고, 센서 하나가 고장 나면 사람보다 못합니다.",
+      "std": "[10통과2-03-03]",
+      "path": "u3/04-iot-robot/",
+      "videos": [
+        {
+          "cap": "도입 — 스마트 팜이 왜 필요할까? (농림축산식품부×사물궁이)",
+          "yt": "https://www.youtube.com/watch?v=Ual5agBwDyk"
+        },
+        {
+          "cap": "생각해 보기 — 첨단 스마트팜이 멈춘 사례 (MBC)",
+          "yt": "https://www.youtube.com/watch?v=hrnFc8l6HaA"
+        }
+      ],
+      "open": true,
+      "used": null,
+      "form": ""
+    },
+    {
+      "unit": "u3",
+      "chapter": "u3c1b",
+      "no": "05",
+      "title": "과학 관련 사회적 쟁점과 과학 윤리",
+      "topic": "2. 과학 관련 사회적 쟁점과 과학 윤리",
+      "sum": "자율주행 딜레마에 반마다 답이 갈립니다. 그 갈림이 SSI입니다. 합의 4단계와 과학 윤리까지.",
+      "std": "[10통과2-03-04]",
+      "path": "u3/05-ssi-ethics/",
+      "videos": [
+        {
+          "cap": "도입 — ‘완전 자율주행 딜레마’…윤리 문제도 ‘성큼’ (KBS)",
+          "yt": "https://www.youtube.com/watch?v=lRTmB7qBQI0"
+        },
+        {
+          "cap": "사건 — ‘유전자 편집 아기’ 과학자 징역 3년 (YTN 사이언스)",
+          "yt": "https://www.youtube.com/watch?v=FC6NHXXPKVY"
+        }
+      ],
+      "open": true,
+      "used": null,
+      "form": ""
+    },
+    {
+      "unit": "u3",
+      "chapter": "u3rev",
+      "no": "06",
+      "title": "대단원 정리와 SSI 논증",
+      "topic": "단원 종합 · AI 데이터센터와 기후",
+      "sum": "Ⅱ단원의 온실 효과와 Ⅲ단원의 AI가 한 문제에서 만납니다. IEA 자료를 읽고 내 입장을 논증합니다.",
+      "std": "[10통과2-03-04]",
+      "path": "u3/06-review/",
+      "videos": [
+        {
+          "cap": "도입 — AI 산업의 핵심이 된 전력 (KBS)",
+          "yt": "https://www.youtube.com/watch?v=tvjymaEmZkw"
         }
       ],
       "open": true,

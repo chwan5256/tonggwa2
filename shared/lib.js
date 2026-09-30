@@ -234,6 +234,11 @@ function chart(canvas, cfg){
     if(hoverX != null){
       const rows = [];
       S.forEach(s => {
+        /* v0.10.0 — 마우스가 이 선의 x 범위 밖이면 툴팁에서 뺍니다.
+           일부 기간에만 있는 선(고른 기간·반복 횟수까지의 곡선 등)이 엉뚱한 끝값을 보여 주지 않게 합니다. */
+        if(!s.pts.length) return;
+        const x0 = xs(s.pts[0][0]), x1 = xs(s.pts[s.pts.length - 1][0]);
+        if(hoverX < Math.min(x0, x1) - 8 || hoverX > Math.max(x0, x1) + 8) return;
         let best = null, bd = Infinity;
         s.pts.forEach(p => { const d = Math.abs(xs(p[0]) - hoverX); if(d < bd){ bd = d; best = p; } });
         if(best) rows.push({ s, p: best });

@@ -212,7 +212,7 @@ footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--rule);
 <div class="meter">
   <span class="lb">진행</span>
   <span class="track"><i id="bar"></i></span>
-  <span class="n" id="cnt">0 / 9</span>
+  <span class="n" id="cnt">0 / 10</span>
   <button type="button" id="reset">처음부터</button>
 </div>
 
@@ -369,6 +369,37 @@ const CLIENT_ID = '';</pre></div>
   <button class="mark" type="button"><span class="box" aria-hidden="true"></span>했습니다</button>
 </li>
 
+<li data-k="s7b">
+  <p class="st-h">바깥 인터넷에 나갈 권한을 받습니다 — <code>권한주기</code></p>
+  <p class="st-where">Apps Script → 함수 고르는 칸 → 권한주기 → ▶ 실행</p>
+  <div class="st-body">
+    <p>이 스크립트는 구글에게 <b>“이 증표 진짜인가요?”</b> 하고 물어봐야 합니다.
+      바깥 인터넷에 나가는 일이라 <b>권한을 따로 받아야</b> 합니다.
+      이 권한이 없으면 로그인할 때 이런 오류가 뜹니다.</p>
+    <div class="code"><pre>UrlFetchApp.fetch 을(를) 호출할 수 있는 권한이 없습니다.
+필요한 권한은 …/auth/script.external_request 입니다.</pre></div>
+    <p>같은 Apps Script 화면에서, 위쪽 <b>함수 고르는 칸</b>을 눌러
+      <span class="click">권한주기</span> 를 고르고 <span class="click">▶ 실행</span> 합니다.</p>
+    <div class="warn"><b><code>doGet</code> 을 고르면 안 됩니다.</b>
+      그 함수는 <b>웹 페이지가 부를 때</b> 쓰는 것이라 손으로 실행하면
+      <code>Cannot read properties of undefined (reading 'parameter')</code> 가 납니다.
+      고장이 아니라 <b>원래 그런 함수</b>이고, 그것으로는 권한도 받지 못합니다.
+      목록에서 <b>권한주기</b> 를 찾으세요 — 목록에 없으면 <b>새 <code>Code.gs</code> 를 아직 붙여 넣지 않은 것</b>입니다.</div>
+    <ul>
+      <li>권한 검토 창 → 계정 선택 → <span class="click">고급</span>
+        → <span class="click">(안전하지 않은 페이지)로 이동</span> → <span class="click">허용</span></li>
+      <li>이번 창에는 <b>“외부 서비스에 연결”</b> 이라는 항목이 새로 보입니다. 그것이 지금 받으려는 권한입니다.</li>
+    </ul>
+    <div class="warn"><b>실행 기록에 ‘응답 코드 400’ 이 나와도 정상입니다.</b>
+      일부러 가짜 값을 보내 문을 두드려 본 것이라 구글이 거절하는 것이 맞습니다.
+      여기서 보려는 것은 <b>오류 없이 다녀왔다</b>는 사실 하나입니다.</div>
+    <div class="warn"><b>권한만 받고 끝내면 안 됩니다.</b> 배포는 <b>권한을 받은 시점의 상태</b>로 돕니다.
+      바로 다음 단계에서 <b>반드시 다시 배포</b>해야 새 권한으로 바뀝니다.</div>
+    <p class="ok">실행 기록에 <code>바깥 인터넷에 다녀왔습니다. 응답 코드 400 …</code> 이 보입니다.</p>
+  </div>
+  <button class="mark" type="button"><span class="box" aria-hidden="true"></span>했습니다</button>
+</li>
+
 <li data-k="s8">
   <p class="st-h">Apps Script 를 다시 배포합니다</p>
   <p class="st-where">Apps Script → 배포 → 배포 관리</p>
@@ -420,6 +451,12 @@ const CLIENT_ID = '';</pre></div>
         <td>그 계정이 <b>테스트 사용자</b> 목록에 없습니다. 3단계로 돌아가 추가하세요.</td></tr>
     <tr><th>“허용된 계정이 아닙니다” 가 뜬다</th>
         <td>구글은 통과했는데 <b>교사 페이지의 허용 계정 목록</b>에 없습니다. 두 목록은 별개입니다.</td></tr>
+    <tr><th>“UrlFetchApp.fetch 을(를) 호출할 수 있는 권한이 없습니다”</th>
+        <td><b>가장 흔한 사고입니다.</b> 7-1단계의 <code>권한주기</code> 를 실행해 허용한 뒤,
+            <b>반드시 8단계 재배포</b>까지 하세요. 권한만 받고 재배포하지 않으면 그대로입니다.</td></tr>
+    <tr><th>권한주기 를 실행했는데도 같은 오류</th>
+        <td>재배포를 안 했거나, ‘새 배포’를 눌러 <b>다른 주소</b>에 배포했습니다.
+            배포 관리 → 편집(연필) → 새 버전인지 확인하세요.</td></tr>
     <tr><th>“로그인 정보를 확인하지 못했습니다”</th>
         <td>Apps Script 를 다시 배포하지 않았습니다(8단계). 또는 7단계의 함수를 실행하지 않았습니다.</td></tr>
     <tr><th>“다른 앱에서 발급된 토큰입니다”</th>

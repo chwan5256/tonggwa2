@@ -1,0 +1,513 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>감염병의 진단과 추적 · 통합과학2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=IBM+Plex+Sans+KR:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../../shared/base.css">
+<link rel="stylesheet" href="../u3.css">
+<style>
+/* 가상 진단 키트 */
+.kit{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:0 0 14px}
+.well{text-align:center}
+.well .cup{width:84px;height:84px;margin:0 auto 8px;border-radius:50%;border:3px solid var(--rule);
+  background:var(--surface-2);position:relative;overflow:hidden}
+.well .liq{position:absolute;left:0;right:0;bottom:0;height:0;background:#d9e6ea;transition:height .5s ease,background 1.6s ease}
+.well .lb{font-size:14px;color:var(--ink-soft)}
+.well .lb b{color:var(--ink)}
+@media (prefers-reduced-motion:reduce){.well .liq{transition:none}}
+</style>
+</head>
+<body>
+
+<div class="topbar"><div class="wrap">
+  <a class="home" href="../../">← 자료실</a>
+  <nav></nav>
+  <button class="tbtn" id="themeBtn" type="button">테마</button>
+</div></div>
+
+<header class="mast"><div class="wrap">
+  <p class="eyebrow">Ⅲ-1. 과학과 미래 사회 · 01차시</p>
+  <h1>감염병의 진단과 추적 — 과학은 어디에 쓸모가 있나</h1>
+  <p class="dek">‘과학이 유용하다’는 말은 너무 쉽게 나옵니다. 오늘은 <b>2020년 대한민국의 실제 검사 자료</b>로 그 말을 증명해 봅니다.</p>
+  <div class="tags">
+    <span class="tag std">[10통과2-03-01]</span>
+    <span class="tag">1. 과학의 유용성과 필요성</span>
+    <span class="tag">지식·이해 · 과정·기능 · 가치·태도</span>
+  </div>
+  <div class="stdbar">
+    <p class="k">성취기준 <span class="code">[10통과2-03-01]</span></p>
+    <p>감염병의 진단, 추적 등을 사례로 과학의 유용성을 설명하고, 미래 사회 문제 해결에서 과학의 필요성에 대해 논증할 수 있다.</p>
+    <p class="sub"><b>이 차시가 맡는 부분</b> — 성취기준 <b>전체</b>입니다. 진단·추적 사례로 유용성을 <b>설명</b>하고, 짧은 글로 필요성을 <b>논증</b>합니다.</p>
+  </div>
+</div></header>
+
+<main><div class="wrap">
+  <div id="meBar"></div>
+
+<!-- 1 -->
+<section class="step" id="s1" data-min="3" data-nav="오늘의 질문">
+  <h2><span class="n">01</span>오늘의 질문</h2>
+  <p class="q">2020년 2월 말, 하루 수백 명씩 확진자가 나오던 때 — ‘누가 감염되었는지’는 무엇으로 가려냈을까?</p>
+  <p>오늘 끝날 때 세 가지를 말할 수 있어야 합니다 — <b>병원체는 무엇으로 이루어져 있나 · 진단 기술 두 가지의 장단점 · 과학이 필요하다는 주장의 근거</b>.</p>
+  <div class="teach-only" data-yt="FRd0n5JXH-U" data-cap="도입 — PCR·침·신속항원 검사, 어떻게 다를까 (SBS)" data-find="PCR 신속항원검사 차이"></div>
+</section>
+
+<!-- 2 -->
+<section class="step" id="s2" data-min="8" data-nav="병원체와 진단">
+  <h2><span class="n">02</span>병원체와 두 가지 진단</h2>
+  <p class="lead">세균이나 바이러스 같은 <b>병원체</b>에 감염되어 생기는 병이 <b>감염병</b>입니다. 병원체는 <b>핵산</b>과 <b>단백질</b>로 이루어져 있고, 진단 기술은 이 두 가지 중 하나를 찾아냅니다.</p>
+
+  <figure class="fig">
+    <p class="figtitle">바이러스 모식도 — 무엇을 찾아낼 것인가</p>
+    <p class="figsub">바깥의 단백질을 찾느냐, 안쪽의 핵산을 찾느냐</p>
+    <svg viewBox="0 0 760 250" role="img" aria-label="바이러스는 안쪽에 유전 정보를 담은 핵산이 있고, 바깥을 단백질 껍질과 돌기가 감싸고 있다. 면역 진단은 바깥의 단백질을, 분자 진단은 안쪽의 핵산을 찾는다." style="width:100%;height:auto;display:block">
+      <g id="spikes" stroke="var(--s2)" stroke-width="4" stroke-linecap="round"></g>
+      <circle cx="230" cy="125" r="78" fill="var(--s2)" opacity=".16" stroke="var(--s2)" stroke-width="3"/>
+      <path d="M185 125 C 195 95, 210 95, 220 125 S 245 155, 255 125 S 270 95, 280 125"
+            fill="none" stroke="var(--s1)" stroke-width="5" stroke-linecap="round"/>
+      <g font-family="IBM Plex Sans KR, sans-serif" font-size="14">
+        <!-- 핵산 라벨: 곡선 오른쪽 끝(280,125) 옆에서 출발, 0°·30° 돌기 사이로 빠져나감 -->
+        <line x1="284" y1="129" x2="440" y2="166" stroke="var(--s1)" stroke-width="1.4"/>
+        <text x="448" y="162" fill="var(--s1-ink)" font-weight="600">핵산 — 유전 정보</text>
+        <text x="448" y="182" fill="var(--ink-soft)" font-size="13">→ <tspan font-weight="600">분자 진단</tspan>이 찾는 것 (PCR로 불려서)</text>
+        <!-- 단백질 라벨: −30° 돌기 끝(311.4, 78.0) 바로 바깥에서 -->
+        <line x1="316" y1="74" x2="440" y2="60" stroke="var(--s2)" stroke-width="1.4"/>
+        <text x="448" y="56" fill="var(--s2-ink)" font-weight="600">단백질 — 껍질과 돌기</text>
+        <text x="448" y="76" fill="var(--ink-soft)" font-size="13">→ <tspan font-weight="600">면역 진단</tspan>이 찾는 것 (항체가 붙어서)</text>
+      </g>
+      <text x="16" y="238" font-family="IBM Plex Sans KR, sans-serif" font-size="12.5" fill="var(--ink-faint)">※ 관계를 보이기 위한 모식도입니다. 실제 병원체의 모양은 종류마다 매우 다양합니다.</text>
+    </svg>
+  </figure>
+
+  <div class="duo">
+    <div class="card"><p class="k">분자 진단 · 유전자증폭(PCR) 검사</p>
+      <p>병원체의 <b>핵산</b>을 직접 찾습니다. 아주 적은 양도 <b>여러 번 복제해 불린 뒤</b> 찾기 때문에 <b>정확도가 높습니다</b>. 대신 <b>시간과 비용이 많이</b> 듭니다.</p></div>
+    <div class="card"><p class="k">면역 진단 · 신속항원검사</p>
+      <p>병원체 표면의 <b>단백질</b>에 <b>항체</b>가 달라붙는 성질을 씁니다. 불리는 과정이 없어 <b>간편하고 빠르지만</b>, 병원체가 적은 <b>감염 초기에는 정확도가 떨어질</b> 수 있습니다.</p></div>
+  </div>
+
+  <div id="clozeA"></div>
+
+  <div class="note warn">
+    <span class="lbl">자주 틀리는 지점</span>
+    <b>병원체 = 바이러스</b>가 아닙니다. 세균, 균류(곰팡이), 원생생물, 기생충도 병원체가 될 수 있습니다. 코로나19가 워낙 익숙해서 생기는 오해입니다.
+  </div>
+</section>
+
+<!-- 3 -->
+<section class="step" id="s3" data-min="8" data-nav="가상 진단 실험">
+  <h2><span class="n">03</span>가상 진단 실험</h2>
+  <p class="lead">교과서 탐구 「핵산과 단백질을 이용한 감염병 진단 기술 체험하기」를 화면으로 옮겼습니다. <b>모의 시료</b>이므로 실제 병원체는 들어 있지 않습니다.</p>
+
+  <h3>① 면역 진단 — 단백질을 찾는다</h3>
+  <figure class="fig">
+    <p class="figtitle">8홈판 중 세 홈 <span class="model-tag">모의 실험</span></p>
+    <p class="figsub">순서대로 누르세요. 순서가 틀리면 다음 단계로 가지 않습니다.</p>
+    <div class="steps" id="kitSteps"></div>
+    <div class="kit" id="kit"></div>
+    <p class="status" id="kitStat">먼저 <b>모의 항체 용액</b>을 세 홈에 넣습니다.</p>
+    <div id="kitJudge"></div>
+    <figcaption><b>판정 기준(교과서).</b> 검출 시약 ②를 넣은 뒤 <b>붉은색으로 빠르게 변한 홈</b>이 감염된 것입니다. 대조군은 병원체가 없는 시료로, 색이 변하지 않아야 실험을 믿을 수 있습니다.</figcaption>
+  </figure>
+
+  <h3>② 분자 진단 — 핵산을 불려서 찾는다</h3>
+  <figure class="fig">
+    <p class="figtitle">왜 PCR은 ‘감염 초기’에도 찾아낼까 <span class="model-tag">모형</span></p>
+    <p class="figsub" id="pcrSub"></p>
+    <div class="ctrl">
+      <div class="btnrow">
+        <button class="pill" type="button" data-n0="2">감염 초기 — 병원체가 아주 적다</button>
+        <button class="pill" type="button" data-n0="4">며칠 뒤 — 100배로 늘었다</button>
+        <button class="pill" type="button" data-n0="7">증상이 심할 때 — 많다</button>
+      </div>
+      <div class="row">
+        <label for="cyc">PCR 복제 반복 횟수</label>
+        <input type="range" id="cyc" min="0" max="35" step="1" value="0">
+        <span class="val" id="cycv">0회</span>
+      </div>
+    </div>
+    <div class="tiles">
+      <div class="tile s1"><p class="k">신속항원 (불리지 않음)</p><p class="v" id="tAg">–</p></div>
+      <div class="tile s2"><p class="k">PCR (지금까지)</p><p class="v" id="tPcr">–</p></div>
+      <div class="tile"><p class="k">PCR이 선을 넘는 횟수</p><p class="v" id="tCross">–</p></div>
+    </div>
+    <div class="legend">
+      <span><i style="background:var(--s1)"></i>신속항원 — 검체 속 양 그대로</span>
+      <span><i style="background:var(--s2)"></i>PCR — 한 번 반복할 때마다 핵산이 두 배 <span class="model-tag">참고</span></span>
+    </div>
+    <div class="chartbox"><canvas id="pcrC" aria-label="PCR 반복 횟수에 따라 핵산의 양이 두 배씩 늘어 검출선을 넘는 모습"></canvas></div>
+    <figcaption><b>읽는 법.</b> 세로축의 숫자는 <b>10의 몇 제곱인가</b>입니다(6 → 10⁶ = 100만). 1 올라갈 때마다 양이 10배입니다. 점선이 ‘눈에 보일 만큼 신호가 나는 양’입니다.<br>
+      <b>※ 모형입니다.</b> ‘한 번에 두 배’와 ‘10의 몇 제곱’ 눈금은 이해를 돕는 <b>참고</b> 설명으로, 교과서 밖 내용이라 시험에서 계산하게 하지 않습니다. 검출선의 높이와 검체 속 양은 설명을 위해 정한 값이고 실측값이 아닙니다. 이 그래프로 확인할 것은 <b>방향</b>뿐입니다 — <b>불리면 적은 양도 선을 넘는다, 대신 반복하는 만큼 시간이 걸린다.</b></figcaption>
+  </figure>
+  <div id="quizK"></div>
+</section>
+
+<!-- 4 -->
+<section class="step" id="s4" data-min="9" data-nav="2020년 자료">
+  <h2><span class="n">04</span>자료로 보는 유용성 — 2020년 대한민국</h2>
+  <p class="lead">대한민국은 2020년 2월 말부터 검사를 크게 늘렸습니다(선별진료소·드라이브 스루 검사). 그 결과가 자료에 어떻게 남았는지 봅니다.</p>
+  <div id="covWarn"></div>
+
+  <figure class="fig">
+    <p class="figtitle">주간 검사 건수와 주간 확진자 수</p>
+    <p class="figsub" id="covSub">불러오는 중…</p>
+    <div class="legend">
+      <span><i style="background:var(--s1)"></i>검사 건수 (왼쪽 축)</span>
+      <span><i style="background:var(--s2)"></i>확진자 수 (오른쪽 축)</span>
+    </div>
+    <div class="chartbox"><canvas id="covA" aria-label="2020년 2~5월 대한민국 주간 검사 건수와 주간 확진자 수"></canvas></div>
+    <figcaption><b>※ 두 곡선의 높이는 비교할 수 없습니다.</b> 왼쪽과 오른쪽의 눈금이 다릅니다. 각 곡선이 <b>언제 오르고 언제 내리는지</b>만 읽으세요.</figcaption>
+  </figure>
+
+  <figure class="fig">
+    <p class="figtitle">주간 양성률 — 검사한 것 중 확진이 나온 비율</p>
+    <p class="figsub">양성률(%) = 주간 확진자 수 ÷ 주간 검사 건수 × 100 <span class="model-tag">참고 용어</span></p>
+    <div class="tiles">
+      <div class="tile s1"><p class="k">검사가 가장 많았던 주</p><p class="v" id="tT">–</p></div>
+      <div class="tile s2"><p class="k">양성률이 가장 높았던 주</p><p class="v" id="tP">–</p></div>
+      <div class="tile"><p class="k">5월 셋째 주 양성률</p><p class="v" id="tM">–</p></div>
+    </div>
+    <div class="chartbox"><canvas id="covB" aria-label="2020년 2~5월 주간 양성률"></canvas></div>
+    <p class="dcard" id="covCard"></p>
+  </figure>
+  <div id="quizC"></div>
+</section>
+
+<!-- 5 -->
+<section class="step" id="s5" data-min="5" data-nav="추적과 미래 문제">
+  <h2><span class="n">05</span>추적, 그리고 미래 사회의 문제</h2>
+  <p class="lead">진단만큼 중요한 것이 <b>추적</b>입니다. GPS·와이파이·블루투스로 환자의 이동 정보를 모으고, 여러 나라가 분석한 병원체의 <b>유전 정보</b>를 실시간으로 공유해 <b>변이·유행 상황·전파 경로</b>를 세계적 규모에서 추적합니다. 인공지능과 빅데이터로 <b>확산을 예측</b>하기도 합니다.</p>
+  <h3>진단인가, 추적인가</h3>
+  <div id="sortA"></div>
+  <h3>미래 사회의 문제 — 어느 분야의 과학 기술인가</h3>
+  <p class="lead">교과서에 실린 사례입니다. 문제와 그것을 풀려는 기술을 짝지어 봅니다.</p>
+  <div id="sortB"></div>
+</section>
+
+<!-- 6 -->
+<section class="step" id="s6" data-min="4" data-nav="짧은 논증">
+  <h2><span class="n">06</span>짧은 논증 — 과학은 왜 필요한가</h2>
+  <p class="lead">성취기준의 마지막 동사는 <b>‘논증할 수 있다’</b>입니다. 주장만 쓰지 말고 <b>근거</b>와, 근거가 주장을 뒷받침하는 <b>이유</b>를 함께 씁니다.</p>
+  <div class="frame"><b>주장</b> 미래 사회의 ○○ 문제를 해결하려면 과학이 필요하다. → <b>근거</b> 오늘 본 사례·자료에서 한 가지 → <b>이유</b> 그 근거가 왜 주장을 뒷받침하는가</div>
+  <div id="noteA"></div>
+</section>
+
+<!-- 7 -->
+<section class="step" id="s7" data-min="3" data-nav="정리 확인">
+  <h2><span class="n">07</span>정리 확인</h2>
+  <div id="quizA"></div>
+</section>
+
+<!-- 8 -->
+<section class="step" id="s8" data-nav="내 학습 기록">
+  <h2><span class="n">08</span>내 학습 기록</h2>
+  <p class="lead">오늘 배운 개념과 내가 푼 것이 한 파일로 저장됩니다.</p>
+  <div id="repA"></div>
+</section>
+
+</div></main>
+
+<footer><div class="wrap">
+  <span>통합과학2 · Ⅲ-1. 과학과 미래 사회 · 01차시</span>
+  <span><a href="../../">자료실로 돌아가기</a></span>
+</div></footer>
+
+<script src="../../shared/lib.js"></script>
+<script src="../../shared/gate.js"></script>
+<script src="../../shared/me.js"></script>
+<script src="../../shared/act.js"></script>
+<script src="../u3kit.js"></script>
+<script>
+const LESSON = {
+  code: "u3-01", form: "",
+  api : "https://script.google.com/macros/s/AKfycbxGwVShBta72VSwPeJxaVDRWyEgv6Nl2tNsGNjdf_0AIKeI86oDrx806MAwoNJgezStNw/exec"
+};
+
+TG.theme('themeBtn');
+TG.nav('.topbar nav');
+if(location.hash !== '#t'){
+  ME.bar('meBar');
+  ME.askOnce();
+  TG2.state(LESSON.api).then(st => {
+    const cls = (st && st.cls && st.cls.length) ? st.cls : null;
+    if(cls){ ME.bar('meBar', cls); ME.clsList(cls); }
+  });
+}
+
+/* 모식도의 돌기 — 원 둘레에서 바깥으로, 하나의 식으로 그립니다 */
+(() => {
+  const g = document.getElementById('spikes');
+  const cx = 230, cy = 125, r = 78;
+  let s = '';
+  for(let k = 0; k < 12; k++){
+    const a = k / 12 * Math.PI * 2;
+    const x1 = cx + Math.cos(a) * r, y1 = cy + Math.sin(a) * r;
+    const x2 = cx + Math.cos(a) * (r + 16), y2 = cy + Math.sin(a) * (r + 16);
+    s += `<line x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}"/>` +
+         `<circle cx="${x2.toFixed(1)}" cy="${y2.toFixed(1)}" r="5" fill="var(--s2)" stroke="none"/>`;
+  }
+  g.innerHTML = s;
+})();
+
+ACT.cloze('#clozeA', [
+  { t:'감염병은 세균이나 바이러스와 같은 {{0}}에 감염되어 생기는 질병이며, 이것은 {{1}}과 단백질로 이루어져 있다.',
+    blanks:[
+      { opts:['병원체','항체','백신'], ans:0, fb:'항체는 우리 몸이 만드는 단백질이고, 백신은 예방을 위한 물질입니다.' },
+      { opts:['지방','핵산','탄수화물'], ans:1, fb:'유전 정보를 담은 물질입니다. 통합과학1에서 배웠습니다.' }] },
+  { t:'감염병의 진단은 증상이 나타나는 사람의 {{0}}를 채취해 병원체가 있는지 확인하는 것이다.',
+    blanks:[{ opts:['혈압','검체','체온'], ans:1, fb:'코·목에서 채취한 분비물, 침, 혈액 등이 검체입니다.' }] },
+  { t:'신속항원검사는 간편하고 빠르지만 정확도가 {{0}} 편이고, 유전자증폭검사는 시간과 비용이 많이 들지만 정확도가 {{1}}.',
+    blanks:[
+      { opts:['낮은','높은'], ans:0, fb:'불리는 과정이 없어 병원체가 적으면 놓칠 수 있습니다.' },
+      { opts:['낮다','높다'], ans:1, fb:'적은 양의 핵산도 여러 번 복제해 불린 뒤 찾습니다.' }] }
+]);
+
+/* ============================================================
+   가상 진단 키트 — 단계·홈 색·판정이 모두 KIT 상태 하나에서 나옵니다
+   감염된 모의 환자는 학생마다 무작위(①/②)로 정합니다. 외워서 맞히지 못하게.
+   ============================================================ */
+(() => {
+  const WELLS = ['대조군', '모의 환자 ①', '모의 환자 ②'];
+  let pos;
+  try{ pos = +localStorage.getItem('u3-01-pos'); }catch(e){}
+  if(pos !== 1 && pos !== 2){ pos = Math.random() < .5 ? 1 : 2; try{ localStorage.setItem('u3-01-pos', pos); }catch(e){} }
+  const STEPS = [
+    { t:'모의 항체 용액 넣기', say:'세 홈에 <b>모의 항체 용액</b>을 2방울씩 넣고 5분 기다렸습니다. 다음은 <b>시료</b>입니다.' },
+    { t:'시료 넣기',          say:'각 홈에 <b>대조군 · 환자 ① · 환자 ②</b>의 시료를 하나씩 넣었습니다. 다음은 <b>검출 시약 ①</b>입니다.' },
+    { t:'검출 시약 ① 넣기',   say:'검출 시약 ①을 넣고 5분 기다렸습니다. 아직 색 변화가 없습니다. 다음은 <b>검출 시약 ②</b>입니다.' },
+    { t:'검출 시약 ② 넣기',   say:'검출 시약 ②를 넣었습니다. <b>색이 변하는 홈을 보세요.</b> 그리고 아래에서 판정하세요.' }
+  ];
+  let at = 0;
+  const kit = document.getElementById('kit'), st = document.getElementById('kitStat'),
+        bar = document.getElementById('kitSteps'), jd = document.getElementById('kitJudge');
+  kit.innerHTML = WELLS.map((w, i) =>
+    `<div class="well"><div class="cup"><div class="liq" id="lq${i}"></div></div>
+      <p class="lb"><b>${w}</b></p></div>`).join('');
+  const paint = () => {
+    bar.innerHTML = STEPS.map((s, i) =>
+      `<button type="button" class="pill${i < at ? ' done' : ''}" data-i="${i}" ${i < at ? 'disabled' : ''}>${i + 1}. ${s.t}</button>`).join('');
+    WELLS.forEach((w, i) => {
+      const lq = document.getElementById('lq' + i);
+      lq.style.height = (at === 0 ? 0 : 30 + at * 15) + '%';
+      lq.style.background = (at >= 4 && i === pos) ? '#c9412f' : (at >= 1 ? '#d9e6ea' : 'transparent');
+    });
+  };
+  paint();
+  bar.addEventListener('click', e => {
+    const b = e.target.closest('button[data-i]'); if(!b) return;
+    const i = +b.dataset.i;
+    if(i !== at){ st.innerHTML = `순서가 다릅니다. 지금은 <b>${at + 1}. ${STEPS[at].t}</b> 차례입니다.`; return; }
+    at++; st.innerHTML = STEPS[i].say; paint();
+    if(at === 4) judge();
+  });
+  function judge(){
+    const q = '가상 진단 실험에서 감염된 모의 환자는?';
+    ACT.reg({ id:'kit-judge', sec:'가상 진단 실험', kind:'판정', q:q + ' (학생마다 감염된 환자가 다름)', opts:['맞게 판정','다르게 판정'], ans:'맞게 판정' });
+    jd.innerHTML = `<p style="font-weight:600;margin:6px 0 10px">${q}</p><div class="btnrow">` +
+      WELLS.map((w, i) => `<button type="button" class="pill" data-w="${i}">${w}</button>`).join('') + '</div><p class="fb" hidden></p>';
+    jd.addEventListener('click', e => {
+      const b = e.target.closest('button[data-w]'); if(!b || b.disabled) return;
+      const w = +b.dataset.w, ok = w === pos;
+      jd.querySelectorAll('button').forEach(x => x.disabled = true);
+      b.classList.add(ok ? 'right' : 'wrong');
+      const fb = jd.querySelector('.fb'); fb.hidden = false;
+      fb.className = 'fb ' + (ok ? 'right' : 'wrong');
+      fb.innerHTML = ok
+        ? `<b>맞았습니다.</b> ${WELLS[pos]}의 시료 속 병원체 <b>단백질(항원)</b>에 항체가 결합해 색이 변했습니다. 대조군이 변하지 않았으므로 이 판정을 믿을 수 있습니다.`
+        : `<b>다시 볼 지점.</b> 붉게 변한 홈은 <b>${WELLS[pos]}</b>입니다.` + (w === 0 ? ' 대조군은 병원체가 없는 시료라 변하면 안 되는 홈입니다.' : '');
+      ACT.put({ id:'kit-judge', sec:'가상 진단 실험', kind:'판정', q, my:WELLS[w], ans:WELLS[pos], ok });
+      ACT.send({ item:'kit-judge', choice: ok ? '맞게 판정' : '다르게 판정' });
+    });
+  }
+})();
+
+/* ============================================================
+   PCR 모형 — 곡선·타일·문구가 모두 amt() 하나에서 나옵니다 (§6-3 ①)
+   amt(n0, k) = 10^n0 × 2^k   (k번 반복 후의 양, 상대값)
+   검출선 = 10^DET  · 신속항원은 불리지 않으므로 10^n0 그대로
+   ============================================================ */
+(() => {
+  const DET = 6;                                    /* 모형의 검출선: 10^6 */
+  const lg = (n0, k) => n0 + k * Math.log10(2);     /* log10(amt) */
+  const cross = n0 => n0 >= DET ? 0 : Math.ceil((DET - n0) / Math.log10(2));
+  let n0 = 2;
+  const cyc = document.getElementById('cyc');
+  const series = () => {
+    const K = +cyc.value;
+    const pcr = [], ag = [];
+    for(let k = 0; k <= 35; k++){ ag.push([k, n0]); if(k <= K) pcr.push([k, lg(n0, k)]); }
+    return [{ name:'신속항원', color:'--s1', pts:ag }, { name:'PCR', color:'--s2', pts:pcr }];
+  };
+  const ch = TG.chart(document.getElementById('pcrC'), {
+    series: series(), xLabel:'PCR 복제 반복 횟수', yLabel:'양: 10의 몇 제곱인가 (상대값)',
+    xMin:0, xMax:35, yMin:0, yMax:18, hline:{ y:DET, text:'검출선 (모형)' },
+    xFmt: v => String(Math.round(v)), yFmt: v => String(Math.round(v)), tipFmt: v => '10^' + v.toFixed(1)
+  });
+  const say = ok => ok ? '<span style="color:var(--good)">양성</span>' : '<span style="color:var(--ink-faint)">못 찾음</span>';
+  function refresh(){
+    const K = +cyc.value;
+    document.getElementById('cycv').textContent = K + '회';
+    const agOk = n0 >= DET, pcrOk = lg(n0, K) >= DET, c = cross(n0);
+    document.getElementById('tAg').innerHTML = say(agOk);
+    document.getElementById('tPcr').innerHTML = say(pcrOk);
+    document.getElementById('tCross').innerHTML = c + '<span class="u">회</span>';
+    document.getElementById('pcrSub').textContent =
+      `검체 속 처음 양 10^${n0} · 신속항원은 ${agOk ? '바로 찾음' : '못 찾음'} · PCR은 ${c ? c + '번 반복하면 찾음' : '반복하기 전부터 검출선 위'}`;
+    document.querySelectorAll('[data-n0]').forEach(b => b.classList.toggle('on', +b.dataset.n0 === n0));
+    ch.update(series());
+  }
+  document.querySelectorAll('[data-n0]').forEach(b => b.addEventListener('click', () => { n0 = +b.dataset.n0; refresh(); }));
+  cyc.addEventListener('input', refresh);
+  refresh();
+})();
+
+TG.quiz('#quizK', [
+  { stem:'모형에서 ‘감염 초기’를 고르면 신속항원은 병원체를 찾지 못하고, PCR은 여러 번 반복한 뒤 찾아낸다. 그 까닭으로 알맞은 것은?',
+    opts:['신속항원검사는 핵산을, PCR은 단백질을 찾기 때문',
+          'PCR은 적은 양의 핵산을 복제해 불린 뒤 찾기 때문',
+          '감염 초기에는 병원체에 단백질이 없기 때문',
+          'PCR은 검체를 채취하지 않아도 되기 때문'], ans:1,
+    fb:{ right:'불리는 과정이 있기에 적은 양도 찾을 수 있습니다. 대신 반복하는 만큼 시간이 걸립니다 — 교과서의 “정확도가 높지만 시간이 걸린다”가 이것입니다.',
+         wrong:['거꾸로입니다. PCR(분자 진단)이 핵산을, 신속항원(면역 진단)이 단백질을 찾습니다.','',
+                '단백질은 있지만 양이 적어 신호가 약한 것입니다.','PCR도 검체가 필요합니다.'] } }
+]);
+
+/* ============================================================
+   2020년 자료 — 주간 합계·양성률·타일·문구가 모두 WK 배열 하나에서 나옵니다
+   ============================================================ */
+(() => {
+  const fmtD = d => `${d.getMonth() + 1}/${d.getDate()}`;
+  U3.csv('../../data/kor-covid-daily.csv').then(rows => {
+    const R = rows.map(r => ({ d:new Date(r.date + 'T00:00:00'), t:+r.tests, c:+r.cases }))
+                  .filter(r => r.d >= new Date('2020-02-09T00:00:00') && r.d <= new Date('2020-05-30T00:00:00'));
+    /* 일요일~토요일을 한 주로 묶습니다. 7일이 다 찬 주만 씁니다. */
+    const WK = [];
+    for(let i = 0; i + 7 <= R.length; i += 7){
+      const w = R.slice(i, i + 7);
+      const t = w.reduce((s, r) => s + r.t, 0), c = w.reduce((s, r) => s + r.c, 0);
+      WK.push({ a:w[0].d, b:w[6].d, t, c, p: t ? c / t * 100 : 0 });
+    }
+    const xi = WK.map((w, i) => i);
+    const lab = i => WK[Math.round(i)] ? fmtD(WK[Math.round(i)].a) + '~' : '';
+    TG.chart(document.getElementById('covA'), {
+      series:[ { name:'검사 건수', color:'--s1', pts: WK.map((w, i) => [i, w.t]) },
+               { name:'확진자 수', color:'--s2', axis:'r', pts: WK.map((w, i) => [i, w.c]) } ],
+      xLabel:'주(일~토)', yLabel:'주간 검사 건수', y2Label:'주간 확진자 수', y2Color:'--s2',
+      yMin:0, y2Min:0, xFmt: lab, yFmt: v => (Math.round(v / 1000) || 0) + '천', y2Fmt: v => (Math.round(v) || 0).toLocaleString(),
+      tipFmt: v => Math.round(v).toLocaleString() + '건', y2TipFmt: v => Math.round(v).toLocaleString() + '명'
+    });
+    TG.chart(document.getElementById('covB'), {
+      series:[ { name:'양성률', color:'--s2', pts: WK.map((w, i) => [i, w.p]) } ],
+      xLabel:'주(일~토)', yLabel:'주간 양성률 (%)', yMin:0,
+      xFmt: lab, yFmt: v => v.toFixed(1), tipFmt: v => v.toFixed(2) + ' %'
+    });
+    const iT = WK.reduce((m, w, i) => w.t > WK[m].t ? i : m, 0);
+    const iP = WK.reduce((m, w, i) => w.p > WK[m].p ? i : m, 0);
+    const iM = WK.findIndex(w => w.a.getMonth() === 4 && w.a.getDate() >= 15 && w.a.getDate() <= 21);
+    document.getElementById('tT').innerHTML = fmtD(WK[iT].a) + '~<span class="u">' + WK[iT].t.toLocaleString() + '건</span>';
+    document.getElementById('tP').innerHTML = fmtD(WK[iP].a) + '~<span class="u">' + WK[iP].p.toFixed(1) + '%</span>';
+    document.getElementById('tM').innerHTML = iM >= 0 ? WK[iM].p.toFixed(2) + '<span class="u">%</span>' : '–';
+    document.getElementById('covSub').textContent =
+      `${WK[0].a.getFullYear()}년 ${fmtD(WK[0].a)} ~ ${fmtD(WK[WK.length - 1].b)} · ${WK.length}주`;
+    document.getElementById('covCard').innerHTML =
+      '<b>출처</b> 검사: Our World in Data(원자료 질병관리청) · 확진: 존스홉킨스대 CSSE &nbsp;·&nbsp; <b>취득</b> 2026-09-30 &nbsp;·&nbsp; ' +
+      '<b>만드는 법</b> 하루 값을 일요일~토요일로 묶어 합계 &nbsp;·&nbsp; ' +
+      '<b>주의</b> 날짜는 자료에 집계된 날짜로, 질병관리청 발표(0시 기준)와 하루 어긋날 수 있습니다. 검사 건수는 사람 수가 아니라 건수입니다.';
+  }).catch(() => {
+    document.getElementById('covWarn').innerHTML =
+      '<div class="warnbox">자료 파일(data/kor-covid-daily.csv)을 읽지 못했습니다. 없는 값을 지어내어 채우지 않습니다. 인터넷 주소로 열었는지 확인하세요.</div>';
+  });
+})();
+
+TG.quiz('#quizC', [
+  { stem:'3월 둘째~넷째 주, <b>확진자 수는 3월 첫째 주의 3분의 1 아래로 줄었지만 검사 건수는 주당 6만 건 이상을 유지했다.</b> 이 자료로 할 수 있는 해석으로 가장 알맞은 것은?',
+    opts:['검사를 줄였기 때문에 확진자가 적게 나온 것이다',
+          '검사를 넓게 계속했는데도 양성 비율이 낮아졌으므로, 확산이 줄어들고 있었다고 볼 수 있다',
+          '검사 건수와 확진자 수는 언제나 같은 비율로 움직인다',
+          '진단 기술이 부정확해져 확진자를 찾지 못한 것이다'], ans:1,
+    fb:{ right:'확진자 수만 보면 “검사를 덜 해서 줄었나?”를 구별할 수 없습니다. <b>검사 건수와 함께</b> 보아야, 즉 <b>양성률</b>을 보아야 판단할 수 있습니다.',
+         wrong:['자료를 다시 보세요. 이 기간에도 검사는 주당 6만 건 넘게 이어졌습니다.','',
+                '비율이 같았다면 양성률 곡선이 평평했을 것입니다. 실제로는 4.6%대에서 1%대로 떨어졌습니다.',
+                '자료에 진단의 정확도가 변했다는 근거는 없습니다. 자료에 없는 것을 끌어오면 오답입니다.'] } },
+  { stem:'5월 중순, <b>검사 건수는 다시 크게 늘었지만 양성률은 0.2% 안팎으로 낮았다.</b> 5월 초 수도권 집단 감염이 확인된 직후였다. 가장 알맞은 해석은?',
+    opts:['감염이 폭발적으로 늘어 검사가 늘었다',
+          '감염자와 접촉했을 수 있는 사람을 찾아(추적) 넓게 검사했기 때문으로 해석할 수 있다',
+          '양성률이 낮으므로 검사는 쓸모가 없었다',
+          '검사 건수가 늘면 양성률은 반드시 낮아진다'], ans:1,
+    fb:{ right:'<b>추적</b>으로 찾은 사람들을 넓게 검사하면, 대부분은 음성이더라도 <b>숨은 감염자를 일찍 찾아</b> 확산을 막을 수 있습니다. 진단과 추적이 함께 움직인 사례입니다.',
+         wrong:['감염이 폭발했다면 양성률도 함께 올랐을 것입니다.','',
+                '음성이 많다는 것은 “퍼지지 않았음을 확인했다”는 정보이기도 합니다.',
+                '“반드시”는 자료가 보여 주지 않습니다. 2월 말에는 검사가 늘 때 양성률도 올랐습니다.'] } }
+]);
+
+ACT.sort('#sortA', {
+  bins:[{ id:'d', name:'진단에 쓰는 기술' }, { id:'t', name:'추적에 쓰는 기술' }],
+  cards:[
+    { t:'유전자증폭(PCR) 검사', bin:'d', why:'검체 속 병원체의 핵산을 찾아 감염 여부를 가립니다.' },
+    { t:'항체가 달라붙는 신속항원 키트', bin:'d', why:'병원체의 단백질을 찾아 감염 여부를 가립니다.' },
+    { t:'GPS·와이파이로 모은 이동 정보', bin:'t', why:'누가 어디를 거쳤는지 — 전파 경로를 찾습니다.' },
+    { t:'여러 나라가 공유한 병원체 유전 정보 분석', bin:'t', why:'변이와 유행 상황을 세계적 규모에서 추적합니다.' },
+    { t:'블루투스 접촉 알림', bin:'t', why:'가까이 있었던 사람을 찾아 알립니다.' },
+    { t:'인공지능으로 확산 예측', bin:'t', why:'모은 정보를 빠르게 분석해 앞으로의 확산을 내다봅니다.' }
+  ]
+});
+ACT.sort('#sortB', {
+  bins:[{ id:'e', name:'에너지' }, { id:'v', name:'환경' }, { id:'s', name:'생활 안전' }, { id:'d', name:'교육' }],
+  cards:[
+    { t:'화석 연료 고갈 → 신재생 에너지 기술', bin:'e', why:'교과서 그림 Ⅲ-2 에너지 분야 사례입니다.' },
+    { t:'버려진 어망에 걸리는 해양 동물 → 생분해성 어망', bin:'v', why:'교과서 탐구의 예시 사례입니다.' },
+    { t:'도로 교통사고 → 인공지능 위험도 예측·알림', bin:'s', why:'교과서 그림 Ⅲ-2 생활 안전 분야 사례입니다.' },
+    { t:'시간·공간의 제약과 교육 격차 → 온라인 협업 도구', bin:'d', why:'교과서 그림 Ⅲ-2 교육 분야 사례입니다.' }
+  ]
+});
+
+ACT.note('#noteA', {
+  prompt:'<b>[활동]</b> 미래 사회의 문제를 한 가지 골라, 그 문제를 해결하는 데 <b>과학이 필요하다</b>는 주장을 논증하시오.<br>' +
+         '<b>&lt;조건&gt;</b> ① 오늘 본 <b>진단·추적 사례나 2020년 자료</b>에서 근거를 한 가지 이상 쓸 것 ② <b>문제 → 과학 기술 → 예상되는 효과</b>의 순서를 지킬 것 ③ 세 문장 이상',
+  ph:'주장: 미래 사회의 … 문제를 해결하려면 과학이 필요하다.\n근거: 2020년 …\n이유: …',
+  model:`<p><b>주장</b> 앞으로 새로운 감염병이 다시 유행할 때 피해를 줄이려면 과학이 필요하다.</p>
+         <p><b>근거</b> 2020년 대한민국은 2월 말부터 검사를 크게 늘렸고, 그 뒤 주당 수만 건의 검사를 이어 가는 동안 양성률은 3월 첫째 주 약 4.6%에서 4월 말 0.2% 안팎으로 떨어졌다.</p>
+         <p><b>이유</b> 적은 양의 핵산도 불려서 찾아내는 진단 기술과 접촉자를 찾는 추적 기술이 있었기에 감염자를 일찍 찾아 전파를 끊을 수 있었다. 같은 기술을 발전시키면 미래의 감염병에도 더 빨리 대응할 수 있으므로 과학이 필요하다.</p>`,
+  checks:[
+    '주장이 <b>한 문장으로 분명하게</b> 드러난다',
+    '오늘 본 사례·자료에서 <b>구체적인 근거</b>(기술 이름이나 수치)를 한 가지 이상 썼다',
+    '근거가 주장을 <b>왜</b> 뒷받침하는지 이유를 썼다',
+    '<b>문제 → 과학 기술 → 예상 효과</b> 순서가 지켜졌다'
+  ]
+});
+
+TG.quiz('#quizA', [
+  { stem:'병원체를 이루는 두 가지 물질로 옳은 것은?',
+    opts:['핵산과 단백질','지방과 탄수화물','항체와 백신','물과 무기 염류'], ans:0,
+    fb:{ right:'진단 기술은 이 둘 중 하나를 찾아냅니다 — 핵산(분자 진단), 단백질(면역 진단).',
+         wrong:['','병원체 구성으로 배운 것이 아닙니다.','항체는 우리 몸이 만드는 것, 백신은 예방용 물질입니다.','병원체 구성으로 배운 것이 아닙니다.'] } },
+  { stem:'진단 기술과 그것이 찾는 물질을 바르게 짝지은 것은?',
+    opts:['분자 진단 – 단백질, 면역 진단 – 핵산','분자 진단 – 핵산, 면역 진단 – 단백질',
+          '분자 진단 – 항체, 면역 진단 – 핵산','둘 다 핵산을 찾는다'], ans:1,
+    fb:{ right:'분자 진단(PCR)은 핵산을, 면역 진단(신속항원)은 항체를 이용해 단백질을 찾습니다.',
+         wrong:['거꾸로입니다.','','항체는 찾는 대상이 아니라 찾는 도구입니다.','면역 진단은 단백질을 찾습니다.'] } },
+  { stem:'감염 초기라 검체 속 병원체가 매우 적다. 이때 더 믿을 만한 검사와 그 대가를 바르게 짝지은 것은?',
+    opts:['신속항원검사 – 정확도가 낮아진다','유전자증폭검사 – 시간과 비용이 더 든다',
+          '신속항원검사 – 시간이 더 든다','유전자증폭검사 – 정확도가 낮아진다'], ans:1,
+    fb:{ right:'불려서 찾으니 적은 양도 찾지만, 반복하는 만큼 시간이 걸리고 장비와 비용이 듭니다.',
+         wrong:['신속항원검사는 이때 놓치기 쉽습니다.','','신속항원검사는 빠른 것이 장점입니다.','유전자증폭검사의 장점이 정확도입니다.'] } },
+  { stem:'다음 중 감염병 <b>추적</b>에 해당하는 것은?',
+    opts:['환자의 검체에서 핵산을 증폭해 확인한다','항체가 붙은 키트로 15분 안에 판정한다',
+          '여러 나라가 분석한 병원체의 유전 정보를 공유해 변이와 전파 경로를 찾는다','검체를 채취한다'], ans:2,
+    fb:{ right:'진단은 “이 사람이 감염되었는가”, 추적은 “어디서 어디로 퍼지고 어떻게 바뀌는가”를 묻습니다.',
+         wrong:['진단입니다.','진단입니다.','','진단을 위한 준비 과정입니다.'] } }
+]);
+
+ACT.report('#repA', {
+  school:'남강고등학교', term:'2026학년도 1학년 2학기',
+  title:'통합과학2 · Ⅲ-01차시 감염병의 진단과 추적',
+  std:'[10통과2-03-01]', topic:'Ⅲ-1. 과학과 미래 사회 · 1. 과학의 유용성과 필요성'
+});
+</script>
+<script src="../../shared/teach.js"></script>
+</body>
+</html>

@@ -1,0 +1,80 @@
+/* ==========================================================================
+   통합과학2 · Ⅲ단원 공용 스타일 — shared/base.css 위에 얹습니다.
+   색은 base.css 의 토큰만 씁니다(다크 모드 자동 대응).
+   ========================================================================== */
+
+/* 가로 막대 (U3.hbars) */
+.hb{display:grid;gap:8px}
+.hb .hr{display:grid;grid-template-columns:minmax(92px,30%) 1fr auto;gap:12px;align-items:center;font-size:14.5px}
+.hb .hl{color:var(--ink-soft);line-height:1.35}
+.hb .hk{height:14px;background:var(--surface-2);border-radius:7px;overflow:hidden;border:1px solid var(--rule-soft)}
+.hb .hf{display:block;height:100%;background:var(--s1);border-radius:7px 0 0 7px;transition:width .4s ease}
+.hb .hr.hi .hf{background:var(--s2)}
+.hb .hr.hi .hl{color:var(--ink);font-weight:600}
+.hb .hv{font-family:var(--mono);font-size:13.5px;font-variant-numeric:tabular-nums;color:var(--ink);min-width:64px;text-align:right;white-space:nowrap}
+.hb .hv small{font-size:11.5px;color:var(--ink-faint);margin-left:2px}
+.hb .hv i{font-style:normal;color:var(--ink-faint);margin-left:6px;font-size:12px}
+@media (prefers-reduced-motion:reduce){.hb .hf{transition:none}}
+
+/* 투표 (U3.poll) */
+.poll{background:var(--surface);border:1px solid var(--rule);border-radius:14px;padding:18px 20px;margin:0 0 14px}
+.poll .pq{font-weight:600;margin:0 0 12px;font-size:calc(16.5px * var(--tg-scale, 1))}
+.poll .po{display:flex;flex-wrap:wrap;gap:8px}
+.poll .ps{margin:12px 0 0;font-size:13.5px;color:var(--ink-faint)}
+.poll .pill:disabled:not(.on){opacity:.55}
+
+/* 반 고르기 */
+.clspick{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:0 0 12px}
+.clspick .lb{font-size:13.5px;color:var(--ink-faint);margin-right:4px}
+.clspick .pill{padding:6px 12px;font-size:13.5px}
+
+/* 데이터 카드 */
+.dcard{margin-top:12px;font-family:var(--mono);font-size:12px;line-height:1.85;color:var(--ink-faint)}
+.dcard b{color:var(--ink-soft);font-weight:500}
+.dcard a{color:var(--ink-soft)}
+.warnbox{border:1px solid var(--danger);background:var(--danger-wash);color:var(--danger);
+  border-radius:10px;padding:12px 16px;font-size:14.5px;margin:0 0 14px}
+.model-tag{display:inline-block;font-family:var(--mono);font-size:11px;letter-spacing:.08em;
+  color:var(--ochre);border:1px solid var(--ochre);border-radius:999px;padding:2px 9px;margin-left:6px;vertical-align:middle}
+
+/* 사건 카드 (데이터 탐정) */
+.case{display:flex;gap:12px;align-items:baseline;margin:0 0 10px}
+.case .no{font-family:var(--mono);font-size:12px;letter-spacing:.1em;color:var(--on-accent);
+  background:var(--accent);border-radius:999px;padding:3px 10px;flex:none}
+.case .claim{font-family:var(--serif);font-size:clamp(18px,2.2vw,22px);line-height:1.5;margin:0}
+
+/* 한 줄기 흐름 (정리 차시) */
+.chain{display:grid;gap:0;counter-reset:ch;margin-top:6px}
+.chain .cs{position:relative;background:var(--surface);border:1px solid var(--rule);border-radius:13px;
+  padding:15px 18px 15px 56px;font-size:15.5px;line-height:1.7;color:var(--ink);width:100%;
+  text-align:left;cursor:pointer;font-family:inherit}
+.chain .cs:hover{border-color:var(--accent)}
+.chain .cs[aria-expanded="true"]{border-color:var(--accent);background:var(--accent-wash)}
+.chain .cs::before{counter-increment:ch;content:counter(ch);position:absolute;left:18px;top:15px;
+  width:24px;height:24px;border-radius:50%;background:var(--accent);color:var(--on-accent);
+  font-family:var(--mono);font-size:12.5px;display:grid;place-items:center}
+.chain .cs .lv{display:block;margin-top:5px;font-family:var(--mono);font-size:11.5px;letter-spacing:.05em;color:var(--ink-faint)}
+.chain .ar{justify-self:center;color:var(--ink-faint);font-size:15px;line-height:1;margin:7px 0}
+.chain .dt{margin:9px 0 0;padding:14px 17px;border-radius:11px;background:var(--surface-2);
+  border-left:3px solid var(--accent);font-size:14.5px;line-height:1.8;color:var(--ink-soft)}
+.chain .dt b{color:var(--ink)}
+.chain .dt .tp{display:block;margin-top:9px;padding-top:9px;border-top:1px solid var(--rule);color:var(--s2-ink)}
+
+/* 두 칸 비교 */
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:0 0 18px}
+@media(max-width:680px){.duo{grid-template-columns:1fr}}
+.duo .card{margin:0}
+.duo .card .k{font-family:var(--mono);font-size:11.5px;letter-spacing:.1em;color:var(--ochre);margin:0 0 6px}
+
+/* 단계 표시 줄 */
+.steps{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 14px}
+.steps .pill{font-size:14px}
+.status{font-size:14.5px;color:var(--ink-soft);margin:6px 0 12px;min-height:1.6em}
+.status b{color:var(--ink)}
+
+/* 쓰기 틀 */
+.frame{border:1px dashed var(--rule);border-radius:12px;padding:14px 18px;background:var(--surface-2);
+  font-size:14.5px;line-height:1.8;color:var(--ink-soft);margin:0 0 14px}
+.frame b{color:var(--ink)}
+.rub th{white-space:nowrap}
+.rub td{font-size:14px;line-height:1.6}

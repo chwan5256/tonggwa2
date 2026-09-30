@@ -32,7 +32,7 @@ var DEFAULT_WHO = ['cadrical@gmail.com', 'chwan5256@namkang.sen.hs.kr'];
 var DEFAULT_CLS = ['1반', '2반', '3반', '4반', '5반', '6반', '7반', '8반'];
 
 /* 페이지가 요구하는 최소 버전. 코드에 새 mode 를 더할 때마다 올립니다. */
-var VER = 6;
+var VER = 7;
 
 var SHEET = '응답';
 
@@ -95,6 +95,10 @@ function _safe(v, n) {
      ?mode=gate                          (옛 방식) 공개 상태만
      ?mode=vid                           차시별 영상 주소
      ?mode=stats[&lesson=&cls=&since=]   응답 집계 (기본) · since 분 · 0 이면 전부
+                                         ※ 조합 항목(PRIVATE_ITEMS)은 비밀번호가 맞을 때만 셉니다
+     ?mode=uniq&lesson=&item=[&cls=&since=&season=1&drop=1&wake=1]
+                                         (VER 7) 세 답 조합의 '혼자인 사람 수'만 돌려줍니다.
+                                         조합 목록은 절대 내보내지 않습니다 — Ⅲ-02차시
      ?mode=chkwho&email=____             이 계정이 교사 화면에 들어올 수 있는지
                                          → 참·거짓만 돌려줍니다. 목록은 알려주지 않습니다.
      ?mode=checkpin&pin=____             비밀번호가 맞는지
@@ -115,6 +119,14 @@ function _safe(v, n) {
    ?callback=fn 을 붙이면 JSONP 로 돌려줍니다 (브라우저 CORS 우회)
    ============================================================ */
 function doGet(e) {
+  /* e 는 학생·교사 페이지가 부를 때만 들어옵니다.
+     편집기에서 이 함수를 손으로 실행하면 e 가 비어 있어 예전에는 오류가 났습니다.
+     오류가 아니라 안내가 나오도록 막아 둡니다 — 권한을 받으려면 [권한주기] 를 실행하세요. */
+  if (!e || !e.parameter) {
+    Logger.log('이 함수는 웹 페이지가 부를 때 쓰는 것이라 편집기에서 직접 실행할 수 없습니다.\n' +
+               '구글 로그인 권한을 받으시려면 위쪽 함수 칸에서 [권한주기] 를 골라 실행하세요.');
+    return _out({ ok: false, error: '편집기에서 직접 실행할 수 없는 함수입니다' });
+  }
   var p = e.parameter || {};
   var out;
   try {
@@ -135,6 +147,7 @@ function doGet(e) {
       case 'setgate':  out = _guard(p, function () { return _setGate(p); }); break;
       case 'settoday': out = _guard(p, function () { return _setToday(p); }); break;
       case 'setvid':   out = _guard(p, function () { return _setVid(p); }); break;
+      case 'uniq':     out = _uniq(p); break;
       case 'stats':
       case undefined:
       case '':         out = _stats(p); break;
@@ -197,7 +210,16 @@ function _gToken(p) {
 
     return { ok: true, email: d.email || '', allowed: _allowed(d.email) };
   } catch (err) {
-    return { ok: false, error: String(err) };
+    var m = String(err);
+    /* 가장 흔한 사고 — 바깥 인터넷에 나갈 권한을 아직 받지 못한 상태.
+       코드에 UrlFetchApp 이 새로 들어왔는데 예전 권한으로 배포가 돌고 있으면 납니다. */
+    if (m.indexOf('script.external_request') >= 0 || m.indexOf('UrlFetchApp') >= 0) {
+      return { ok: false, needAuth: true, error:
+        '구글에 물어볼 권한을 아직 받지 못했습니다. ' +
+        'Apps Script 편집기에서 함수 [권한주기] 를 한 번 실행해 허용한 뒤, ' +
+        '배포 관리 → 편집 → 새 버전으로 다시 배포해 주세요.' };
+    }
+    return { ok: false, error: m };
   }
 }
 
@@ -355,6 +377,50 @@ function _setVid(p) {
 /* ============================================================
    응답 집계
    ============================================================ */
+/* 선택지 자체는 가볍지만 **여러 개를 묶은 조합**은 사람을 가리킬 수 있는 항목.
+   공개 집계(stats)에 나오지 않고, 인원수만 _uniq 로 셉니다. */
+var PRIVATE_ITEMS = ['live-combo'];
+
+/* Ⅲ-02차시 — 조합이 '나 혼자'인 사람이 몇 명인지.
+   보호 조치(계절로 묶기·등교 수단 지우기·7시 전후로 묶기)를 서버에서 적용한 뒤 셉니다.
+   ★ 페이지(u3/02-live-data)의 '가상 예시 반' 계산과 규칙이 같아야 합니다. */
+function _uniq(p) {
+  var lesson = p.lesson || '', item = p.item || 'live-combo';
+  var cls = String(p.cls || '').trim();
+  var since = (p.since === undefined || p.since === '') ? 0 : Number(p.since);
+  var from = since > 0 ? new Date(Date.now() - since * 60 * 1000) : null;
+  var sh = _sheet(), last = sh.getLastRow();
+  var zero = { ok: true, people: 0, k1: 0, k2: 0, k3: 0 };
+  if (last < 2) return zero;
+  var startRow = Math.max(2, last - STAT_MAX_ROWS + 1);
+  var rows = sh.getRange(startRow, 1, last - startRow + 1, 6).getValues();
+  var NA = '답하지 않음';
+  var early = ['6시 전', '6:00~6:29', '6:30~6:59'];
+  var season = function (m) { var n = parseInt(m, 10); if (!n) return m;
+    return (n === 12 || n <= 2) ? '겨울' : n <= 5 ? '봄' : n <= 8 ? '여름' : '가을'; };
+  var map = {};
+  rows.forEach(function (r) {
+    if (!(r[0] instanceof Date)) return;
+    if (from && r[0] < from) return;
+    if (lesson && r[1] !== lesson) return;
+    if (r[2] !== item) return;
+    if (cls && String(r[5] || '') !== cls) return;
+    var t = String(r[3] || '').split('|');
+    if (t.length !== 3) return;
+    if (p.wake === '1') t[0] = (t[0] === NA) ? NA : (early.indexOf(t[0]) >= 0 ? '7시 전' : '7시 이후');
+    if (p.drop === '1') t[1] = '-';
+    if (p.season === '1') t[2] = season(t[2]);
+    var k = t.join('|');
+    map[k] = (map[k] || 0) + 1;
+  });
+  var out = { ok: true, people: 0, k1: 0, k2: 0, k3: 0 };
+  Object.keys(map).forEach(function (k) {
+    var n = map[k];
+    out.people += n;
+    if (n === 1) out.k1 += n; else if (n === 2) out.k2 += n; else out.k3 += n;
+  });
+  return out;
+}
 function _stats(p) {
   var lesson = p.lesson || '', item = p.item || '';
   var cls    = String(p.cls || '').trim();
@@ -365,9 +431,13 @@ function _stats(p) {
   var since = (p.since === undefined || p.since === '') ? 0 : Number(p.since);
   var from  = since > 0 ? new Date(Date.now() - since * 60 * 1000) : null;
 
+  /* ★ v0.10.0 — 비밀번호 확인은 **비밀번호가 실려 왔을 때만** 합니다.
+     _pinOk 는 틀린 시도를 세어 빗장을 거는데, 학생 페이지가 공개 집계를 부를 때마다
+     빈 비밀번호로 부르면 '틀린 시도'가 쌓여 선생님이 10분씩 잠기게 됩니다. */
+  var mineEarly = p.pin ? _pinOk(p.pin) : false;
   var sh   = _sheet();
   var last = sh.getLastRow();
-  if (last < 2) return { ok: true, total: 0, count: {}, byCls: {}, texts: [], textN: 0, locked: !_pinOk(p.pin), scanned: 0 };
+  if (last < 2) return { ok: true, total: 0, count: {}, byCls: {}, texts: [], textN: 0, locked: !mineEarly, scanned: 0 };
 
   /* 맨 아래(최근)부터 최대 STAT_MAX_ROWS 줄만 읽습니다 */
   var startRow = Math.max(2, last - STAT_MAX_ROWS + 1);
@@ -375,6 +445,8 @@ function _stats(p) {
 
   var picked = rows.filter(function (r) {
     if (!(r[0] instanceof Date)) return false;
+    /* 조합 항목은 누가 누구인지 드러낼 수 있으므로 공개 집계에서 뺍니다 */
+    if (!mineEarly && PRIVATE_ITEMS.indexOf(String(r[2])) >= 0) return false;
     if (from && r[0] < from) return false;
     if (lesson && r[1] !== lesson) return false;
     if (item   && r[2] !== item)   return false;
@@ -400,7 +472,7 @@ function _stats(p) {
   /* 선택지 분포(count)는 막대그래프를 그려야 하므로 누구나 읽을 수 있습니다.
      그러나 **학생이 직접 쓴 문장(texts)** 은 비밀번호가 맞을 때만 돌려줍니다.
      주소만 알면 남의 글을 통째로 읽을 수 있으면 안 됩니다. */
-  var mine = _pinOk(p.pin);
+  var mine = mineEarly;
 
   /* 서술형 답안은 **문항·반·시각**과 함께 돌려줍니다.
      그래야 진행 화면에서 문항별로 묶어 보여 줄 수 있습니다.
@@ -461,6 +533,30 @@ function _out(obj, callback) {
   return ContentService
     .createTextOutput(txt)
     .setMimeType(ContentService.MimeType.JSON);
+}
+
+/**
+ * ★ 구글 로그인을 붙일 때 **가장 먼저** 실행하는 함수 ★
+ *
+ * 이 스크립트가 **바깥 인터넷(구글의 토큰 확인 창구)에 나갈 권한**을 받습니다.
+ * 코드에 UrlFetchApp 이 새로 들어왔는데 예전 권한 그대로 배포가 돌고 있으면
+ *   "UrlFetchApp.fetch 을(를) 호출할 수 있는 권한이 없습니다"
+ * 라는 오류가 납니다. 그때 이 함수를 실행하면 해결됩니다.
+ *
+ * 하는 법
+ *   1. 위쪽 함수 고르는 칸에서 [권한주기] 를 고르고 ▶ 실행
+ *   2. 권한 검토 창 → 계정 선택 → 고급 → (안전하지 않은 페이지)로 이동 → 허용
+ *   3. 실행 기록에 '응답 코드 400' 이 보이면 성공입니다 (400 이 정상입니다 —
+ *      일부러 가짜 토큰을 보내 문을 두드려 본 것이므로 구글이 거절한 것이 맞습니다)
+ *   4. ★ 그 다음 반드시 **배포 관리 → 편집(연필) → 버전: 새 버전 → 배포**
+ *      권한만 받고 다시 배포하지 않으면 예전 권한 그대로 돕니다.
+ */
+function 권한주기() {
+  var r = UrlFetchApp.fetch(
+    'https://oauth2.googleapis.com/tokeninfo?id_token=권한받기용_가짜값',
+    { muteHttpExceptions: true });
+  Logger.log('바깥 인터넷에 다녀왔습니다. 응답 코드 ' + r.getResponseCode() +
+             ' — 400 이면 정상입니다. 이제 배포 관리 → 편집 → 새 버전으로 다시 배포하세요.');
 }
 
 /**
