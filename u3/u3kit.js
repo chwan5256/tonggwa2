@@ -13,6 +13,16 @@
    ========================================================================== */
 const U3 = (() => {
 
+/* ---------- 한 번만 내기 잠금 ----------
+   잠금은 **그날 하루만** 유지됩니다(열쇠에 날짜를 붙임). 다음 날 다른 반이 같은 기기를 써도 다시 낼 수 있습니다.
+   선생님이 같은 날 시험해 본 기기를 풀려면 주소 뒤에 ?reset=1 을 붙여 한 번 엽니다. */
+const today = () => { const d = new Date(); return d.getFullYear() + String(d.getMonth() + 1).padStart(2, '0') + String(d.getDate()).padStart(2, '0'); };
+const lockKey = base => base + '-' + today();
+if(/[?&]reset=1\b/.test(location.search)){
+  try{ Object.keys(localStorage).filter(k => k.startsWith('u3-')).forEach(k => localStorage.removeItem(k)); }catch(e){}
+  history.replaceState(null, '', location.pathname + location.hash);
+}
+
 const esc = s => String(s == null ? '' : s)
   .replace(/[<>&"]/g, c => ({ '<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;' }[c]));
 
@@ -62,12 +72,12 @@ function hbars(host, rows, opt){
 /* ---------- 투표 ----------
    cfg = { item:'mm-1', q:'…', opts:['…','…'], once:true, onPick?:fn }
    · 정답이 없는 문항입니다. 맞았는지를 기록하지 않습니다(ok 없음).
-   · 한 기기에서 한 번만 냅니다. 같은 사람이 여러 번 눌러 분포가 부풀지 않게 합니다. */
+   · 한 기기에서 하루 한 번만 냅니다. 같은 사람이 여러 번 눌러 분포가 부풀지 않게 합니다. */
 function poll(sel, cfg){
   const host = document.querySelector(sel);
   if(!host) return;
   const code = (typeof LESSON === 'object' && LESSON.code) || 'x';
-  const KEY = 'u3-poll-' + code + '-' + cfg.item;
+  const KEY = lockKey('u3-poll-' + code + '-' + cfg.item);
   let mine = null;
   try{ mine = localStorage.getItem(KEY); }catch(e){}
   if(typeof ACT === 'object' && ACT.reg){
@@ -190,5 +200,5 @@ function corr(a, b){
   return (saa && sbb) ? sab / Math.sqrt(saa * sbb) : 0;
 }
 
-return { csv, hbars, poll, live, uniq, clsPick, linreg, corr, esc };
+return { csv, hbars, poll, live, uniq, clsPick, linreg, corr, esc, lockKey };
 })();

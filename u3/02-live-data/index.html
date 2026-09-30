@@ -263,7 +263,7 @@ const Q = [
   { id:'live-go',   h:'오늘 등교 수단',   opts:['걸어서','버스','지하철','자전거·기타', NA] },
   { id:'live-bm',   h:'생일이 있는 달',   opts:['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월', NA] }
 ];
-const SENT_KEY = 'u3-02-sent';
+const SENT_KEY = U3.lockKey('u3-02-sent');   /* 하루 한 번 — ?reset=1 로 이 기기 잠금 해제 */
 
 (() => {
   const pick = {};
@@ -274,7 +274,7 @@ const SENT_KEY = 'u3-02-sent';
   fq.innerHTML = Q.map(q => `<p style="font-weight:600;margin:14px 0 8px">${q.h}</p>
     <div class="btnrow" data-q="${q.id}">${q.opts.map(o =>
       `<button type="button" class="pill" data-v="${o}" ${sent ? 'disabled' : ''}>${o}</button>`).join('')}</div>`).join('');
-  if(sent){ go.disabled = true; st.innerHTML = '이미 보냈습니다. 한 사람이 여러 번 보내면 집계가 틀어지므로 <b>한 번만</b> 받습니다.'; }
+  if(sent){ go.disabled = true; st.innerHTML = '오늘은 이미 보냈습니다. 한 사람이 여러 번 보내면 집계가 틀어지므로 <b>하루 한 번만</b> 받습니다.'; }
   fq.addEventListener('click', e => {
     const b = e.target.closest('button[data-v]'); if(!b || b.disabled) return;
     const row = b.closest('[data-q]');
