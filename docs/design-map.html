@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>성취기준 → 차시 설계 지도 · 통합과학2 교사용</title>
+<script src="teacher-only.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=IBM+Plex+Sans+KR:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../shared/base.css">
+<style>
+.wrap{max-width:1180px}
+.howto{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin:0 0 8px}
+.howto .card{margin:0;padding:16px 18px}
+.howto .card .k{font-family:var(--mono);font-size:11.5px;letter-spacing:.1em;color:var(--ochre);margin:0 0 6px}
+.howto .card p{margin:0;font-size:14.5px;color:var(--ink-soft);line-height:1.65}
+.howto .card b{color:var(--ink)}
+
+/* 매트릭스 */
+.mx{overflow-x:auto;border:1px solid var(--rule);border-radius:12px;background:var(--surface)}
+.mx table{min-width:860px}
+.mx th,.mx td{text-align:center;padding:9px 6px;border-bottom:1px solid var(--rule-soft)}
+.mx th.std,.mx td.std{text-align:left;padding-left:14px;min-width:220px}
+.mx td.std .c{font-family:var(--mono);font-size:12.5px;color:var(--accent);display:block}
+.mx td.std .t{font-size:13.5px;color:var(--ink-soft)}
+.mx th.u{background:var(--accent-wash);color:var(--accent);font-family:var(--mono);font-size:11.5px}
+.mx th.l{font-family:var(--mono);font-size:11.5px;line-height:1.35;white-space:normal;min-width:62px}
+.mx th.l small{display:block;font-family:var(--sans);font-size:11px;color:var(--ink-faint);font-weight:400;letter-spacing:0}
+.mx a.dot{display:inline-block;width:24px;height:24px;border-radius:50%;text-decoration:none;vertical-align:middle;border:2px solid transparent}
+.mx a.dot.m{background:var(--accent);border-color:var(--accent)}
+.mx a.dot.r{background:linear-gradient(90deg,var(--accent) 50%,transparent 50%);border-color:var(--accent)}
+.mx a.dot.x{background:transparent;border-color:var(--ochre)}
+.lg i.dot{display:inline-block;width:16px;height:16px;border-radius:50%;border:2px solid transparent}
+.lg i.m{background:var(--accent);border-color:var(--accent)}
+.lg i.r{background:linear-gradient(90deg,var(--accent) 50%,transparent 50%);border-color:var(--accent)}
+.lg i.x{border-color:var(--ochre);background:transparent}
+.mx a.dot:hover{box-shadow:0 0 0 3px var(--accent-wash)}
+.mx td.sum{font-family:var(--mono);font-size:12.5px;color:var(--ink-faint)}
+.lg{display:flex;flex-wrap:wrap;gap:8px 20px;margin:12px 2px 0;font-size:13.5px;color:var(--ink-soft)}
+.lg span{display:flex;align-items:center;gap:7px}
+.lg i{display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;font-style:normal;font-size:11px}
+
+/* 성취기준 블록 */
+.sblk{border:1px solid var(--rule);border-radius:14px;background:var(--surface);padding:22px 24px;margin:0 0 22px;box-shadow:var(--shadow);scroll-margin-top:66px}
+.sblk .hd{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:baseline;margin:0 0 8px}
+.sblk .hd .c{font-family:var(--mono);font-size:13px;color:var(--on-accent);background:var(--accent);border-radius:999px;padding:3px 11px}
+.sblk .hd h3{margin:0;font-size:19px}
+.sblk .txt{font-family:var(--serif);font-size:16.5px;line-height:1.65;margin:0 0 12px;max-width:none}
+.sblk .meta{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 16px}
+.chip{font-size:12.5px;border:1px solid var(--rule);border-radius:999px;padding:3px 10px;color:var(--ink-soft);background:var(--surface-2)}
+.chip.no{border-color:var(--danger);color:var(--danger);background:var(--danger-wash)}
+.lcards{display:grid;gap:12px}
+.lc{border:1px solid var(--rule-soft);border-radius:12px;padding:16px 18px;background:var(--ground);scroll-margin-top:66px}
+.lc:target{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-wash)}
+.lc .top{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:baseline;margin:0 0 6px}
+.lc .no{font-family:var(--mono);font-size:12px;color:var(--ochre)}
+.lc .ti{font-weight:600;font-size:16px}
+.lc .role{font-size:11.5px;border-radius:999px;padding:2px 9px}
+.lc .role.m{background:var(--accent);color:var(--on-accent)}
+.lc .role.r{background:var(--accent-wash);color:var(--accent)}
+.lc .role.x{border:1px solid var(--ochre);color:var(--ochre)}
+.lc .part{font-size:14.5px;color:var(--ink-soft);margin:0 0 10px;max-width:none}
+.lc .part b{color:var(--ink)}
+.flow{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 10px;align-items:center}
+.flow .sx{font-size:12.5px;border:1px solid var(--rule);background:var(--surface);border-radius:8px;padding:4px 9px;color:var(--ink)}
+.flow .sx em{font-style:normal;font-family:var(--mono);color:var(--ink-faint);font-size:11.5px;margin-left:5px}
+.flow .sx u{text-decoration:none;color:var(--s2-ink);font-size:11.5px;margin-left:5px}
+.flow .ar{color:var(--ink-faint);font-size:12px}
+.lc .foot{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.lc .foot .info{font-size:12.5px;color:var(--ink-faint);margin-right:auto}
+.lc .foot a.btn{font-size:13.5px;padding:7px 13px;text-decoration:none}
+.status{font-size:14px;color:var(--ink-faint)}
+.dtop{background:var(--surface);border-bottom:1px solid var(--rule);font-size:13.5px;position:sticky;top:0;z-index:30}
+.dtop .wrap{display:flex;gap:18px;align-items:center;height:48px}
+.dtop a{color:var(--ink-soft);text-decoration:none}
+.dtop a:hover{color:var(--accent)}
+.dtop .sp{flex:1}
+@media print{.dtop,.lc .foot{display:none}.sblk{box-shadow:none;page-break-inside:avoid}}
+</style>
+</head>
+<body>
+
+<div class="dtop"><div class="wrap">
+  <a href="../teacher.html">← 교사 화면</a>
+  <span class="sp"></span>
+  <a href="unpacking.html">성취기준 언패킹(S2)</a>
+  <a href="../">학생 자료실</a>
+  <button class="tbtn" id="themeBtn" type="button">테마</button>
+</div></div>
+
+<header class="mast"><div class="wrap">
+  <p class="eyebrow">교사 전용 · 수업 설계 근거</p>
+  <h1>성취기준 → 차시 설계 지도</h1>
+  <p class="dek">담당 성취기준 5개가 <b>어느 차시에서, 어떤 흐름과 활동으로</b> 다루어지는지 한 장에 모았습니다.
+    각 차시 페이지 맨 위의 성취기준 칸을 <b>그대로 읽어</b> 만들므로, 차시를 고치면 이 지도도 저절로 따라 바뀝니다.</p>
+  <div class="tags"><span class="tag std" id="tgStd">성취기준 5개</span><span class="tag" id="tgLes">차시 –</span><span class="tag" id="tgMin">절 시간 합 –</span></div>
+</div></header>
+
+<main><div class="wrap">
+
+<section class="step" id="how">
+  <h2><span class="n">01</span>이렇게 읽으세요</h2>
+  <div class="howto">
+    <div class="card"><p class="k">① 표에서 찾기</p><p>가로줄이 <b>성취기준</b>, 세로줄이 <b>차시</b>입니다. 동그라미를 누르면 그 차시의 설명으로 내려갑니다.</p></div>
+    <div class="card"><p class="k">② 차시가 맡는 부분</p><p>차시마다 <b>성취기준의 어느 구절을 맡는지</b>와 <b>절의 흐름 · 배정 시간 · 활동 종류</b>를 보여 줍니다.</p></div>
+    <div class="card"><p class="k">③ 근거로 건너가기</p><p><b>[언패킹]</b>은 그 성취기준의 3범주 분해 · 성취수준 A~E · 오개념 · 평가요소로, <b>[학생 화면] · [진행 화면]</b>은 실제 수업 페이지로 갑니다.</p></div>
+  </div>
+</section>
+
+<section class="step" id="mxs">
+  <h2><span class="n">02</span>한눈에 — 성취기준 × 차시</h2>
+  <p class="status" id="stat">차시 페이지를 읽는 중…</p>
+  <div class="mx" id="mx" hidden></div>
+  <div class="lg" id="lg" hidden>
+    <span><i class="dot m"></i>중심 — 그 차시의 주 성취기준</span>
+    <span><i class="dot r"></i>정리 — 대단원 정리에서 다시 묶음</span>
+    <span><i class="dot x"></i>연계 — 다른 단원의 개념을 근거로 불러옴</span>
+  </div>
+</section>
+
+<section class="step" id="blocks">
+  <h2><span class="n">03</span>성취기준별 설계</h2>
+  <div id="sb"></div>
+</section>
+
+<p class="status" style="margin-top:30px">이 지도는 <code>manifest.json</code> 의 차시 목록과 각 차시 페이지의 머리말(성취기준 칸 · 태그 · 절 제목 · <code>data-min</code>)을 읽어 화면에서 만듭니다.
+  손으로 적은 표가 없으므로 페이지와 어긋나지 않습니다. 다만 <b>인터넷 주소로 열어야</b> 읽을 수 있습니다(파일로 직접 열면 브라우저가 막습니다).</p>
+
+</div></main>
+
+<script src="../shared/lib.js"></script>
+<script>
+TG.theme('themeBtn');
+
+/* 성취기준 → 내용 요소(교육과정 성취기준 표의 핵심개념). 표시용 이름표일 뿐이며, 원문은 차시 페이지에서 읽습니다. */
+const STD = [
+  { c:'02-03', tag:'지구 환경의 변화 · 온실기체와 지구온난화', area:'(2) 환경과 에너지' },
+  { c:'03-01', tag:'감염병과 병원체', area:'(3) 과학과 미래 사회' },
+  { c:'03-02', tag:'인공지능과 과학 탐구 · 빅데이터', area:'(3) 과학과 미래 사회' },
+  { c:'03-03', tag:'로봇 · 사물 인터넷', area:'(3) 과학과 미래 사회' },
+  { c:'03-04', tag:'과학기술과 윤리 · SSI', area:'(3) 과학과 미래 사회' }
+];
+const CAT = ['지식·이해','과정·기능','가치·태도'];
+const esc = s => String(s == null ? '' : s).replace(/[<>&"]/g, c => ({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'}[c]));
+const clean = el => el ? el.textContent.replace(/\s+/g, ' ').trim() : '';
+
+/* "[10통과2-03-01~04]" → ['03-01','03-02','03-03','03-04'] */
+function codes(text){
+  const out = [];
+  String(text).replace(/10통과2-(\d{2})-(\d{2})(?:~(\d{2}))?/g, (_, a, b, e) => {
+    const s = +b, t = e ? +e : s;
+    for(let k = s; k <= t; k++) out.push(a + '-' + String(k).padStart(2, '0'));
+  });
+  return out;
+}
+
+/* 차시 페이지 하나를 읽어 설계 정보를 뽑습니다 — 이 함수 하나가 표·카드의 유일한 출처입니다. */
+function readLesson(l, html){
+  const d = new DOMParser().parseFromString(html, 'text/html');
+  const sb = d.querySelector('.stdbar');
+  const k = sb ? clean(sb.querySelector('.k')) : '';
+  const ps = sb ? [...sb.querySelectorAll('p')] : [];
+  const stdText = ps.find(p => !p.classList.contains('k') && !p.classList.contains('sub'));
+  const subs = ps.filter(p => p.classList.contains('sub'));
+  const part = subs.map(p => p.innerHTML).join('<br>');
+  const tags = [...d.querySelectorAll('.mast .tags .tag')].map(clean);
+
+  /* 역할: (중심)이 적힌 코드가 있으면 그것만 중심, 태그의 나머지는 정리 · '연계'가 붙은 것은 연계 */
+  const role = {};
+  const center = /\(중심\)/.test(k) ? codes(k.split('(중심)')[0]).slice(-1) : null;
+  tags.filter(t => /10통과2/.test(t)).forEach(t => {
+    const linked = /연계/.test(t);
+    codes(t).forEach(c => { role[c] = linked ? 'x' : (center && !center.includes(c) ? 'r' : 'm'); });
+  });
+  if(/연계/.test(k)) codes(k.split('연계')[1] || '').forEach(c => { if(!role[c]) role[c] = 'x'; });
+  if(!Object.keys(role).length) codes(k).forEach(c => role[c] = 'm');
+
+  const cats = CAT.filter(c => tags.some(t => t.includes(c)));
+  const topic = tags.find(t => !/10통과2/.test(t) && !CAT.some(c => t.includes(c))) || l.topic || '';
+
+  const script = [...d.querySelectorAll('script:not([src])')].map(s => s.textContent).join('\n');
+  const kind = id => {
+    const pat = new RegExp("(ACT\\.(cloze|sort|place|note)|TG\\.quiz|U3\\.poll)\\(\\s*'#" + id + "'");
+    const m = script.match(pat);
+    if(m) return ({ 'ACT.cloze':'빈칸', 'ACT.sort':'분류', 'ACT.place':'그림 채우기', 'ACT.note':'서술형', 'TG.quiz':'객관식', 'U3.poll':'투표' })[m[1]];
+    if(/^p\d+$/.test(id) && /U3\.poll\('#p'\s*\+/.test(script)) return '투표';
+    return null;
+  };
+  const secs = [...d.querySelectorAll('section.step')].map(s => {
+    const acts = new Set();
+    s.querySelectorAll('[id]').forEach(e => { const k2 = kind(e.id); if(k2) acts.add(k2); });
+    if(s.querySelector('canvas')) acts.add('그래프');
+    if(s.querySelector('figure svg')) acts.add('도식');
+    if(s.querySelector('input[type=range]')) acts.add('모형 조작');
+    if(s.querySelector('.teach-only')) acts.add('영상');
+    acts.delete('');
+    return { nav: s.dataset.nav || clean(s.querySelector('h2')), min: +s.dataset.min || 0, acts:[...acts] };
+  });
+  const data = [...new Set((script.match(/data\/[\w.-]+\.csv/g) || []).map(x => x.replace('data/', '')))];
+  return { l, code: l.unit + '-' + l.no, title: l.title, path: l.path, role, cats, topic,
+           part, stdText: stdText ? clean(stdText) : '', k, secs, data,
+           min: secs.reduce((a, s) => a + s.min, 0) };
+}
+
+fetch('../manifest.json', { cache:'no-store' }).then(r => r.json()).then(M => {
+  const units = {}; M.units.forEach(u => units[u.id] = u);
+  return Promise.all(M.lessons.map(l =>
+    fetch('../' + l.path, { cache:'no-store' }).then(r => r.ok ? r.text() : Promise.reject(r.status))
+      .then(h => readLesson(l, h)).catch(() => ({ l, code:l.unit + '-' + l.no, title:l.title, path:l.path, role:{}, fail:true, secs:[], data:[], cats:[], min:0 }))
+  )).then(L => draw(M, units, L));
+}).catch(() => {
+  if(!document.getElementById('stat')) return;
+  document.getElementById('stat').innerHTML = '<b style="color:var(--danger)">manifest.json 을 읽지 못했습니다.</b> 인터넷 주소(GitHub Pages)로 열었는지 확인하세요.';
+});
+
+function draw(M, units, L){
+  if(!document.getElementById('mx')) return;          /* 허들에 막혀 본문이 없을 때 */
+  /* 성취기준 원문: 그 성취기준이 '중심'인 첫 차시의 머리말에서 가져옵니다 */
+  STD.forEach(s => {
+    const src = L.find(x => x.role[s.c] === 'm' && x.stdText && codes(x.k)[0] === s.c) || L.find(x => x.role[s.c] === 'm' && x.stdText);
+    s.text = src ? src.stdText : '';
+  });
+  const nFail = L.filter(x => x.fail).length;
+  const tot = L.reduce((a, x) => a + x.min, 0);
+  document.getElementById('tgLes').textContent = `차시 ${L.length}개`;
+  document.getElementById('tgMin').textContent = `절 배정 시간 합 ${tot}분`;
+  document.getElementById('stat').innerHTML = nFail
+    ? `<b style="color:var(--danger)">${nFail}개 차시를 읽지 못했습니다.</b> 그 차시는 표에서 비어 보입니다.`
+    : `${L.length}개 차시 페이지를 읽었습니다.`;
+
+  /* ── 매트릭스 ── */
+  const byUnit = [];
+  L.forEach(x => { const g = byUnit.find(b => b.u === x.l.unit); g ? g.ls.push(x) : byUnit.push({ u:x.l.unit, ls:[x] }); });
+  const nm = { m:'중심', r:'정리', x:'연계' };
+  let h = '<table><thead><tr><th class="std" rowspan="2">성취기준</th>' +
+    byUnit.map(g => `<th class="u" colspan="${g.ls.length}">${esc((units[g.u] || {}).no || g.u)}. ${esc((units[g.u] || {}).title || '')}</th>`).join('') +
+    '<th rowspan="2">차시 수</th></tr><tr>' +
+    L.map(x => `<th class="l">${esc(x.l.no)}<small>${esc(x.title.length > 9 ? x.title.slice(0, 8) + '…' : x.title)}</small></th>`).join('') +
+    '</tr></thead><tbody>';
+  STD.forEach(s => {
+    const n = L.filter(x => x.role[s.c]).length;
+    h += `<tr><td class="std"><span class="c">[10통과2-${s.c}]</span><span class="t">${esc(s.tag)}</span></td>` +
+      L.map(x => {
+        const r = x.role[s.c];
+        return `<td>${r ? `<a class="dot ${r}" href="#L-${s.c}-${x.code}" title="${esc(x.code + ' ' + x.title + ' — ' + nm[r])}" aria-label="${esc(x.title + ' ' + nm[r])}"></a>` : ''}</td>`;
+      }).join('') + `<td class="sum">${n}</td></tr>`;
+  });
+  h += '</tbody></table>';
+  const mx = document.getElementById('mx'); mx.innerHTML = h; mx.hidden = false;
+  document.getElementById('lg').hidden = false;
+
+  /* ── 성취기준별 블록 ── */
+  document.getElementById('sb').innerHTML = STD.map(s => {
+    const ls = L.filter(x => x.role[s.c]);
+    const main = ls.filter(x => x.role[s.c] === 'm');
+    const catCount = CAT.map(c => [c, main.filter(x => x.cats.includes(c)).length]);
+    const mins = main.reduce((a, x) => a + x.min, 0);
+    return `<div class="sblk" id="S-${s.c}">
+      <div class="hd"><span class="c">[10통과2-${s.c}]</span><h3>${esc(s.tag)}</h3><span class="chip">${esc(s.area)}</span></div>
+      <p class="txt">${esc(s.text) || '<span style="color:var(--ink-faint)">원문을 읽지 못했습니다</span>'}</p>
+      <div class="meta">
+        <span class="chip">중심 차시 ${main.length}개 · 절 시간 ${mins}분</span>
+        ${catCount.map(([c, n]) => `<span class="chip${n ? '' : ' no'}">${c} ${n}차시</span>`).join('')}
+        <a class="btn ghost" style="font-size:13.5px;padding:6px 12px;text-decoration:none;margin-left:auto" href="unpacking.html#${s.c}">언패킹 — 성취수준 A~E · 오개념 · 평가요소</a>
+      </div>
+      <div class="lcards">${ls.map(x => lessonCard(s.c, x)).join('')}</div>
+    </div>`;
+  }).join('');
+
+  if(location.hash){ const t = document.getElementById(location.hash.slice(1)); if(t) t.scrollIntoView(); }
+}
+
+function lessonCard(c, x){
+  const r = x.role[c];
+  const nm = { m:'중심', r:'정리', x:'연계' }[r];
+  const flow = x.secs.map((s, i) => `${i ? '<span class="ar">→</span>' : ''}<span class="sx">${esc(s.nav)}${s.min ? `<em>${s.min}분</em>` : ''}${s.acts.length ? `<u>${esc(s.acts.join('·'))}</u>` : ''}</span>`).join('');
+  return `<div class="lc" id="L-${c}-${x.code}">
+    <div class="top"><span class="no">${esc(x.code)}</span><span class="ti">${esc(x.title)}</span><span class="role ${r}">${nm}</span>
+      ${x.cats.map(k => `<span class="chip">${esc(k)}</span>`).join('')}</div>
+    ${x.fail ? '<p class="part" style="color:var(--danger)">이 차시 페이지를 읽지 못했습니다.</p>'
+             : `<p class="part"><b>${esc(x.topic)}</b><br>${x.part || ''}</p>
+    <div class="flow">${flow}</div>`}
+    <div class="foot">
+      <span class="info">${x.min ? `절 시간 합 ${x.min}분` : ''}${x.data.length ? ` · 자료 ${esc(x.data.join(', '))}` : ''}</span>
+      <a class="btn ghost" href="../${esc(x.path)}" target="_blank" rel="noopener">학생 화면</a>
+      <a class="btn" href="../${esc(x.path)}#t" target="_blank" rel="noopener">진행 화면</a>
+    </div>
+  </div>`;
+}
+</script>
+</body>
+</html>

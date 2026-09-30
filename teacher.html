@@ -78,6 +78,14 @@ fieldset.step{border:0;border-top:1px solid var(--rule-soft);margin-inline:0;pad
 
 /* 차시 목록 */
 .glist{display:grid;gap:10px;margin-top:4px}
+.dsg{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+.dcard{display:flex;flex-direction:column;gap:6px;border:1px solid var(--rule);border-radius:12px;padding:16px 18px;
+  background:var(--surface);color:var(--ink);text-decoration:none;transition:border-color .15s,transform .1s}
+.dcard:hover{border-color:var(--accent);transform:translateY(-1px);text-decoration:none}
+.dcard .k{font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;color:var(--ochre)}
+.dcard b{font-size:16.5px}
+.dcard span:not(.k){font-size:14px;color:var(--ink-soft);line-height:1.62}
+.dcard em{font-style:normal;font-size:14px;color:var(--accent);font-weight:600;margin-top:auto}
 .gchap{font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;color:var(--ink-faint);
   margin:14px 0 2px;text-transform:uppercase}
 .grow{display:flex;align-items:center;gap:14px;padding:13px 16px;border:1px solid var(--rule);
@@ -261,6 +269,35 @@ fieldset.step{border:0;border-top:1px solid var(--rule-soft);margin-inline:0;pad
       <span class="dirty" id="tDirty"></span>
     </div>
     <p class="msg mute" id="tMsg" style="margin-top:12px"></p>
+  </div>
+
+  <!-- 수업 설계 근거 (v0.12.0) -->
+  <div class="panel">
+    <h2>수업 설계 근거</h2>
+    <p class="sub">이 자료실의 차시들은 <b>성취기준에서 거꾸로</b> 설계했습니다(백워드 설계).
+      성취기준 → <b>언패킹</b>(3범주 분해 · 성취수준 A~E · 오개념 · 평가요소) → <b>차시 설계</b>(어느 차시가 성취기준의 어느 구절을 맡는지) → <b>차시 페이지</b> 순서입니다.
+      아래 두 문서로 그 연결을 거꾸로 따라가 볼 수 있습니다.</p>
+    <div class="dsg">
+      <a class="dcard" href="docs/design-map.html" target="_blank" rel="noopener">
+        <span class="k">수업 설계 지도</span>
+        <b>성취기준 → 차시 설계 지도</b>
+        <span>성취기준 5개 × 차시 11개 표, 차시마다 맡는 구절 · 절 흐름 · 배정 시간 · 활동 종류.
+          차시 페이지를 직접 읽어 만들므로 늘 최신입니다.</span>
+        <em>열기 →</em>
+      </a>
+      <a class="dcard" href="docs/unpacking.html" target="_blank" rel="noopener">
+        <span class="k">S2 · 설계의 출발점</span>
+        <b>담당 5개 성취기준 언패킹</b>
+        <span>지식·이해 / 과정·기능 / 가치·태도 분해, 성취수준 A~E 원문과 수준을 가르는 결정적 차이,
+          오개념 지도, 평가요소, 공식 예시 평가 도구.</span>
+        <em>열기 →</em>
+      </a>
+    </div>
+    <p class="note">
+      <b>교사 전용입니다.</b> 이 화면에 들어온 브라우저(12시간)에서만 열리고, 학생 화면 어디에도 걸려 있지 않습니다.
+      다만 정적 사이트라 <b>잠금이 아니라 허들</b>이므로, 평가 문항·정답·채점기준표는 이 문서들에도 넣지 않습니다.
+      원본은 <code>[산출물]/통합과학2_지구과학/02_설계/</code> 에 있고, 고치면 <code>docs/unpacking.html</code> 에도 다시 넣어야 합니다.
+    </p>
   </div>
 
   <!-- 여닫이 -->
